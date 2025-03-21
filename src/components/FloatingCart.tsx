@@ -39,8 +39,8 @@ const FloatingCart: React.FC<FloatingCartProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white shadow-float
-        hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 ${isAnimating ? 'animate-cart-bounce' : ''}`}
+      className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-yellow-500 text-white shadow-float
+        hover:bg-yellow-600 transition-all duration-300 ${isAnimating ? 'animate-cart-bounce' : ''}`}
       style={buttonPositionStyle}
     >
       <ShoppingCart className="h-6 w-6" />

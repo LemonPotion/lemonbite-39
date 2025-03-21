@@ -47,7 +47,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-medium text-gray-900">{item.name}</h3>
-          <span className="text-sm font-semibold bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-2 py-1 rounded-full shadow-sm">
+          <span className="text-sm font-semibold bg-yellow-500 text-white px-2 py-1 rounded-full shadow-sm">
             {item.price.toFixed(2)} р
           </span>
         </div>
@@ -57,7 +57,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
         <button 
           onClick={handleAddToCart}
           className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide transition-all
-            ${isAdding ? 'bg-yellow-500 text-white cart-item-add' : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white hover:shadow-lg shadow-md'}`}
+            ${isAdding ? 'bg-yellow-500 text-white cart-item-add' : 'bg-yellow-500 text-white hover:bg-yellow-600 hover:shadow-lg shadow-md'}`}
         >
           <Plus size={16} className="mr-1" />
           Добавить в корзину
