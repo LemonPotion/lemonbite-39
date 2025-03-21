@@ -110,8 +110,12 @@ const Index = () => {
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
+          <div className="mb-6 inline-block p-2 bg-yellow-100 rounded-lg">
+            <span className="text-yellow-700 font-medium px-3 py-1 text-sm">Вкусная еда прямо к вам домой</span>
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Откройте для себя мир гастрономии</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto"> Ваш идеальный заказ всего в пару кликов.
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto"> 
+            Ваш идеальный заказ всего в пару кликов.
           </p>
         </div>
 

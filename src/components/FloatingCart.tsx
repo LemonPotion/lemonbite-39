@@ -39,13 +39,13 @@ const FloatingCart: React.FC<FloatingCartProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-yellow-500 text-white shadow-float
-        hover:bg-yellow-400 transition-all duration-300 ${isAnimating ? 'animate-cart-bounce' : ''}`}
+      className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white shadow-float
+        hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 ${isAnimating ? 'animate-cart-bounce' : ''}`}
       style={buttonPositionStyle}
     >
       <ShoppingCart className="h-6 w-6" />
       {totalItems > 0 && (
-        <span className="absolute -top-1 -right-1 bg-white text-yellow-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-yellow-500">
+        <span className="absolute -top-1 -right-1 bg-white text-yellow-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-yellow-500 shadow-sm">
           {totalItems}
         </span>
       )}

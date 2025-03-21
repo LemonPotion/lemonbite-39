@@ -25,7 +25,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
 
   return (
     <div 
-      className="food-card-shadow bg-white rounded-xl overflow-hidden transition-all duration-300"
+      className="food-card-shadow bg-white rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-5px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -35,6 +35,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
             <div className="w-8 h-8 rounded-full border-2 border-yellow-400 border-t-transparent animate-spin"></div>
           </div>
         )}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10"></div>
         <img 
           src={item.image} 
           alt={item.name}
@@ -46,7 +47,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-medium text-gray-900">{item.name}</h3>
-          <span className="text-sm font-semibold bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+          <span className="text-sm font-semibold bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-2 py-1 rounded-full shadow-sm">
             {item.price.toFixed(2)} р
           </span>
         </div>
@@ -55,8 +56,8 @@ const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
         
         <button 
           onClick={handleAddToCart}
-          className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium transition-all
-            ${isAdding ? 'bg-yellow-500 text-white cart-item-add' : 'bg-yellow-500 text-white hover:bg-yellow-600 shadow-md'}`}
+          className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide transition-all
+            ${isAdding ? 'bg-yellow-500 text-white cart-item-add' : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white hover:shadow-lg shadow-md'}`}
         >
           <Plus size={16} className="mr-1" />
           Добавить в корзину
