@@ -5,6 +5,7 @@ import FoodCard from '../components/FoodCard';
 import FloatingCart from '../components/FloatingCart';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
+import WelcomeMessage from '../components/WelcomeMessage';
 import { useCart, FoodItem } from '../context/CartContext';
 
 // Sample food data with added items
@@ -98,6 +99,7 @@ const foodItems: FoodItem[] = [
 const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
   const { totalItems } = useCart();
 
   const handleOrderComplete = (phoneNumber: string, address: string) => {
@@ -109,21 +111,29 @@ const Index = () => {
   return (
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <div className="mb-6 inline-block p-2 bg-yellow-100 rounded-lg">
-            <span className="text-yellow-700 font-medium px-3 py-1 text-sm">Вкусная еда прямо к вам домой</span>
+        {showWelcome ? (
+          <div className="py-12">
+            <WelcomeMessage onContinue={() => setShowWelcome(false)} />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Откройте для себя мир гастрономии</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto"> 
-            Ваш идеальный заказ всего в пару кликов.
-          </p>
-        </div>
+        ) : (
+          <>
+            <div className="text-center mb-12">
+              <div className="mb-6 inline-block p-2 bg-yellow-100 rounded-lg">
+                <span className="text-yellow-700 font-medium px-3 py-1 text-sm">Вкусная еда прямо к вам домой</span>
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">Откройте для себя мир гастрономии</h1>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto"> 
+                Ваш идеальный заказ всего в пару кликов.
+              </p>
+            </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {foodItems.map(item => (
-            <FoodCard key={item.id} item={item} />
-          ))}
-        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {foodItems.map(item => (
+                <FoodCard key={item.id} item={item} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {totalItems > 0 && (

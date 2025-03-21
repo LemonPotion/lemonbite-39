@@ -25,16 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Food background with overlay for better readability */}
-      <div className="fixed inset-0 z-[-1]">
-        <img 
-          src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9" 
-          alt="Food background" 
-          className="w-full h-full object-cover opacity-10"
-        />
-      </div>
-      
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-yellow-50">
       {/* Easter egg animation */}
       {easterEggActive && (
         <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center">
