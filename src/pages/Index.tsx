@@ -7,6 +7,7 @@ import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import WelcomeMessage from '../components/WelcomeMessage';
 import { useCart, FoodItem } from '../context/CartContext';
+import { Search, Filter } from 'lucide-react';
 
 // Sample food data with added items
 const foodItems: FoodItem[] = [
@@ -100,6 +101,7 @@ const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const { totalItems } = useCart();
 
   const handleOrderComplete = (phoneNumber: string, address: string) => {
@@ -107,6 +109,11 @@ const Index = () => {
     setIsCheckoutOpen(false);
     setIsSuccessOpen(true);
   };
+
+  const filteredItems = foodItems.filter(item => 
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Layout>
@@ -117,20 +124,45 @@ const Index = () => {
           </div>
         ) : (
           <>
-            <div className="text-center mb-12">
-              <div className="mb-6 inline-block p-2 bg-yellow-100 rounded-lg">
-                <span className="text-yellow-700 font-medium px-3 py-1 text-sm">Вкусная еда прямо к вам домой</span>
+            <div className="mb-12">
+              <div className="flex flex-col items-start space-y-6 mb-10">
+                <h1 className="text-4xl sm:text-5xl font-bold text-[#221F26] tracking-tight leading-none">
+                  Our <span className="text-yellow-500">Menu</span>
+                </h1>
+                <p className="text-lg text-[#555555] max-w-lg">
+                  Discover our carefully crafted dishes made with the freshest ingredients
+                </p>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">Откройте для себя мир гастрономии</h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto"> 
-                Ваш идеальный заказ всего в пару кликов.
-              </p>
-            </div>
+              
+              <div className="relative mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="relative flex-grow max-w-2xl">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#8A898C]" size={18} />
+                    <input
+                      type="text"
+                      placeholder="Search for dishes..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-12 pr-4 py-3 bg-[#F6F6F7] border-0 rounded-xl text-[#403E43] focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                    />
+                  </div>
+                  <button className="p-3 bg-white border border-[#E5E5E5] rounded-xl flex items-center justify-center text-[#403E43] hover:bg-[#F6F6F7] transition-colors">
+                    <Filter size={18} />
+                  </button>
+                </div>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {foodItems.map(item => (
-                <FoodCard key={item.id} item={item} />
-              ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredItems.map(item => (
+                  <FoodCard key={item.id} item={item} />
+                ))}
+                {filteredItems.length === 0 && (
+                  <div className="col-span-full py-16 text-center">
+                    <h3 className="text-xl font-medium text-[#403E43]">No items found</h3>
+                    <p className="text-[#8A898C] mt-2">Try adjusting your search</p>
+                  </div>
+                )}
+              </div>
             </div>
           </>
         )}
