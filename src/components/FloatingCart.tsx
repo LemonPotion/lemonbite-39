@@ -15,7 +15,7 @@ const FloatingCart: React.FC<FloatingCartProps> = ({ onClick }) => {
   useEffect(() => {
     if (totalItems > prevTotalItems) {
       setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 200); // Reduced from 300ms
+      const timer = setTimeout(() => setIsAnimating(false), 150);
       return () => clearTimeout(timer);
     }
     setPrevTotalItems(totalItems);
@@ -25,7 +25,7 @@ const FloatingCart: React.FC<FloatingCartProps> = ({ onClick }) => {
     <button
       onClick={onClick}
       className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-yellow-500 text-white 
-      hover:bg-yellow-600 ${isAnimating ? 'scale-105' : 'scale-100'} transform-gpu duration-150`}
+      hover:bg-yellow-600 transition-colors duration-150 ${isAnimating ? 'scale-105' : 'scale-100'} transform-gpu`}
       aria-label="Shopping Cart"
     >
       <ShoppingCart className="h-6 w-6" />
