@@ -125,7 +125,7 @@ const Index = () => {
         ) : (
           <>
             <div className="mb-12">
-              <div className="flex flex-col items-start space-y-6 mb-10">
+              <div className="flex flex-col items-center text-center space-y-6 mb-10 animate-fade-in">
                 <h1 className="text-4xl sm:text-5xl font-bold text-[#221F26] tracking-tight leading-none">
                   Our <span className="text-yellow-500">Menu</span>
                 </h1>
@@ -134,27 +134,29 @@ const Index = () => {
                 </p>
               </div>
               
-              <div className="relative mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="relative flex-grow max-w-2xl">
+              <div className="relative mb-8 flex justify-center animate-fade-in" style={{animationDelay: "0.1s"}}>
+                <div className="flex items-center gap-4 w-full max-w-2xl">
+                  <div className="relative flex-grow">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#8A898C]" size={18} />
                     <input
                       type="text"
                       placeholder="Search for dishes..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 bg-[#F6F6F7] border-0 rounded-xl text-[#403E43] focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                      className="w-full pl-12 pr-4 py-3 bg-[#F6F6F7]/80 backdrop-blur-sm border border-white/20 rounded-xl text-[#403E43] focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all shadow-soft"
                     />
                   </div>
-                  <button className="p-3 bg-white border border-[#E5E5E5] rounded-xl flex items-center justify-center text-[#403E43] hover:bg-[#F6F6F7] transition-colors">
+                  <button className="p-3 bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl flex items-center justify-center text-[#403E43] hover:bg-[#F6F6F7] transition-colors shadow-soft">
                     <Filter size={18} />
                   </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredItems.map(item => (
-                  <FoodCard key={item.id} item={item} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in" style={{animationDelay: "0.2s"}}>
+                {filteredItems.map((item, index) => (
+                  <div key={item.id} style={{animationDelay: `${0.1 * (index % 4)}s`}} className="animate-scale-in">
+                    <FoodCard item={item} />
+                  </div>
                 ))}
                 {filteredItems.length === 0 && (
                   <div className="col-span-full py-16 text-center">
