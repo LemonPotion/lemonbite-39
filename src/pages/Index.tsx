@@ -4,7 +4,6 @@ import FoodCard from '../components/FoodCard';
 import FloatingCart from '../components/FloatingCart';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
-import WelcomeMessage from '../components/WelcomeMessage';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Search } from 'lucide-react';
 
@@ -69,7 +68,7 @@ const foodItems: FoodItem[] = [
     id: "0195b364-9b4d-7852-8c63-064f39aa7323",
     name: 'Бефстроганов',
     price: 380,
-    image: 'https://images.unsplash.com/photo-1608835291093-394b0c943a75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1608835291093-394b0c943a75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Нежные кусочки говядины с грибами в сливочном соусе, подаются с яичной лапшой.'
   },
   {
@@ -98,7 +97,6 @@ const foodItems: FoodItem[] = [
 const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const { totalItems } = useCart();
 
@@ -128,14 +126,14 @@ const Index = () => {
           
           <div className="relative mb-8 flex justify-center">
             <div className="flex items-center w-full max-w-md">
-              <div className="relative flex-grow glass-morphism rounded-lg">
+              <div className="relative flex-grow">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#8A898C]" size={18} />
                 <input
                   type="text"
                   placeholder="Search for dishes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-transparent rounded-lg text-[#403E43] focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-[#403E43] focus:outline-none focus:ring-1 focus:ring-yellow-500"
                 />
               </div>
             </div>
@@ -169,14 +167,6 @@ const Index = () => {
         isOpen={isSuccessOpen}
         onClose={() => setIsSuccessOpen(false)}
       />
-
-      {showWelcome && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="max-w-xl w-full mx-4">
-            <WelcomeMessage onContinue={() => setShowWelcome(false)} />
-          </div>
-        </div>
-      )}
     </Layout>
   );
 };
