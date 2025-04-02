@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 52 36% 92%;
+    --background: 50 33% 95%;
     --foreground: 0 0% 18%;
 
     --card: 0 0% 100%;
@@ -22,20 +22,24 @@
     --secondary: 52 36% 92%;
     --secondary-foreground: 0 0% 18%;
 
-    --muted: 52 26% 82%;
+    --muted: 50 33% 90%;
     --muted-foreground: 0 0% 40%;
 
-    --accent: 12 91% 65%;
+    --accent: 16 92% 65%;
     --accent-foreground: 0 0% 18%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 52 26% 82%;
-    --input: 52 26% 82%;
-    --ring: 12 91% 65%;
+    --border: 50 33% 85%;
+    --input: 50 33% 85%;
+    --ring: 16 92% 65%;
 
     --radius: 0.75rem;
+    
+    --background: 60 41% 92%;
+    --foreground: 0 0% 18%;
+    --accent: 16 92% 65%;
   }
 
   * {
@@ -43,7 +47,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans overflow-x-hidden;
+    @apply bg-[#F2F0E3] text-[#2E2E2E] font-sans overflow-x-hidden;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -96,19 +100,9 @@
   }
 }
 
+/* Simplified button animation */
 .cart-item-add {
-  animation: cartItemAdd 0.2s ease-out;
-}
-
-@keyframes cartItemAdd {
-  0% {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  transition: background-color 0.2s ease;
 }
 
 .modal-enter {
@@ -147,13 +141,6 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
-}
-
-.gradient-text {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(90deg, #3b82f6, #60a5fa);
 }
 
 /* New calming styles */
@@ -200,16 +187,6 @@
 
 .favorite-pulse {
   animation: favorite-pulse 0.4s ease-in-out;
-}
-
-/* New rating styles */
-.rating {
-  display: inline-flex;
-  gap: 2px;
-}
-
-.rating-star {
-  @apply text-accent;
 }
 
 /* Food tag styles */
