@@ -108,7 +108,8 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           <button 
             onClick={handleAddToCart}
             className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide 
-              transition-colors ${isAdding ? 'bg-accent text-white' : 'bg-accent text-white hover:bg-accent/90 hover:shadow-lg shadow-md'}`}
+              transition-all duration-200 cart-button-add ${isAdding ? 'bg-green-500 text-white' : 'bg-accent text-white shadow-sm'}`}
+            aria-label="Add to cart"
           >
             <Plus size={16} className="mr-1" />
             Добавить в корзину
@@ -117,7 +118,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-white border-accent/10">
           <div className="relative h-64 sm:h-72">
             <img 
               src={item.image} 
@@ -147,7 +148,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
                 handleAddToCart(e);
                 setIsDialogOpen(false);
               }}
-              className="w-full py-3 flex items-center justify-center rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition-colors shadow-md"
+              className="w-full py-3 flex items-center justify-center rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition-all duration-200 cart-button-add shadow-sm"
             >
               <Plus size={16} className="mr-1" />
               Добавить в корзину

@@ -39,7 +39,7 @@
     
     --background: 60 41% 92%;
     --foreground: 0 0% 18%;
-    --accent: 16 92% 65%;
+    --accent: 14 91% 65%;
   }
 
   * {
@@ -100,9 +100,9 @@
   }
 }
 
-/* Simplified button animation */
-.cart-item-add {
-  transition: background-color 0.2s ease;
+/* Simplified responsive cart button animation */
+.cart-button-add {
+  @apply transition-all duration-200 ease-in-out transform hover:scale-[1.03] active:scale-[0.97];
 }
 
 .modal-enter {
@@ -178,7 +178,7 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
   100% {
     transform: scale(1);
@@ -186,10 +186,32 @@
 }
 
 .favorite-pulse {
-  animation: favorite-pulse 0.4s ease-in-out;
+  animation: favorite-pulse 0.3s ease-in-out;
 }
 
 /* Food tag styles */
 .food-tag {
   @apply inline-block bg-muted px-2 py-1 rounded-full text-xs font-medium text-foreground/70;
+}
+
+/* Form styling to match the site colors */
+.form-control {
+  @apply bg-white border border-[#F2F0E3]/60 text-[#2E2E2E] rounded-lg shadow-sm;
+}
+
+.form-label {
+  @apply text-[#2E2E2E]/80 font-medium;
+}
+
+.form-button {
+  @apply bg-[#F77A54] hover:bg-[#F77A54]/90 text-white transition-colors duration-200;
+}
+
+/* Add to cart animation */
+.cart-item-add {
+  transition: all 0.2s ease;
+}
+
+.cart-item-add:active {
+  transform: scale(0.95);
 }
