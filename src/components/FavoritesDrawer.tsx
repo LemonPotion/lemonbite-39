@@ -24,11 +24,11 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-25 z-40" onClick={onClose} />
-      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-lg z-50 overflow-y-auto transition-transform duration-300 transform-gpu">
-        <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">Your Favorites</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+      <div className="fixed inset-0 bg-foreground/20 bg-opacity-25 z-40" onClick={onClose} />
+      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-background shadow-lg z-50 overflow-y-auto transition-transform duration-300 transform-gpu">
+        <div className="p-4 border-b border-muted flex justify-between items-center">
+          <h2 className="text-xl font-semibold text-foreground">Your Favorites</h2>
+          <button onClick={onClose} className="text-foreground/60 hover:text-foreground">
             <X size={20} />
           </button>
         </div>
@@ -36,8 +36,8 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
         <div className="p-4">
           {items.length === 0 ? (
             <div className="text-center py-10">
-              <Heart className="mx-auto h-12 w-12 text-gray-300" />
-              <p className="mt-4 text-gray-500">You haven't added any favorites yet</p>
+              <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
+              <p className="mt-4 text-foreground/60">You haven't added any favorites yet</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -50,7 +50,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                   />
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <h3 className="font-medium text-gray-800">{item.name}</h3>
+                      <h3 className="font-medium text-foreground">{item.name}</h3>
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
@@ -61,13 +61,13 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                         <Heart size={18} fill="currentColor" />
                       </button>
                     </div>
-                    <p className="text-sm text-gray-500 line-clamp-2 mt-1">{item.description}</p>
+                    <p className="text-sm text-foreground/60 line-clamp-2 mt-1">{item.description}</p>
                     <div className="flex justify-between items-center mt-2">
-                      <p className="font-semibold text-blue-600">₽{item.price}</p>
+                      <p className="font-semibold text-accent">₽{item.price}</p>
                       <Button
                         onClick={() => addItem(item)}
                         variant="outline"
-                        className="text-xs px-3 py-1 h-8 border-blue-200 text-blue-600 hover:bg-blue-50"
+                        className="text-xs px-3 py-1 h-8 border-muted text-accent hover:bg-muted/50"
                       >
                         Add to Cart
                       </Button>

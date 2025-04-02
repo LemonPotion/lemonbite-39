@@ -7,33 +7,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 52 36% 92%;
+    --foreground: 0 0% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 0 0% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 0 0% 18%;
 
-    --primary: 210 100% 55%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary: 58 91% 65%;
+    --primary-foreground: 0 0% 18%;
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 52 36% 92%;
+    --secondary-foreground: 0 0% 18%;
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 52 26% 82%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 58 91% 65%;
+    --accent-foreground: 0 0% 18%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 210 100% 55%;
+    --border: 52 26% 82%;
+    --input: 52 26% 82%;
+    --ring: 58 91% 65%;
 
     --radius: 0.75rem;
   }
@@ -157,32 +157,32 @@
 }
 
 /* New calming styles */
-.bg-calm-blue {
-  @apply bg-blue-50;
+.bg-calm-primary {
+  @apply bg-accent;
 }
 
-.bg-calm-green {
-  @apply bg-green-50;
+.bg-calm-secondary {
+  @apply bg-muted;
 }
 
-.text-calm-blue {
-  @apply text-blue-600;
+.text-calm-primary {
+  @apply text-accent-foreground;
 }
 
-.text-calm-green {
-  @apply text-green-600;
+.text-calm-accent {
+  @apply text-accent;
 }
 
-.border-calm-blue {
-  @apply border-blue-200;
+.border-calm-primary {
+  @apply border-accent;
 }
 
-.border-calm-green {
-  @apply border-green-200;
+.border-calm-secondary {
+  @apply border-muted;
 }
 
 .card-calm {
-  @apply bg-white shadow-sm border border-gray-100 rounded-lg transition duration-200 hover:shadow-md;
+  @apply bg-white shadow-sm border border-muted rounded-lg transition duration-200 hover:shadow-md;
 }
 
 /* Favorite button pulse effect */

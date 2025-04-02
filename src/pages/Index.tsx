@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -9,6 +8,7 @@ import { useCart, FoodItem } from '../context/CartContext';
 import { Search, Heart, Clock, Filter } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
+import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
 
 const foodItems: FoodItem[] = [
   {
@@ -107,6 +107,13 @@ const Index = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const { totalItems } = useCart();
 
+  useEffect(() => {
+    const savedFavorites = getFavoritesFromCookies();
+    if (savedFavorites.length > 0) {
+      setFavorites(savedFavorites);
+    }
+  }, []);
+
   const handleOrderComplete = (phoneNumber: string, address: string) => {
     console.log('Order placed with:', { phoneNumber, address });
     setIsCheckoutOpen(false);
@@ -115,11 +122,12 @@ const Index = () => {
 
   const toggleFavorite = (itemId: string) => {
     setFavorites(prev => {
-      if (prev.includes(itemId)) {
-        return prev.filter(id => id !== itemId);
-      } else {
-        return [...prev, itemId];
-      }
+      const newFavorites = prev.includes(itemId)
+        ? prev.filter(id => id !== itemId)
+        : [...prev, itemId];
+      
+      saveFavoritesToCookies(newFavorites);
+      return newFavorites;
     });
   };
 
@@ -154,10 +162,10 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
-            <h1 className="text-4xl font-bold text-gray-700">
-              Our <span className="text-blue-500">Menu</span>
+            <h1 className="text-4xl font-bold text-foreground">
+              Our <span className="text-accent">Menu</span>
             </h1>
-            <p className="text-lg text-gray-600 max-w-lg text-center">
+            <p className="text-lg text-foreground/80 max-w-lg text-center">
               Discover our carefully crafted dishes made with the freshest ingredients
             </p>
           </div>
@@ -165,41 +173,39 @@ const Index = () => {
           <div className="relative mb-8 flex justify-center">
             <div className="flex items-center w-full max-w-md">
               <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50" size={18} />
                 <input
                   type="text"
                   placeholder="Search for dishes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-blue-100 rounded-lg text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
                 />
               </div>
             </div>
           </div>
 
-          {/* Filter buttons */}
           <div className="flex justify-center gap-3 mb-8">
             <button 
               onClick={() => handleFilterClick('favorites')}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors ${
                 activeFilter === 'favorites' 
-                  ? 'bg-blue-100 border-blue-200 text-blue-600' 
-                  : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                  ? 'bg-accent border-accent/50 text-foreground' 
+                  : 'bg-white border-muted text-foreground hover:bg-muted/50'
               }`}
             >
-              <Heart size={16} className={activeFilter === 'favorites' ? 'text-blue-500' : 'text-gray-400'} />
+              <Heart size={16} className={activeFilter === 'favorites' ? 'text-foreground' : 'text-foreground/50'} />
               Favorites
             </button>
             <button
               onClick={() => setIsFavoritesOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-white border border-muted text-foreground hover:bg-muted/50"
             >
-              <Heart size={16} className="text-gray-400" />
+              <Heart size={16} className="text-foreground/50" />
               View All Favorites
             </button>
           </div>
 
-          {/* Recently viewed */}
           {recentlyViewed.length > 0 && (
             <RecentlyViewedBanner items={recentlyViewed} />
           )}
@@ -216,8 +222,8 @@ const Index = () => {
             ))}
             {filteredItems.length === 0 && (
               <div className="col-span-full py-16 text-center">
-                <h3 className="text-xl font-medium text-gray-700">No items found</h3>
-                <p className="text-gray-500 mt-2">Try adjusting your search</p>
+                <h3 className="text-xl font-medium text-foreground">No items found</h3>
+                <p className="text-foreground/60 mt-2">Try adjusting your search</p>
               </div>
             )}
           </div>
