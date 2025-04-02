@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -15,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 48 100% 55%;
+    --primary: 210 100% 55%;
     --primary-foreground: 240 5.9% 10%;
 
     --secondary: 240 4.8% 95.9%;
@@ -32,7 +33,7 @@
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 48 100% 55%;
+    --ring: 210 100% 55%;
 
     --radius: 0.75rem;
   }
@@ -152,5 +153,51 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(90deg, #f97316, #f59e0b);
+  background-image: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+/* New calming styles */
+.bg-calm-blue {
+  @apply bg-blue-50;
+}
+
+.bg-calm-green {
+  @apply bg-green-50;
+}
+
+.text-calm-blue {
+  @apply text-blue-600;
+}
+
+.text-calm-green {
+  @apply text-green-600;
+}
+
+.border-calm-blue {
+  @apply border-blue-200;
+}
+
+.border-calm-green {
+  @apply border-green-200;
+}
+
+.card-calm {
+  @apply bg-white shadow-sm border border-gray-100 rounded-lg transition duration-200 hover:shadow-md;
+}
+
+/* Favorite button pulse effect */
+@keyframes favorite-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.favorite-pulse {
+  animation: favorite-pulse 0.4s ease-in-out;
 }

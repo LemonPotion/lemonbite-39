@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
 import FloatingCart from '../components/FloatingCart';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search } from 'lucide-react';
+import { Search, Heart, Clock, Filter } from 'lucide-react';
+import FavoritesDrawer from '../components/FavoritesDrawer';
+import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 
 const foodItems: FoodItem[] = [
   {
@@ -98,6 +101,10 @@ const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
+  const [recentlyViewed, setRecentlyViewed] = useState<FoodItem[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const { totalItems } = useCart();
 
   const handleOrderComplete = (phoneNumber: string, address: string) => {
@@ -106,20 +113,51 @@ const Index = () => {
     setIsSuccessOpen(true);
   };
 
-  const filteredItems = foodItems.filter(item => 
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const toggleFavorite = (itemId: string) => {
+    setFavorites(prev => {
+      if (prev.includes(itemId)) {
+        return prev.filter(id => id !== itemId);
+      } else {
+        return [...prev, itemId];
+      }
+    });
+  };
+
+  const addToRecentlyViewed = (item: FoodItem) => {
+    setRecentlyViewed(prev => {
+      const filtered = prev.filter(i => i.id !== item.id);
+      return [item, ...filtered].slice(0, 4);
+    });
+  };
+
+  const handleFilterClick = (filter: string) => {
+    setActiveFilter(prev => prev === filter ? null : filter);
+  };
+
+  const filteredItems = foodItems.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (!matchesSearch) return false;
+    
+    if (activeFilter === 'favorites') {
+      return favorites.includes(item.id);
+    }
+    
+    return true;
+  });
+
+  const favoritedItems = foodItems.filter(item => favorites.includes(item.id));
 
   return (
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
-            <h1 className="text-4xl font-bold text-[#221F26]">
-              Our <span className="text-yellow-500">Menu</span>
+            <h1 className="text-4xl font-bold text-gray-700">
+              Our <span className="text-blue-500">Menu</span>
             </h1>
-            <p className="text-lg text-[#555555] max-w-lg text-center">
+            <p className="text-lg text-gray-600 max-w-lg text-center">
               Discover our carefully crafted dishes made with the freshest ingredients
             </p>
           </div>
@@ -127,26 +165,59 @@ const Index = () => {
           <div className="relative mb-8 flex justify-center">
             <div className="flex items-center w-full max-w-md">
               <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#8A898C]" size={18} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 <input
                   type="text"
                   placeholder="Search for dishes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-[#403E43] focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-blue-100 rounded-lg text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
           </div>
 
+          {/* Filter buttons */}
+          <div className="flex justify-center gap-3 mb-8">
+            <button 
+              onClick={() => handleFilterClick('favorites')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors ${
+                activeFilter === 'favorites' 
+                  ? 'bg-blue-100 border-blue-200 text-blue-600' 
+                  : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <Heart size={16} className={activeFilter === 'favorites' ? 'text-blue-500' : 'text-gray-400'} />
+              Favorites
+            </button>
+            <button
+              onClick={() => setIsFavoritesOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+            >
+              <Heart size={16} className="text-gray-400" />
+              View All Favorites
+            </button>
+          </div>
+
+          {/* Recently viewed */}
+          {recentlyViewed.length > 0 && (
+            <RecentlyViewedBanner items={recentlyViewed} />
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredItems.map((item) => (
-              <FoodCard key={item.id} item={item} />
+              <div key={item.id} onClick={() => addToRecentlyViewed(item)}>
+                <FoodCard 
+                  item={item} 
+                  isFavorite={favorites.includes(item.id)}
+                  onFavoriteToggle={() => toggleFavorite(item.id)}
+                />
+              </div>
             ))}
             {filteredItems.length === 0 && (
               <div className="col-span-full py-16 text-center">
-                <h3 className="text-xl font-medium text-[#403E43]">No items found</h3>
-                <p className="text-[#8A898C] mt-2">Try adjusting your search</p>
+                <h3 className="text-xl font-medium text-gray-700">No items found</h3>
+                <p className="text-gray-500 mt-2">Try adjusting your search</p>
               </div>
             )}
           </div>
@@ -166,6 +237,13 @@ const Index = () => {
       <SuccessModal
         isOpen={isSuccessOpen}
         onClose={() => setIsSuccessOpen(false)}
+      />
+
+      <FavoritesDrawer 
+        isOpen={isFavoritesOpen} 
+        onClose={() => setIsFavoritesOpen(false)}
+        items={favoritedItems}
+        onFavoriteToggle={toggleFavorite}
       />
     </Layout>
   );
