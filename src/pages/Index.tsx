@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -105,6 +106,7 @@ const Index = () => {
   const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<FoodItem[]>([]);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { totalItems } = useCart();
 
   useEffect(() => {
@@ -142,6 +144,22 @@ const Index = () => {
     setActiveFilter(prev => prev === filter ? null : filter);
   };
 
+  const handleCategoryClick = (category: string) => {
+    setActiveCategory(prev => prev === category ? null : category);
+  };
+
+  // Extract all unique categories from food items
+  const categories = [...new Set(foodItems.map(item => {
+    if (item.name.toLowerCase().includes('бургер')) return 'Фаст-фуд';
+    if (item.name.toLowerCase().includes('пицца')) return 'Пицца';
+    if (item.name.toLowerCase().includes('салат')) return 'Салаты';
+    if (item.name.toLowerCase().includes('паста')) return 'Паста';
+    if (item.name.toLowerCase().includes('суши')) return 'Азиатская';
+    if (item.name.toLowerCase().includes('торт') || item.name.toLowerCase().includes('шоколад')) return 'Десерты';
+    if (item.name.toLowerCase().includes('рыб')) return 'Морепродукты';
+    return 'Основные блюда';
+  }))];
+
   const filteredItems = foodItems.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -150,6 +168,19 @@ const Index = () => {
     
     if (activeFilter === 'favorites') {
       return favorites.includes(item.id);
+    }
+
+    if (activeCategory) {
+      const itemCategory = item.name.toLowerCase().includes('бургер') ? 'Фаст-фуд' :
+        item.name.toLowerCase().includes('пицца') ? 'Пицца' :
+        item.name.toLowerCase().includes('салат') ? 'Салаты' :
+        item.name.toLowerCase().includes('паста') ? 'Паста' :
+        item.name.toLowerCase().includes('суши') ? 'Азиатская' :
+        item.name.toLowerCase().includes('торт') || item.name.toLowerCase().includes('шоколад') ? 'Десерты' :
+        item.name.toLowerCase().includes('рыб') ? 'Морепродукты' :
+        'Основные блюда';
+      
+      return itemCategory === activeCategory;
     }
     
     return true;
@@ -190,20 +221,32 @@ const Index = () => {
               onClick={() => handleFilterClick('favorites')}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors ${
                 activeFilter === 'favorites' 
-                  ? 'bg-accent border-accent/50 text-foreground' 
+                  ? 'bg-accent border-accent/50 text-white' 
                   : 'bg-white border-muted text-foreground hover:bg-muted/50'
               }`}
             >
-              <Heart size={16} className={activeFilter === 'favorites' ? 'text-foreground' : 'text-foreground/50'} />
+              <Heart size={16} className={activeFilter === 'favorites' ? 'text-white' : 'text-foreground/50'} />
               Favorites
             </button>
-            <button
-              onClick={() => setIsFavoritesOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm bg-white border border-muted text-foreground hover:bg-muted/50"
-            >
-              <Heart size={16} className="text-foreground/50" />
-              View All Favorites
-            </button>
+          </div>
+
+          {/* Categories horizontal scroll */}
+          <div className="mb-8 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 pb-2 min-w-max">
+              {categories.map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleCategoryClick(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                    activeCategory === category
+                      ? 'bg-accent text-white'
+                      : 'bg-white text-foreground border border-muted hover:bg-muted/50'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
 
           {recentlyViewed.length > 0 && (

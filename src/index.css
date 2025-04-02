@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 18%;
 
-    --primary: 58 91% 65%;
+    --primary: 12 91% 65%;
     --primary-foreground: 0 0% 18%;
 
     --secondary: 52 36% 92%;
@@ -25,7 +25,7 @@
     --muted: 52 26% 82%;
     --muted-foreground: 0 0% 40%;
 
-    --accent: 58 91% 65%;
+    --accent: 12 91% 65%;
     --accent-foreground: 0 0% 18%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,7 +33,7 @@
 
     --border: 52 26% 82%;
     --input: 52 26% 82%;
-    --ring: 58 91% 65%;
+    --ring: 12 91% 65%;
 
     --radius: 0.75rem;
   }
@@ -200,4 +200,19 @@
 
 .favorite-pulse {
   animation: favorite-pulse 0.4s ease-in-out;
+}
+
+/* New rating styles */
+.rating {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.rating-star {
+  @apply text-accent;
+}
+
+/* Food tag styles */
+.food-tag {
+  @apply inline-block bg-muted px-2 py-1 rounded-full text-xs font-medium text-foreground/70;
 }

@@ -24,13 +24,13 @@ const FloatingCart: React.FC<FloatingCartProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-blue-500 text-white 
-      hover:bg-blue-600 transition-colors duration-150 ${isAnimating ? 'scale-105' : 'scale-100'} transform-gpu`}
+      className={`fixed bottom-8 right-8 z-30 p-4 rounded-full bg-accent text-white 
+      hover:bg-accent/90 transition-colors duration-150 ${isAnimating ? 'scale-105' : 'scale-100'} transform-gpu`}
       aria-label="Shopping Cart"
     >
       <ShoppingCart className="h-6 w-6" />
       {totalItems > 0 && (
-        <span className="absolute -top-1 -right-1 bg-white text-blue-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+        <span className="absolute -top-1 -right-1 bg-white text-accent text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
           {totalItems}
         </span>
       )}
