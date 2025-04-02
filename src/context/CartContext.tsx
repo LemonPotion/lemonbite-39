@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 export interface FoodItem {
@@ -21,6 +20,7 @@ interface CartContextType {
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
+  addToCart: (item: FoodItem) => void; // Adding this alias for addItem
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -77,6 +77,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setItems([]);
   }, []);
 
+  // Creating an alias for addItem as addToCart for better readability
+  const addToCart = useCallback((item: FoodItem) => {
+    addItem(item);
+  }, [addItem]);
+
   return (
     <CartContext.Provider value={{
       items,
@@ -85,7 +90,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updateQuantity,
       clearCart,
       totalItems,
-      totalPrice
+      totalPrice,
+      addToCart
     }}>
       {children}
     </CartContext.Provider>

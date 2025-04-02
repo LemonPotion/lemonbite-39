@@ -18,7 +18,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
   items,
   onFavoriteToggle
 }) => {
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
 
   if (!isOpen) return null;
 
@@ -65,7 +65,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                     <div className="flex justify-between items-center mt-2">
                       <p className="font-semibold text-blue-600">₽{item.price}</p>
                       <Button
-                        onClick={() => addToCart(item)}
+                        onClick={() => addItem(item)}
                         variant="outline"
                         className="text-xs px-3 py-1 h-8 border-blue-200 text-blue-600 hover:bg-blue-50"
                       >

@@ -8,7 +8,7 @@ interface RecentlyViewedBannerProps {
 }
 
 const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) => {
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
 
   if (items.length === 0) return null;
 
@@ -32,7 +32,7 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
               <div className="flex justify-between items-center mt-1">
                 <p className="text-blue-600 text-sm font-semibold">₽{item.price}</p>
                 <button
-                  onClick={() => addToCart(item)}
+                  onClick={() => addItem(item)}
                   className="text-xs text-blue-500 hover:text-blue-700 font-medium"
                 >
                   Add
