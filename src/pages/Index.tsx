@@ -5,7 +5,6 @@ import FoodCard from '../components/FoodCard';
 import FloatingCart from '../components/FloatingCart';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
-import QuickOrder from '../components/QuickOrder';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Search, Heart, Clock, Filter } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
@@ -96,6 +95,91 @@ const foodItems: FoodItem[] = [
     price: 300,
     image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Кремовый рис Арборио, медленно приготовленный с грибами, белым вином и пармезаном.'
+  },
+  // New food items
+  {
+    id: "0195b365-7f2a-8c9d-4e5f-6g7h8i9j0k1l",
+    name: 'Тирамису',
+    price: 230,
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Классический итальянский десерт с нежным кремом, кофе и какао.'
+  },
+  {
+    id: "0195b365-8d9e-0f1g-2h3i-4j5k6l7m8n9o",
+    name: 'Борщ украинский',
+    price: 240,
+    image: 'https://images.unsplash.com/photo-1629467752776-c7ad955958c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Традиционный украинский суп со свеклой, капустой, и сметаной.'
+  },
+  {
+    id: "0195b365-9p0q-1r2s-3t4u-5v6w7x8y9z0a",
+    name: 'Пельмени сибирские',
+    price: 290,
+    image: 'https://images.unsplash.com/photo-1626132647523-66c3ae1dtat0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Домашние пельмени с мясной начинкой, подаются со сметаной.'
+  },
+  {
+    id: "0195b366-0b1c-2d3e-4f5g-6h7i8j9k0l1m",
+    name: 'Стейк Рибай',
+    price: 720,
+    image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Сочный стейк из мраморной говядины, приготовленный на гриле.'
+  },
+  {
+    id: "0195b366-2n3o-4p5q-6r7s-8t9u0v1w2x3y",
+    name: 'Том Ям',
+    price: 310,
+    image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Острый тайский суп с креветками, грибами и ароматными травами.'
+  },
+  {
+    id: "0195b366-4z5a-6b7c-8d9e-0f1g2h3i4j5k",
+    name: 'Хачапури по-аджарски',
+    price: 270,
+    image: 'https://plus.unsplash.com/premium_photo-1675451537971-b3435c2942f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Традиционная грузинская выпечка с сыром и яйцом.'
+  },
+  {
+    id: "0195b366-6l7m-8n9o-0p1q-2r3s4t5u6v7w",
+    name: 'Чизкейк Нью-Йорк',
+    price: 250,
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Классический американский чизкейк с нежной сырной начинкой и ягодным соусом.'
+  },
+  {
+    id: "0195b366-8x9y-0z1a-2b3c-4d5e6f7g8h9i",
+    name: 'Раменбоул с курицей',
+    price: 340,
+    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Питательный японский суп с лапшой, куриным филе, яйцом и овощами.'
+  },
+  {
+    id: "0195b367-0j1k-2l3m-4n5o-6p7q8r9s0t1u",
+    name: 'Фалафель в питe',
+    price: 220,
+    image: 'https://images.unsplash.com/photo-1593001872095-7d5b3868dd30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Хрустящие шарики из нута с хумусом, свежими овощами и соусом в мягкой питe.'
+  },
+  {
+    id: "0195b367-2v3w-4x5y-6z7a-8b9c0d1e2f3g",
+    name: 'Осьминог на гриле',
+    price: 650,
+    image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Нежные щупальца осьминога, приготовленные на гриле с оливковым маслом и зеленью.'
+  },
+  {
+    id: "0195b367-4h5i-6j7k-8l9m-0n1o2p3q4r5s",
+    name: 'Паэлья с морепродуктами',
+    price: 520,
+    image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Традиционное испанское блюдо из риса с шафраном, креветками, мидиями и кальмарами.'
+  },
+  {
+    id: "0195b367-6t7u-8v9w-0x1y-2z3a4b5c6d7e",
+    name: 'Утка по-пекински',
+    price: 690,
+    image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    description: 'Хрустящая утка с тонкими блинчиками, огурцом, зеленым луком и сладким соусом хойсин.'
   }
 ];
 
@@ -156,8 +240,13 @@ const Index = () => {
     if (item.name.toLowerCase().includes('салат')) return 'Салаты';
     if (item.name.toLowerCase().includes('паста')) return 'Паста';
     if (item.name.toLowerCase().includes('суши')) return 'Азиатская';
-    if (item.name.toLowerCase().includes('торт') || item.name.toLowerCase().includes('шоколад')) return 'Десерты';
-    if (item.name.toLowerCase().includes('рыб')) return 'Морепродукты';
+    if (item.name.toLowerCase().includes('торт') || item.name.toLowerCase().includes('шоколад') || 
+        item.name.toLowerCase().includes('тирамису') || item.name.toLowerCase().includes('чизкейк')) return 'Десерты';
+    if (item.name.toLowerCase().includes('рыб') || item.name.toLowerCase().includes('морепродукт') ||
+        item.name.toLowerCase().includes('осьминог')) return 'Морепродукты';
+    if (item.name.toLowerCase().includes('суп') || item.name.toLowerCase().includes('борщ') || 
+        item.name.toLowerCase().includes('том ям') || item.name.toLowerCase().includes('рамен')) return 'Супы';
+    if (item.name.toLowerCase().includes('стейк') || item.name.toLowerCase().includes('утка')) return 'Мясные блюда';
     return 'Основные блюда';
   }))];
 
@@ -172,13 +261,19 @@ const Index = () => {
     }
 
     if (activeCategory) {
-      const itemCategory = item.name.toLowerCase().includes('бургер') ? 'Фаст-фуд' :
+      const itemCategory = 
+        item.name.toLowerCase().includes('бургер') ? 'Фаст-фуд' :
         item.name.toLowerCase().includes('пицца') ? 'Пицца' :
         item.name.toLowerCase().includes('салат') ? 'Салаты' :
         item.name.toLowerCase().includes('паста') ? 'Паста' :
         item.name.toLowerCase().includes('суши') ? 'Азиатская' :
-        item.name.toLowerCase().includes('торт') || item.name.toLowerCase().includes('шоколад') ? 'Десерты' :
-        item.name.toLowerCase().includes('рыб') ? 'Морепродукты' :
+        (item.name.toLowerCase().includes('торт') || item.name.toLowerCase().includes('шоколад') || 
+         item.name.toLowerCase().includes('тирамису') || item.name.toLowerCase().includes('чизкейк')) ? 'Десерты' :
+        (item.name.toLowerCase().includes('рыб') || item.name.toLowerCase().includes('морепродукт') || 
+         item.name.toLowerCase().includes('осьминог')) ? 'Морепродукты' :
+        (item.name.toLowerCase().includes('суп') || item.name.toLowerCase().includes('борщ') || 
+         item.name.toLowerCase().includes('том ям') || item.name.toLowerCase().includes('рамен')) ? 'Супы' :
+        (item.name.toLowerCase().includes('стейк') || item.name.toLowerCase().includes('утка')) ? 'Мясные блюда' :
         'Основные блюда';
       
       return itemCategory === activeCategory;
@@ -200,11 +295,6 @@ const Index = () => {
             <p className="text-lg text-foreground/80 max-w-lg text-center">
               Discover our carefully crafted dishes made with the freshest ingredients
             </p>
-          </div>
-          
-          {/* Quick Order Component */}
-          <div className="mb-6">
-            <QuickOrder />
           </div>
           
           <div className="relative mb-8 flex justify-center">

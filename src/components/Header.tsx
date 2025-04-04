@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { LemonIcon } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
