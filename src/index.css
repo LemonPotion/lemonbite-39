@@ -102,7 +102,7 @@
 
 /* Simplified responsive cart button animation */
 .cart-button-add {
-  @apply transition-all duration-200 ease-in-out transform hover:scale-[1.03] active:scale-[0.97];
+  @apply transition-all duration-150 ease-in-out transform active:scale-[0.97];
 }
 
 .modal-enter {
@@ -145,27 +145,27 @@
 
 /* New calming styles */
 .bg-calm-primary {
-  @apply bg-accent;
+  @apply bg-[#F77A54];
 }
 
 .bg-calm-secondary {
-  @apply bg-muted;
+  @apply bg-[#F2F0E3];
 }
 
 .text-calm-primary {
-  @apply text-accent-foreground;
+  @apply text-[#2E2E2E];
 }
 
 .text-calm-accent {
-  @apply text-accent;
+  @apply text-[#F77A54];
 }
 
 .border-calm-primary {
-  @apply border-accent;
+  @apply border-[#F77A54];
 }
 
 .border-calm-secondary {
-  @apply border-muted;
+  @apply border-[#F2F0E3];
 }
 
 .card-calm {
@@ -191,7 +191,7 @@
 
 /* Food tag styles */
 .food-tag {
-  @apply inline-block bg-muted px-2 py-1 rounded-full text-xs font-medium text-foreground/70;
+  @apply inline-block bg-[#F2F0E3] px-2 py-1 rounded-full text-xs font-medium text-[#2E2E2E]/70;
 }
 
 /* Form styling to match the site colors */

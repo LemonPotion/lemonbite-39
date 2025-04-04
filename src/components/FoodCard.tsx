@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Heart } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -108,7 +107,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           <button 
             onClick={handleAddToCart}
             className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide 
-              transition-all duration-200 cart-button-add ${isAdding ? 'bg-green-500 text-white' : 'bg-accent text-white shadow-sm'}`}
+              transition-all duration-200 cart-button-add bg-accent text-white shadow-sm`}
             aria-label="Add to cart"
           >
             <Plus size={16} className="mr-1" />
