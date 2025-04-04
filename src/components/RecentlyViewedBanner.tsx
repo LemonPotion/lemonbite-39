@@ -1,8 +1,8 @@
 
-import React, { useEffect, useRef } from 'react';
-import { Clock } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Clock, Plus } from 'lucide-react';
 import { FoodItem, useCart } from '../context/CartContext';
-import { Skeleton } from './ui/skeleton';
+import { toast } from 'sonner';
 
 interface RecentlyViewedBannerProps {
   items: FoodItem[];
@@ -25,6 +25,15 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
     }
   }, [items]);
 
+  const handleAddToCart = (item: FoodItem) => {
+    addItem(item);
+    
+    // Show toast with animation similar to the FoodCard
+    toast.success(`${item.name} добавлен в корзину!`, {
+      description: `${item.price.toFixed(2)} р`
+    });
+  };
+
   if (items.length === 0) return null;
 
   return (
@@ -33,8 +42,8 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
       className="mb-10 bg-muted rounded-xl p-5 border border-muted transition-all duration-300 hover:shadow-md"
     >
       <div className="flex items-center gap-2 mb-4">
-        <Clock className="text-accent animate-pulse" size={18} />
-        <h3 className="text-lg font-medium text-foreground">Recently Viewed</h3>
+        <Clock className="text-accent" size={18} />
+        <h3 className="text-lg font-medium text-foreground">Недавно просмотренные</h3>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -51,16 +60,20 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
               src={item.image} 
               alt={item.name} 
               className="w-12 h-12 rounded-md object-cover flex-shrink-0 transition-transform duration-300 hover:scale-110"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
+              }}
             />
             <div className="flex-1 min-w-0">
               <h4 className="font-medium text-foreground text-sm truncate">{item.name}</h4>
               <div className="flex justify-between items-center mt-1">
                 <p className="text-accent text-sm font-semibold">₽{item.price}</p>
                 <button
-                  onClick={() => addItem(item)}
-                  className="text-xs text-accent hover:text-accent-foreground font-medium transition-colors duration-300 hover:scale-105 transform"
+                  onClick={() => handleAddToCart(item)}
+                  className="flex items-center text-xs bg-accent text-white px-2 py-1 rounded-md hover:bg-accent/90 transition-all duration-300 hover:scale-105 transform"
                 >
-                  Add
+                  <Plus size={12} className="mr-1" />
+                  Добавить
                 </button>
               </div>
             </div>
