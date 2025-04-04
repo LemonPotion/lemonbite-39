@@ -5,6 +5,7 @@ import FoodCard from '../components/FoodCard';
 import FloatingCart from '../components/FloatingCart';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
+import QuickOrder from '../components/QuickOrder';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Search, Heart, Clock, Filter } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
@@ -199,6 +200,11 @@ const Index = () => {
             <p className="text-lg text-foreground/80 max-w-lg text-center">
               Discover our carefully crafted dishes made with the freshest ingredients
             </p>
+          </div>
+          
+          {/* Quick Order Component */}
+          <div className="mb-6">
+            <QuickOrder />
           </div>
           
           <div className="relative mb-8 flex justify-center">
