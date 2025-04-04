@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 const QuickOrder: React.FC = () => {
   const [savedOrders, setSavedOrders] = useState<{ name: string; items: FoodItem[] }[]>([]);
-  const { cartItems, addToCart, clearCart } = useCart();
+  const { items, addToCart, clearCart } = useCart();
   const [showSavePrompt, setShowSavePrompt] = useState(false);
   const [orderName, setOrderName] = useState('');
 
@@ -18,7 +18,7 @@ const QuickOrder: React.FC = () => {
   }, []);
 
   const saveCurrentOrder = () => {
-    if (cartItems.length === 0) {
+    if (items.length === 0) {
       toast.error('Your cart is empty. Add items before saving an order.');
       return;
     }
@@ -34,7 +34,13 @@ const QuickOrder: React.FC = () => {
 
     const newOrder = {
       name: orderName,
-      items: cartItems.map(item => ({ ...item.item, quantity: item.quantity }))
+      items: items.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        description: item.description
+      }))
     };
 
     const updatedOrders = [...savedOrders, newOrder];
@@ -51,7 +57,7 @@ const QuickOrder: React.FC = () => {
     
     clearCart();
     orderToLoad.items.forEach(item => {
-      addToCart(item, item.quantity || 1);
+      addToCart(item);
     });
     
     toast.success(`"${orderToLoad.name}" loaded to your cart!`);
