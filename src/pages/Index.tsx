@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -51,7 +50,7 @@ const foodItems: FoodItem[] = [
     id: "0195b363-d60c-799c-a440-c048b08d25e7",
     name: 'Шоколадный торт',
     price: 180,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Насыщенный шоколадный торт с нежным ганашем и свежими ягодами.'
   },
   {
@@ -96,7 +95,6 @@ const foodItems: FoodItem[] = [
     image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Кремовый рис Арборио, медленно приготовленный с грибами, белым вином и пармезаном.'
   },
-  // New food items
   {
     id: "0195b365-7f2a-8c9d-4e5f-6g7h8i9j0k1l",
     name: 'Тирамису',
@@ -108,14 +106,14 @@ const foodItems: FoodItem[] = [
     id: "0195b365-8d9e-0f1g-2h3i-4j5k6l7m8n9o",
     name: 'Борщ украинский',
     price: 240,
-    image: 'https://images.unsplash.com/photo-1629467752776-c7ad955958c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Традиционный украинский суп со свеклой, капустой, и сметаной.'
   },
   {
     id: "0195b365-9p0q-1r2s-3t4u-5v6w7x8y9z0a",
     name: 'Пельмени сибирские',
     price: 290,
-    image: 'https://images.unsplash.com/photo-1626132647523-66c3ae1dtat0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1589187151053-5ec8818e661b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Домашние пельмени с мясной начинкой, подаются со сметаной.'
   },
   {
@@ -136,7 +134,7 @@ const foodItems: FoodItem[] = [
     id: "0195b366-4z5a-6b7c-8d9e-0f1g2h3i4j5k",
     name: 'Хачапури по-аджарски',
     price: 270,
-    image: 'https://plus.unsplash.com/premium_photo-1675451537971-b3435c2942f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Традиционная грузинская выпечка с сыром и яйцом.'
   },
   {
@@ -157,7 +155,7 @@ const foodItems: FoodItem[] = [
     id: "0195b367-0j1k-2l3m-4n5o-6p7q8r9s0t1u",
     name: 'Фалафель в питe',
     price: 220,
-    image: 'https://images.unsplash.com/photo-1593001872095-7d5b3868dd30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1619860860774-1e2e14a78d99?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Хрустящие шарики из нута с хумусом, свежими овощами и соусом в мягкой питe.'
   },
   {
@@ -233,7 +231,6 @@ const Index = () => {
     setActiveCategory(prev => prev === category ? null : category);
   };
 
-  // Extract all unique categories from food items
   const categories = [...new Set(foodItems.map(item => {
     if (item.name.toLowerCase().includes('бургер')) return 'Фаст-фуд';
     if (item.name.toLowerCase().includes('пицца')) return 'Пицца';
@@ -326,7 +323,6 @@ const Index = () => {
             </button>
           </div>
 
-          {/* Categories horizontal scroll */}
           <div className="mb-8 overflow-x-auto scrollbar-hide">
             <div className="flex gap-2 pb-2 min-w-max">
               {categories.map((category, index) => (
