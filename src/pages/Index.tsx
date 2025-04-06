@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
-import FloatingCart from '../components/FloatingCart';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, Heart, Clock, Filter } from 'lucide-react';
+import { Search, Heart } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -190,7 +189,6 @@ const Index = () => {
   const [recentlyViewed, setRecentlyViewed] = useState<FoodItem[]>([]);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const { totalItems } = useCart();
 
   useEffect(() => {
     const savedFavorites = getFavoritesFromCookies();
@@ -282,14 +280,14 @@ const Index = () => {
   const favoritedItems = foodItems.filter(item => favorites.includes(item.id));
 
   return (
-    <Layout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
         <div className="mb-12">
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
-            <h1 className="text-4xl font-bold text-foreground">
+            <h1 className="text-4xl font-bold text-foreground theme-transition">
               Our <span className="text-accent">Menu</span>
             </h1>
-            <p className="text-lg text-foreground/80 max-w-lg text-center">
+            <p className="text-lg text-foreground/80 max-w-lg text-center theme-transition">
               Discover our carefully crafted dishes made with the freshest ingredients
             </p>
           </div>
@@ -297,13 +295,13 @@ const Index = () => {
           <div className="relative mb-8 flex justify-center">
             <div className="flex items-center w-full max-w-md">
               <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50" size={18} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={18} />
                 <input
                   type="text"
                   placeholder="Search for dishes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
                 />
               </div>
             </div>
@@ -312,10 +310,10 @@ const Index = () => {
           <div className="flex justify-center gap-3 mb-8">
             <button 
               onClick={() => handleFilterClick('favorites')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors theme-transition ${
                 activeFilter === 'favorites' 
                   ? 'bg-accent border-accent/50 text-white' 
-                  : 'bg-white border-muted text-foreground hover:bg-muted/50'
+                  : 'bg-card border-muted text-foreground hover:bg-muted/50'
               }`}
             >
               <Heart size={16} className={activeFilter === 'favorites' ? 'text-white' : 'text-foreground/50'} />
@@ -329,10 +327,10 @@ const Index = () => {
                 <button
                   key={index}
                   onClick={() => handleCategoryClick(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors theme-transition ${
                     activeCategory === category
                       ? 'bg-accent text-white'
-                      : 'bg-white text-foreground border border-muted hover:bg-muted/50'
+                      : 'bg-card text-foreground border border-muted hover:bg-muted/50'
                   }`}
                 >
                   {category}
@@ -357,17 +355,13 @@ const Index = () => {
             ))}
             {filteredItems.length === 0 && (
               <div className="col-span-full py-16 text-center">
-                <h3 className="text-xl font-medium text-foreground">No items found</h3>
-                <p className="text-foreground/60 mt-2">Try adjusting your search</p>
+                <h3 className="text-xl font-medium text-foreground theme-transition">No items found</h3>
+                <p className="text-foreground/60 mt-2 theme-transition">Try adjusting your search</p>
               </div>
             )}
           </div>
         </div>
       </div>
-
-      {totalItems > 0 && (
-        <FloatingCart onClick={() => setIsCheckoutOpen(true)} />
-      )}
 
       <CheckoutModal 
         isOpen={isCheckoutOpen} 
