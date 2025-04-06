@@ -11,6 +11,7 @@ interface RecentlyViewedBannerProps {
 const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) => {
   const { addItem } = useCart();
   const bannerRef = useRef<HTMLDivElement>(null);
+  const [isAdding, setIsAdding] = useState<string | null>(null);
 
   useEffect(() => {
     // Add animation when the banner appears or updates
@@ -26,12 +27,18 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
   }, [items]);
 
   const handleAddToCart = (item: FoodItem) => {
+    setIsAdding(item.id);
     addItem(item);
     
-    // Show toast with animation similar to the FoodCard
+    // Show toast with animation
     toast.success(`${item.name} добавлен в корзину!`, {
       description: `${item.price.toFixed(2)} р`
     });
+    
+    // Reset animation state
+    setTimeout(() => {
+      setIsAdding(null);
+    }, 300);
   };
 
   if (items.length === 0) return null;
@@ -70,7 +77,7 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
                 <p className="text-accent text-sm font-semibold">₽{item.price}</p>
                 <button
                   onClick={() => handleAddToCart(item)}
-                  className="flex items-center text-xs bg-accent text-white px-2 py-1 rounded-md hover:bg-accent/90 transition-all duration-300 hover:scale-105 transform"
+                  className={`flex items-center text-xs bg-accent text-white px-2 py-1 rounded-md hover:bg-accent/90 transition-all duration-300 ${isAdding === item.id ? 'scale-95' : 'hover:scale-105'} transform`}
                 >
                   <Plus size={12} className="mr-1" />
                   Добавить

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -81,12 +80,12 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
   return (
     <>
       <div 
-        className="food-card-shadow bg-white rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-5px] cursor-pointer relative"
+        className="food-card-shadow bg-white rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-5px] cursor-pointer relative h-[450px] w-full flex flex-col"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => setIsDialogOpen(true)}
       >
-        <div className="relative h-48 overflow-hidden">
+        <div className="relative h-48 overflow-hidden flex-shrink-0">
           {!isImageLoaded && (
             <div className="absolute inset-0 bg-gray-100 animate-pulse flex items-center justify-center">
               <div className="w-8 h-8 rounded-full border-2 border-accent border-t-transparent animate-spin"></div>
@@ -119,10 +118,10 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           />
         </div>
         
-        <div className="p-4">
+        <div className="p-4 flex flex-col flex-grow">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium text-gray-900">{item.name}</h3>
-            <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full shadow-sm">
+            <h3 className="font-medium text-gray-900 line-clamp-2">{item.name}</h3>
+            <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full shadow-sm flex-shrink-0 ml-2">
               {item.price.toFixed(2)} р
             </span>
           </div>
@@ -137,13 +136,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
               <Clock size={12} className="mr-1" />
               <span>{cookTime.cookTime} мин</span>
             </div>
-            {foodInfo.spicyLevel > 0 && (
-              <div className="flex items-center">
-                <span className="text-accent">
-                  {"🌶️".repeat(foodInfo.spicyLevel)}
-                </span>
-              </div>
-            )}
           </div>
           
           <div className="mb-2 flex flex-wrap gap-1">
@@ -152,12 +144,12 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
             ))}
           </div>
           
-          <p className="text-sm text-gray-500 mb-4 line-clamp-2">{item.description}</p>
+          <p className="text-sm text-gray-500 mb-4 line-clamp-2 flex-grow">{item.description}</p>
           
           <button 
             onClick={handleAddToCart}
             className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide 
-              transition-all duration-200 cart-button-add bg-accent text-white shadow-sm ${isAdding ? 'scale-95' : ''}`}
+              transition-all duration-200 cart-button-add bg-accent text-white shadow-sm mt-auto ${isAdding ? 'scale-95' : ''}`}
             aria-label="Add to cart"
           >
             <Plus size={16} className="mr-1" />
@@ -187,8 +179,8 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           <div className="p-6">
             <DialogHeader>
               <DialogTitle className="flex justify-between items-center">
-                <span>{item.name}</span>
-                <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full">
+                <span className="truncate">{item.name}</span>
+                <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full flex-shrink-0 ml-2">
                   {item.price.toFixed(2)} р
                 </span>
               </DialogTitle>
@@ -202,28 +194,11 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
               <Badge variant="outline" className="bg-white/60 text-foreground">
                 <Clock size={14} className="mr-1" /> {cookTime.cookTime} мин. приготовления
               </Badge>
-              {foodInfo.spicyLevel > 0 && (
-                <Badge variant="outline" className="bg-white/60 text-foreground">
-                  Острота: {"🌶️".repeat(foodInfo.spicyLevel)}
-                </Badge>
-              )}
             </div>
             
             <div className="my-4">
               <h4 className="text-sm font-medium mb-2">Описание</h4>
               <p className="text-foreground/80">{item.description}</p>
-            </div>
-            
-            <div className="mb-2">
-              <h4 className="text-sm font-medium mb-2">Рекомендации по подаче</h4>
-              <p className="text-sm text-foreground/70">
-                {tags.includes('Десерт') ? 
-                  'Подавать охлажденным с чашкой горячего чая или кофе.' :
-                  tags.includes('Суп') || tags.includes('Первое блюдо') ? 
-                    'Подавать горячим со свежим хлебом и сметаной.' :
-                    'Рекомендуется подавать сразу после приготовления. Отлично сочетается с белым или красным вином.'
-                }
-              </p>
             </div>
             
             <div className="flex flex-wrap gap-1 mb-6">
