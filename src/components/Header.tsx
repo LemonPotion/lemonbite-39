@@ -4,6 +4,7 @@ import { ChefHat, Moon, Sun, ShoppingCart, Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
 import { Switch } from './ui/switch';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   onCartClick: () => void;
@@ -31,27 +32,32 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between relative">
-        <div className="flex items-center space-x-3">
-          <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-full shadow-sm">
-            <div className="relative">
-              <ChefHat size={26} className="text-accent" />
+        <div className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-full shadow-sm transition-transform duration-300 group-hover:rotate-12">
+              <div className="relative">
+                <ChefHat size={26} className="text-accent transition-transform duration-300 group-hover:scale-110" />
+              </div>
             </div>
-          </div>
-          
-          <h1 className="text-2xl sm:text-3xl font-serif tracking-tight text-foreground relative">
-            <span className="relative inline-block">
-              <span className="font-light italic">Lemon</span>
-              <span className="text-accent font-medium italic">Bite</span>
-              <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-accent rounded opacity-60"></span>
-            </span>
-          </h1>
+            
+            <h1 className="text-2xl sm:text-3xl font-serif tracking-tight text-foreground relative transition-all duration-300 group-hover:translate-x-1">
+              <span className="relative inline-block">
+                <span className="font-light italic">Lemon</span>
+                <span className="text-accent font-medium italic">Bite</span>
+                <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-accent rounded opacity-60 transition-all duration-300 group-hover:h-[3px] group-hover:opacity-100"></span>
+              </span>
+            </h1>
+          </Link>
         </div>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-foreground/80 hover:text-accent transition-colors">Меню</a>
-          <a href="#" className="text-foreground/80 hover:text-accent transition-colors">Акции</a>
-          <a href="#" className="text-foreground/80 hover:text-accent transition-colors">Доставка</a>
+          <Link to="/" className="text-foreground/80 hover:text-accent transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full">
+            Меню
+          </Link>
+          <Link to="/about" className="text-foreground/80 hover:text-accent transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full">
+            О нас
+          </Link>
         </nav>
         
         <div className="flex items-center space-x-4">
@@ -67,12 +73,12 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
           
           <button
             onClick={onCartClick}
-            className="p-2 rounded-full bg-accent text-white hover:bg-accent/90 transition-colors duration-150 relative shadow-sm"
+            className="p-2 rounded-full bg-accent text-white hover:bg-accent/90 transition-all duration-300 relative shadow-sm hover:shadow-md hover:-translate-y-0.5"
             aria-label="Shopping Cart"
           >
             <ShoppingCart className="h-5 w-5" />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm border border-white/10 dark:border-black/10">
+              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm border border-white/10 dark:border-black/10 animate-pulse">
                 {totalItems}
               </span>
             )}
@@ -83,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
             className="md:hidden p-2 text-foreground/80 hover:text-foreground transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileMenuOpen ? <X size={20} className="animate-fade-in" /> : <Menu size={20} className="animate-fade-in" />}
           </button>
         </div>
       </div>
@@ -92,9 +98,12 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border shadow-lg animate-fade-in py-4">
           <nav className="flex flex-col space-y-4 px-6">
-            <a href="#" className="text-foreground/80 hover:text-accent transition-colors py-2">Меню</a>
-            <a href="#" className="text-foreground/80 hover:text-accent transition-colors py-2">Акции</a>
-            <a href="#" className="text-foreground/80 hover:text-accent transition-colors py-2">Доставка</a>
+            <Link to="/" className="text-foreground/80 hover:text-accent transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+              Меню
+            </Link>
+            <Link to="/about" className="text-foreground/80 hover:text-accent transition-colors py-2" onClick={() => setMobileMenuOpen(false)}>
+              О нас
+            </Link>
           </nav>
         </div>
       )}
