@@ -35,12 +35,12 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
     let isValid = true;
     
     if (!validatePhone(phoneNumber)) {
-      setPhoneError('Please enter a valid phone number (8-10 digits)');
+      setPhoneError('Пожалуйста, введите корректный номер телефона (8-10 цифр)');
       isValid = false;
     }
     
     if (address.trim().length < 5) {
-      setAddressError('Please enter a valid address');
+      setAddressError('Пожалуйста, введите корректный адрес');
       isValid = false;
     }
     
@@ -99,7 +99,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
       <div className="fixed right-0 top-0 h-full w-full sm:w-[450px] bg-card z-50 shadow-lg modal-enter overflow-hidden flex flex-col border-l border-border">
         <div className="flex items-center justify-between border-b p-4 border-border">
           <div className="flex items-center">
-            <ShoppingBag className="h-5 w-5 text-primary mr-2" />
+            <ShoppingBag className="h-5 w-5 text-accent mr-2" />
             <h2 className="text-lg font-medium text-foreground">
               {step === 'cart' ? 'Ваш заказ' : 'Заказать'}
             </h2>
@@ -117,8 +117,8 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
             items.length > 0 ? (
               <ul className="divide-y divide-border">
                 {items.map(item => (
-                  <li key={item.id} className="p-4 flex items-center">
-                    <div className="h-16 w-16 rounded-lg overflow-hidden bg-muted mr-3">
+                  <li key={item.id} className="p-4 flex items-center hover:bg-muted/50 transition-colors">
+                    <div className="h-16 w-16 rounded-lg overflow-hidden bg-muted mr-3 shadow-sm">
                       <img 
                         src={item.image} 
                         alt={item.name} 
@@ -134,7 +134,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                        className="p-1 rounded-full hover:bg-muted"
+                        className="p-1 rounded-full hover:bg-muted bg-card border border-border"
                       >
                         <Minus className="h-4 w-4 text-foreground" />
                       </button>
@@ -145,14 +145,14 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
                       
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        className="p-1 rounded-full hover:bg-muted"
+                        className="p-1 rounded-full hover:bg-muted bg-card border border-border"
                       >
                         <Plus className="h-4 w-4 text-foreground" />
                       </button>
                       
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="ml-2 p-1 rounded-full hover:bg-muted text-destructive"
+                        className="ml-2 p-1 rounded-full hover:bg-destructive/10 text-destructive bg-card border border-border"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -162,11 +162,17 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
               </ul>
             ) : (
               <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
-                  <ShoppingBag className="h-8 w-8 text-primary" />
+                <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mb-4">
+                  <ShoppingBag className="h-8 w-8 text-accent" />
                 </div>
-                <h3 className="text-lg font-medium mb-2 text-foreground">Корзина пуста :(</h3>
-                <p className="text-muted-foreground">Добавьте позиции из меню</p>
+                <h3 className="text-lg font-medium mb-2 text-foreground">Корзина пуста</h3>
+                <p className="text-muted-foreground mb-6">Добавьте что-нибудь вкусное из меню</p>
+                <button
+                  onClick={onClose}
+                  className="px-6 py-2 bg-muted rounded-lg text-foreground hover:bg-muted/80 transition-colors"
+                >
+                  Вернуться к меню
+                </button>
               </div>
             )
           ) : (
@@ -181,8 +187,8 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
                       type="tel"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="Phone Number"
-                      className={`pl-10 w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-background text-foreground
+                      placeholder="Номер телефона"
+                      className={`pl-10 w-full p-2 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all bg-background text-foreground
                         ${phoneError ? 'border-destructive' : 'border-input'}`}
                     />
                   </div>
@@ -191,7 +197,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-sm font-medium text-foreground">информация о доставке</h3>
+                <h3 className="text-sm font-medium text-foreground">Информация о доставке</h3>
                 
                 <div>
                   <div className="relative">
@@ -199,9 +205,9 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
                     <textarea
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Delivery Address"
+                      placeholder="Адрес доставки"
                       rows={3}
-                      className={`pl-10 w-full p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none bg-background text-foreground
+                      className={`pl-10 w-full p-2 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all resize-none bg-background text-foreground
                         ${addressError ? 'border-destructive' : 'border-input'}`}
                     />
                   </div>
@@ -225,7 +231,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
                 disabled={items.length === 0}
                 className={`w-full py-3 rounded-lg font-medium text-base tracking-wide transition-all
                   ${items.length > 0 
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                    ? 'bg-accent text-white hover:bg-accent/90' 
                     : 'bg-muted text-muted-foreground cursor-not-allowed'}`}
               >
                 Перейти к оформлению
@@ -249,9 +255,9 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
                 <button
                   onClick={handleCheckout}
                   disabled={isSubmitting}
-                  className={`flex-1 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors text-base tracking-wide ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                  className={`flex-1 py-3 bg-accent text-white rounded-lg font-medium hover:bg-accent/90 transition-colors text-base tracking-wide ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
-                  Оформить заказ
+                  {isSubmitting ? 'Оформление...' : 'Оформить заказ'}
                 </button>
               </div>
             </div>
