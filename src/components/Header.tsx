@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
           <Link to="/" className="flex items-center space-x-2">
             <div className="relative w-8 h-8 overflow-hidden">
               <div className="absolute w-full h-full flex items-center justify-center">
-                <div className="text-2xl font-bold text-accent animate-bounce">L</div>
+                <div className="text-2xl font-bold text-accent">L</div>
               </div>
               <svg className="w-full h-full absolute top-0 left-0" viewBox="0 0 40 40">
                 <circle 
@@ -43,8 +43,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                   strokeWidth="3"
                   strokeDasharray="100"
                   strokeDashoffset="75"
-                  className="text-accent animate-spin-slow"
-                  style={{ animationDuration: '8s' }}
+                  className="text-accent"
                 />
               </svg>
             </div>

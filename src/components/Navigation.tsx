@@ -5,11 +5,9 @@ import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { 
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils";
@@ -17,7 +15,6 @@ import { cn } from "@/lib/utils";
 interface NavigationItem {
   name: string;
   path: string;
-  children?: NavigationItem[];
 }
 
 const navigationItems: NavigationItem[] = [
@@ -28,23 +25,6 @@ const navigationItems: NavigationItem[] = [
   {
     name: 'О сервисе',
     path: '/about'
-  },
-  {
-    name: 'Меню',
-    path: '#',
-    children: [
-      { name: 'Популярное', path: '/menu/popular' },
-      { name: 'Новинки', path: '/menu/new' },
-      { name: 'Скидки', path: '/menu/discounts' }
-    ]
-  },
-  {
-    name: 'Доставка',
-    path: '#',
-    children: [
-      { name: 'Зоны доставки', path: '/delivery/zones' },
-      { name: 'Стоимость', path: '/delivery/cost' }
-    ]
   }
 ];
 
@@ -54,48 +34,21 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center flex-grow">
       <NavigationMenu className="hidden md:flex">
-        <NavigationMenuList>
+        <NavigationMenuList className="flex justify-center">
           {navigationItems.map((item) => (
             <NavigationMenuItem key={item.name}>
-              {item.children ? (
-                <>
-                  <NavigationMenuTrigger className="text-base font-medium">
-                    {item.name}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[200px] gap-2 p-4">
-                      {item.children.map((child) => (
-                        <li key={child.name}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              to={child.path}
-                              className={cn(
-                                "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                                location.pathname === child.path ? "bg-accent/50" : ""
-                              )}
-                            >
-                              <div className="text-sm font-medium leading-none">{child.name}</div>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </>
-              ) : (
-                <Link
-                  to={item.path}
-                  className={cn(
-                    navigationMenuTriggerStyle(),
-                    "text-base font-medium",
-                    location.pathname === item.path ? "bg-accent/50" : ""
-                  )}
-                >
-                  {item.name}
-                </Link>
-              )}
+              <Link
+                to={item.path}
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  "text-base font-medium",
+                  location.pathname === item.path ? "bg-accent/50" : ""
+                )}
+              >
+                {item.name}
+              </Link>
             </NavigationMenuItem>
           ))}
         </NavigationMenuList>
@@ -135,33 +88,15 @@ const Navigation = () => {
             {navigationItems.map((item) => (
               <div key={item.name} className="space-y-2">
                 <Link 
-                  to={item.children ? '#' : item.path}
+                  to={item.path}
                   className={cn(
                     "block px-4 py-2 text-base font-medium rounded-md",
                     location.pathname === item.path ? "bg-accent text-accent-foreground" : "hover:bg-accent/10"
                   )}
-                  onClick={() => !item.children && setIsOpen(false)}
+                  onClick={() => setIsOpen(false)}
                 >
                   {item.name}
                 </Link>
-                
-                {item.children && (
-                  <div className="ml-4 pl-2 border-l border-border space-y-1">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.name}
-                        to={child.path}
-                        className={cn(
-                          "block px-4 py-2 text-sm rounded-md",
-                          location.pathname === child.path ? "bg-accent text-accent-foreground" : "hover:bg-accent/10"
-                        )}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
           </nav>
