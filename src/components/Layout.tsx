@@ -69,7 +69,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onCartOpen }) => {
         <div className="absolute w-full h-full bg-[linear-gradient(45deg,_transparent_95%,_var(--accent-color)_100%)]" style={{'--accent-color': theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'} as React.CSSProperties}></div>
         <div className="absolute w-full h-full bg-[linear-gradient(135deg,_transparent_95%,_var(--accent-color)_100%)]" style={{'--accent-color': theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'} as React.CSSProperties}></div>
         
-        {/* Additional grid pattern */}
+        {/* Additional grid pattern for more texture */}
         <div className="absolute inset-0 opacity-30 dark:opacity-40 bg-[linear-gradient(to_right,var(--grid-color)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-color)_1px,transparent_1px)]" 
           style={{
             backgroundSize: '30px 30px', 
@@ -85,7 +85,7 @@ const Layout: React.FC<LayoutProps> = ({ children, onCartOpen }) => {
       </main>
       
       <footer className="py-6 px-6 text-center text-sm text-muted-foreground bg-muted/30 border-t border-muted theme-transition backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+        <div className="max-w-7xl mx-auto">
           <p className="group">
             © {new Date().getFullYear()} 
             <span className="inline-block transition-transform duration-500 group-hover:scale-110 mx-1 text-accent">
@@ -93,9 +93,6 @@ const Layout: React.FC<LayoutProps> = ({ children, onCartOpen }) => {
             </span>
             . All rights reserved.
           </p>
-          <div className="mt-3 sm:mt-0">
-            <Link to="/about" className="text-xs text-muted-foreground/70 hover:text-accent transition-all duration-300 hover:scale-105">О нас</Link>
-          </div>
         </div>
       </footer>
     </div>

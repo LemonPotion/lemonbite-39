@@ -4,15 +4,7 @@ import Layout from '../components/Layout';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { motion } from 'framer-motion';
-import { 
-  ChefHat, 
-  Clock, 
-  MapPin, 
-  Truck, 
-  Smartphone, 
-  Utensils,
-  ShoppingBag
-} from 'lucide-react';
+import { ChefHat, Clock, MapPin, Smartphone, Utensils } from 'lucide-react';
 
 const AboutUs = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -70,181 +62,153 @@ const AboutUs = () => {
 
   return (
     <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
-      <motion.div 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition"
-        initial="hidden"
-        animate={isVisible ? "visible" : "hidden"}
-        variants={containerVariants}
-      >
-        <motion.div className="text-center mb-16" variants={itemVariants}>
-          <motion.div 
-            className="inline-block bg-accent/10 dark:bg-accent/20 p-4 rounded-full mb-5"
-            initial={{ rotate: 0 }}
-            animate={{ rotate: [0, -5, 5, 0] }}
-            transition={{ 
-              duration: 4, 
-              repeat: Infinity, 
-              ease: "easeInOut",
-              times: [0, 0.25, 0.75, 1]
-            }}
-          >
-            <ShoppingBag size={36} className="text-accent" />
-          </motion.div>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-foreground theme-transition">
-            О сервисе <span className="text-accent">LemonBite</span>
-          </h1>
-          <p className="text-lg max-w-2xl mx-auto text-foreground/80 theme-transition">
-            Мы создали LemonBite, чтобы доставлять вам самые вкусные блюда прямо к двери, быстро и с заботой.
-          </p>
-        </motion.div>
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20"
-          variants={itemVariants}
+          className="container mx-auto px-4 py-12"
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
+          variants={containerVariants}
         >
-          <motion.div
-            className="flex flex-col justify-center"
-            variants={itemVariants}
-          >
-            <h2 className="text-3xl font-serif font-medium mb-6 text-foreground theme-transition">
-              Наша <span className="text-accent">миссия</span>
-            </h2>
-            <p className="mb-4 text-foreground/80 theme-transition">
-              LemonBite — это современный сервис доставки еды, основанный в 2022 году с целью сделать процесс заказа еды максимально простым и приятным для каждого клиента.
-            </p>
-            <p className="mb-4 text-foreground/80 theme-transition">
-              Мы тщательно отбираем рестораны и кафе, сотрудничаем только с проверенными заведениями и контролируем качество доставки на каждом этапе.
-            </p>
-            <p className="text-foreground/80 theme-transition">
-              Наша цель — не просто доставить еду, а создать целостный опыт удовольствия от заказа до последнего кусочка.
+          <motion.div className="text-center mb-16" variants={itemVariants}>
+            <motion.div 
+              className="inline-block bg-accent/10 dark:bg-accent/20 p-4 rounded-full mb-5"
+              initial={{ rotate: 0 }}
+              animate={{ rotate: [0, -5, 5, 0] }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                times: [0, 0.25, 0.75, 1]
+              }}
+            >
+              <ChefHat size={36} className="text-accent" />
+            </motion.div>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4 text-foreground">
+              О сервисе <span className="text-accent">LemonBite</span>
+            </h1>
+            <p className="text-lg max-w-2xl mx-auto text-foreground/80">
+              Мы создали LemonBite, чтобы доставлять вам самые вкусные блюда прямо к двери
             </p>
           </motion.div>
 
-          <motion.div 
-            className="relative overflow-hidden rounded-2xl shadow-lg h-[400px]"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <motion.div
+              className="flex flex-col justify-center"
+              variants={itemVariants}
+            >
+              <h2 className="text-3xl font-serif font-medium mb-6 text-foreground">
+                Наша <span className="text-accent">миссия</span>
+              </h2>
+              <p className="mb-4 text-foreground/80">
+                LemonBite — это современный сервис доставки еды, основанный в 2022 году с целью сделать процесс заказа еды максимально простым и приятным для каждого клиента.
+              </p>
+              <p className="text-foreground/80">
+                Мы тщательно отбираем рестораны и кафе, сотрудничаем только с проверенными заведениями и контролируем качество доставки на каждом этапе.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              className="relative overflow-hidden rounded-2xl shadow-lg h-[300px]"
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                className="absolute inset-0 bg-gray-200 animate-pulse"
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              />
+              <img 
+                src="https://images.unsplash.com/photo-1576867757603-05b134ebc379?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                alt="Доставка еды" 
+                className="w-full h-full object-cover transition-transform duration-4000 hover:scale-105"
+                loading="lazy"
+                onLoad={(e) => e.currentTarget.classList.add('opacity-100')}
+                style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <h3 className="text-xl font-medium">Быстрая доставка</h3>
+                <p className="text-white/90 text-sm">Тысячи довольных клиентов ежедневно</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.h2 
+            className="text-3xl font-serif font-medium text-center mb-8 text-foreground"
             variants={itemVariants}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
           >
+            Почему <span className="text-accent">LemonBite</span>
+          </motion.h2>
+
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16"
+            variants={itemVariants}
+          >
+            <motion.div 
+              className="bg-card dark:bg-card/90 border border-muted rounded-xl p-6"
+              variants={featureVariants}
+              whileHover="hover"
+            >
+              <div className="bg-accent/10 dark:bg-accent/20 p-3 rounded-full w-fit mb-4">
+                <Clock className="text-accent" size={24} />
+              </div>
+              <h3 className="text-xl font-medium mb-2 text-foreground">Быстрая доставка</h3>
+              <p className="text-foreground/70">Доставляем заказы в среднем за 30 минут по всему городу</p>
+            </motion.div>
+
+            <motion.div 
+              className="bg-card dark:bg-card/90 border border-muted rounded-xl p-6"
+              variants={featureVariants}
+              whileHover="hover"
+            >
+              <div className="bg-accent/10 dark:bg-accent/20 p-3 rounded-full w-fit mb-4">
+                <Utensils className="text-accent" size={24} />
+              </div>
+              <h3 className="text-xl font-medium mb-2 text-foreground">Широкий выбор</h3>
+              <p className="text-foreground/70">Сотни ресторанов и тысячи блюд на любой вкус</p>
+            </motion.div>
+
+            <motion.div 
+              className="bg-card dark:bg-card/90 border border-muted rounded-xl p-6"
+              variants={featureVariants}
+              whileHover="hover"
+            >
+              <div className="bg-accent/10 dark:bg-accent/20 p-3 rounded-full w-fit mb-4">
+                <Smartphone className="text-accent" size={24} />
+              </div>
+              <h3 className="text-xl font-medium mb-2 text-foreground">Удобное приложение</h3>
+              <p className="text-foreground/70">Заказ еды всего в несколько кликов</p>
+            </motion.div>
+          </motion.div>
+
+          <motion.div 
+            className="relative overflow-hidden rounded-xl mb-12"
+            variants={itemVariants}
+          >
+            <motion.div
+              className="absolute inset-0 bg-gray-200 animate-pulse"
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            />
             <img 
-              src="https://images.unsplash.com/photo-1626280381853-c2bd1cc96cdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-              alt="Доставка еды" 
-              className="w-full h-full object-cover transition-transform duration-4000 hover:scale-105"
+              src="https://images.unsplash.com/photo-1513639304702-9116e1c50a13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+              alt="Команда доставки" 
+              className="w-full h-64 md:h-80 object-cover rounded-xl"
+              loading="lazy"
+              onLoad={(e) => e.currentTarget.classList.add('opacity-100')}
+              style={{ opacity: 0, transition: 'opacity 0.3s ease-in-out' }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
             <div className="absolute bottom-6 left-6 right-6 text-white">
-              <h3 className="text-xl font-medium">Быстрая доставка</h3>
-              <p className="text-white/90 text-sm">Тысячи довольных клиентов ежедневно</p>
+              <h3 className="text-2xl font-medium">Мы доставляем счастье</h3>
+              <p className="text-white/90">Каждый день, каждый заказ, каждому клиенту</p>
             </div>
           </motion.div>
         </motion.div>
-
-        <motion.h2 
-          className="text-3xl font-serif font-medium text-center mb-10 text-foreground theme-transition"
-          variants={itemVariants}
-        >
-          Почему <span className="text-accent">LemonBite</span>
-        </motion.h2>
-
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20"
-          variants={itemVariants}
-        >
-          <motion.div 
-            className="bg-card dark:bg-card/90 border border-muted rounded-xl p-6 theme-transition"
-            variants={featureVariants}
-            whileHover="hover"
-          >
-            <div className="bg-accent/10 dark:bg-accent/20 p-3 rounded-full w-fit mb-4">
-              <Clock className="text-accent" size={24} />
-            </div>
-            <h3 className="text-xl font-medium mb-2 text-foreground theme-transition">Быстрая доставка</h3>
-            <p className="text-foreground/70 theme-transition">Доставляем заказы в среднем за 30 минут по всему городу, даже в час пик.</p>
-          </motion.div>
-
-          <motion.div 
-            className="bg-card dark:bg-card/90 border border-muted rounded-xl p-6 theme-transition"
-            variants={featureVariants}
-            whileHover="hover"
-          >
-            <div className="bg-accent/10 dark:bg-accent/20 p-3 rounded-full w-fit mb-4">
-              <Utensils className="text-accent" size={24} />
-            </div>
-            <h3 className="text-xl font-medium mb-2 text-foreground theme-transition">Широкий выбор</h3>
-            <p className="text-foreground/70 theme-transition">Сотни ресторанов и тысячи блюд на любой вкус в нашем приложении.</p>
-          </motion.div>
-
-          <motion.div 
-            className="bg-card dark:bg-card/90 border border-muted rounded-xl p-6 theme-transition"
-            variants={featureVariants}
-            whileHover="hover"
-          >
-            <div className="bg-accent/10 dark:bg-accent/20 p-3 rounded-full w-fit mb-4">
-              <Smartphone className="text-accent" size={24} />
-            </div>
-            <h3 className="text-xl font-medium mb-2 text-foreground theme-transition">Удобное приложение</h3>
-            <p className="text-foreground/70 theme-transition">Интуитивный интерфейс позволяет заказать еду всего в несколько кликов.</p>
-          </motion.div>
-        </motion.div>
-
-        <motion.div 
-          className="rounded-2xl overflow-hidden bg-card dark:bg-card/90 border border-muted p-8 shadow-sm theme-transition"
-          variants={itemVariants}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-3xl font-serif font-medium mb-6 text-foreground theme-transition">
-                Как это <span className="text-accent">работает</span>
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-full flex items-center justify-center mt-1">
-                    <span className="text-accent font-medium">1</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground theme-transition">Выберите блюда</h4>
-                    <p className="text-foreground/70 theme-transition">Просмотрите меню и добавьте понравившиеся блюда в корзину</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-full flex items-center justify-center mt-1">
-                    <span className="text-accent font-medium">2</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground theme-transition">Оформите заказ</h4>
-                    <p className="text-foreground/70 theme-transition">Укажите адрес доставки и выберите способ оплаты</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-full flex items-center justify-center mt-1">
-                    <span className="text-accent font-medium">3</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-foreground theme-transition">Получите доставку</h4>
-                    <p className="text-foreground/70 theme-transition">Отслеживайте статус заказа и встречайте курьера</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="relative overflow-hidden rounded-xl h-[300px]">
-              <motion.img 
-                src="https://images.unsplash.com/photo-1626082927389-6cd097cee6a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-                alt="Доставка еды" 
-                className="w-full h-full object-cover rounded-xl"
-                initial={{ scale: 1 }}
-                animate={{ scale: [1, 1.02, 1] }}
-                transition={{ 
-                  duration: 10, 
-                  repeat: Infinity,
-                  ease: "easeInOut" 
-                }}
-              />
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
+      </div>
 
       <CheckoutModal 
         isOpen={isCheckoutOpen} 
