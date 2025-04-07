@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import Header from './Header';
 import { useTheme } from '../context/ThemeContext';
+import { Link } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;

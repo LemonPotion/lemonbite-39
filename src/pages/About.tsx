@@ -1,8 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import { CheckoutModal } from '../components/CheckoutModal';
-import { SuccessModal } from '../components/SuccessModal';
+import CheckoutModal from '../components/CheckoutModal';
+import SuccessModal from '../components/SuccessModal';
 import { motion } from 'framer-motion';
 import { ChefHat, Clock, MapPin, Award, Users, Heart } from 'lucide-react';
 
