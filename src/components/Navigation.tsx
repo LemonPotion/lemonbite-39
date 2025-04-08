@@ -21,10 +21,9 @@ import {
   CommandHistoryItem 
 } from "@/components/ui/command";
 import { useSearchHistory } from '../hooks/useSearchHistory';
-import { Search, History, Clock, Sparkles, ChefHat, Filter } from 'lucide-react';
+import { Search, History, Clock, Sparkles, ChefHat } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { Toggle } from "@/components/ui/toggle";
 import { saveFavoritesToCookies } from "../utils/cookieUtils";
 
 interface NavigationItem {
@@ -55,14 +54,6 @@ const foodCategories = [
   'Супы',
   'Мясные блюда',
   'Основные блюда'
-];
-
-// Price ranges
-const priceRanges = [
-  { name: 'До 250₽', min: 0, max: 250 },
-  { name: '250₽-350₽', min: 250, max: 350 },
-  { name: '350₽-500₽', min: 350, max: 500 },
-  { name: 'Более 500₽', min: 500, max: Infinity }
 ];
 
 // Food preferences
@@ -107,13 +98,6 @@ const Navigation = () => {
   const handleRandomFood = () => {
     addToHistory('Случайное блюдо');
     navigate('/?random=true');
-    setIsCommandOpen(false);
-  };
-  
-  // Handle price range selection
-  const handlePriceRangeSelect = (range: { min: number, max: number, name: string }) => {
-    addToHistory(`Цена: ${range.name}`);
-    navigate(`/?minPrice=${range.min}&maxPrice=${range.max}`);
     setIsCommandOpen(false);
   };
   
@@ -173,21 +157,47 @@ const Navigation = () => {
             </button>
           </NavigationMenuItem>
           
-          {/* Theme toggle switch */}
+          {/* Theme toggle - More stylish version */}
           <NavigationMenuItem>
-            <div className={cn(
-              navigationMenuTriggerStyle(),
-              "text-base font-medium flex items-center gap-2"
-            )}>
-              <Switch 
-                id="theme-mode" 
-                checked={theme === 'dark'}
-                onCheckedChange={toggleTheme}
-              />
-              <Label htmlFor="theme-mode" className="cursor-pointer">
-                {theme === 'dark' ? 'Тёмная' : 'Светлая'}
-              </Label>
-            </div>
+            <Toggle 
+              pressed={theme === 'dark'} 
+              onPressedChange={toggleTheme}
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "text-base font-medium bg-transparent hover:bg-transparent data-[state=on]:bg-transparent"
+              )}
+              variant="outline"
+            >
+              <div className="w-10 h-5 rounded-full bg-muted relative overflow-hidden">
+                <motion.div 
+                  className="absolute inset-0 flex"
+                  initial={false}
+                  animate={{
+                    x: theme === 'dark' ? 20 : 0
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                >
+                  <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
+                    <motion.div
+                      animate={{
+                        scale: theme === 'dark' ? 1 : 0
+                      }}
+                    >
+                      {theme === 'dark' ? '🌙' : ''}
+                    </motion.div>
+                  </div>
+                  <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
+                    <motion.div
+                      animate={{
+                        scale: theme === 'light' ? 1 : 0
+                      }}
+                    >
+                      {theme === 'light' ? '☀️' : ''}
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </div>
+            </Toggle>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
@@ -252,14 +262,43 @@ const Navigation = () => {
             <div className="flex items-center justify-between px-4 py-2">
               <span className="text-base font-medium">Тема</span>
               <div className="flex items-center space-x-2">
-                <Switch 
-                  id="mobile-theme-mode" 
-                  checked={theme === 'dark'}
-                  onCheckedChange={toggleTheme}
-                />
-                <Label htmlFor="mobile-theme-mode" className="cursor-pointer">
-                  {theme === 'dark' ? 'Тёмная' : 'Светлая'}
-                </Label>
+                {/* Mobile theme toggle */}
+                <Toggle 
+                  pressed={theme === 'dark'} 
+                  onPressedChange={toggleTheme}
+                  className="bg-transparent hover:bg-transparent data-[state=on]:bg-transparent p-1"
+                  variant="outline"
+                >
+                  <div className="w-10 h-5 rounded-full bg-muted relative overflow-hidden">
+                    <motion.div 
+                      className="absolute inset-0 flex"
+                      initial={false}
+                      animate={{
+                        x: theme === 'dark' ? 20 : 0
+                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    >
+                      <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
+                        <motion.div
+                          animate={{
+                            scale: theme === 'dark' ? 1 : 0
+                          }}
+                        >
+                          {theme === 'dark' ? '🌙' : ''}
+                        </motion.div>
+                      </div>
+                      <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
+                        <motion.div
+                          animate={{
+                            scale: theme === 'light' ? 1 : 0
+                          }}
+                        >
+                          {theme === 'light' ? '☀️' : ''}
+                        </motion.div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </Toggle>
               </div>
             </div>
           </nav>
@@ -275,7 +314,7 @@ const Navigation = () => {
           }
         }}>
           <CommandInput 
-            placeholder="Поиск по меню, категориям, ценам..." 
+            placeholder="Поиск по меню, категориям..." 
             value={searchQuery}
             onValueChange={handleSearchInput}
           />
@@ -331,18 +370,6 @@ const Navigation = () => {
                 >
                   <ChefHat className="mr-2 h-4 w-4" />
                   <span>{category}</span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-            
-            <CommandGroup heading="Ценовой диапазон">
-              {priceRanges.map((range) => (
-                <CommandItem 
-                  key={range.name}
-                  onSelect={() => handlePriceRangeSelect(range)}
-                >
-                  <Filter className="mr-2 h-4 w-4" />
-                  <span>{range.name}</span>
                 </CommandItem>
               ))}
             </CommandGroup>

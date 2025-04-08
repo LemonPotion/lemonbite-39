@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, Heart, History, Filter, SlidersHorizontal } from 'lucide-react';
+import { Search, Heart, History, Filter, SlidersHorizontal, X } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -62,7 +61,7 @@ const foodItems: FoodItem[] = [
     id: "0195b363-d60c-799c-a440-c048b08d25e7",
     name: 'Шоколадный торт',
     price: 180,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Насыщенный шоколадный торт с нежным ганашем и свежими ягодами.'
   },
   {
@@ -76,7 +75,7 @@ const foodItems: FoodItem[] = [
     id: "0195b364-569c-7aad-862f-9ecb5a806334",
     name: 'Суши-ассорти',
     price: 450,
-    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
   },
   {
@@ -204,24 +203,21 @@ const Index = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [randomItem, setRandomItem] = useState<FoodItem | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   const [sortOption, setSortOption] = useState<string | null>(null);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Parse query params
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     
-    // Handle category filter
     const category = params.get('category');
     if (category) {
       setActiveCategory(category);
       navigate('/', { replace: true });
     }
     
-    // Handle random food recommendation
     const random = params.get('random');
     if (random === 'true') {
       const randomIndex = Math.floor(Math.random() * foodItems.length);
@@ -229,14 +225,12 @@ const Index = () => {
       navigate('/', { replace: true });
     }
     
-    // Handle search query
     const search = params.get('search');
     if (search) {
       setSearchQuery(search);
       navigate('/', { replace: true });
     }
     
-    // Handle price range
     const minPrice = params.get('minPrice');
     const maxPrice = params.get('maxPrice');
     if (minPrice && maxPrice) {
@@ -244,10 +238,8 @@ const Index = () => {
       navigate('/', { replace: true });
     }
     
-    // Handle recently viewed
     const recently = params.get('recently');
     if (recently === 'true') {
-      // Just to highlight the recently viewed section
       const recentlyViewedElement = document.getElementById('recently-viewed');
       if (recentlyViewedElement) {
         recentlyViewedElement.scrollIntoView({ behavior: 'smooth' });
@@ -260,7 +252,6 @@ const Index = () => {
     }
   }, [location, navigate]);
 
-  // Load favorites from cookies
   useEffect(() => {
     const savedFavorites = getFavoritesFromCookies();
     if (savedFavorites.length > 0) {
@@ -304,15 +295,14 @@ const Index = () => {
     setActiveFilter(null);
     setActiveCategory(null);
     setSearchQuery('');
-    setPriceRange([0, 800]);
     setSortOption(null);
+    setPriceRange([0, 800]);
   };
 
   const handleSortOptionChange = (option: string) => {
     setSortOption(option);
   };
 
-  // Get all categories from the items
   const categories = [...new Set(foodItems.map(item => {
     if (item.name.toLowerCase().includes('бургер')) return 'Фаст-фуд';
     if (item.name.toLowerCase().includes('пицца')) return 'Пицца';
@@ -329,9 +319,7 @@ const Index = () => {
     return 'Основные блюда';
   }))];
 
-  // Apply all filters to the items
   let filteredItems = foodItems.filter(item => {
-    // Search query filter
     const matchesSearch = searchQuery ? 
       (item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
        item.description.toLowerCase().includes(searchQuery.toLowerCase())) :
@@ -339,12 +327,10 @@ const Index = () => {
     
     if (!matchesSearch) return false;
     
-    // Favorites filter
     if (activeFilter === 'favorites') {
       return favorites.includes(item.id);
     }
 
-    // Category filter
     if (activeCategory) {
       const itemCategory = 
         item.name.toLowerCase().includes('бургер') ? 'Фаст-фуд' :
@@ -364,11 +350,9 @@ const Index = () => {
       return itemCategory === activeCategory;
     }
     
-    // Price range filter
-    return item.price >= priceRange[0] && item.price <= priceRange[1];
+    return true;
   });
 
-  // Apply sorting if selected
   if (sortOption) {
     if (sortOption === 'price-low-high') {
       filteredItems = [...filteredItems].sort((a, b) => a.price - b.price);
@@ -382,6 +366,10 @@ const Index = () => {
   }
 
   const favoritedItems = foodItems.filter(item => favorites.includes(item.id));
+
+  const dismissRandomItem = () => {
+    setRandomItem(null);
+  };
 
   return (
     <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
@@ -397,7 +385,14 @@ const Index = () => {
           </div>
           
           {randomItem && (
-            <div className="mb-8 p-6 bg-accent/10 rounded-xl">
+            <div className="mb-8 p-6 bg-accent/10 rounded-xl relative">
+              <button 
+                onClick={dismissRandomItem}
+                className="absolute top-3 right-3 p-1 rounded-full bg-background/80 hover:bg-background text-foreground transition-colors"
+                aria-label="Close recommendation"
+              >
+                <X size={18} />
+              </button>
               <h2 className="text-xl font-bold mb-4 text-center">Рекомендуем попробовать:</h2>
               <div className="max-w-md mx-auto">
                 <FoodCard 
@@ -436,23 +431,6 @@ const Index = () => {
                   </SheetHeader>
                   <div className="py-6 space-y-6">
                     <div className="space-y-2">
-                      <h3 className="text-sm font-medium">Ценовой диапазон</h3>
-                      <Slider
-                        defaultValue={priceRange}
-                        min={0}
-                        max={800}
-                        step={10}
-                        value={priceRange}
-                        onValueChange={(value) => setPriceRange(value as [number, number])}
-                        className="my-4"
-                      />
-                      <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{priceRange[0]}₽</span>
-                        <span>{priceRange[1]}₽</span>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
                       <h3 className="text-sm font-medium">Сортировка</h3>
                       <div className="grid grid-cols-1 gap-2">
                         {[
@@ -465,121 +443,4 @@ const Index = () => {
                             key={option.id}
                             variant={sortOption === option.id ? "default" : "outline"}
                             className="justify-start"
-                            onClick={() => handleSortOptionChange(option.id)}
-                          >
-                            {option.label}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <SheetFooter>
-                    <Button variant="outline" onClick={resetFilters}>Сбросить</Button>
-                    <Button onClick={() => setShowFilters(false)}>Применить</Button>
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-3 mb-8">
-            <button 
-              onClick={() => handleFilterClick('favorites')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors theme-transition ${
-                activeFilter === 'favorites' 
-                  ? 'bg-accent border-accent/50 text-white' 
-                  : 'bg-card border-muted text-foreground hover:bg-muted/50'
-              }`}
-            >
-              <Heart size={16} className={activeFilter === 'favorites' ? 'text-white' : 'text-foreground/50'} />
-              Favorites
-            </button>
-            
-            <button 
-              onClick={() => handleRandomItem()}
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors theme-transition bg-card border-muted text-foreground hover:bg-muted/50"
-            >
-              <History size={16} className="text-foreground/50" />
-              Случайное блюдо
-            </button>
-          </div>
-
-          <div className="mb-8 overflow-x-auto scrollbar-hide">
-            <div className="flex gap-2 pb-2 min-w-max">
-              {categories.map((category, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleCategoryClick(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors theme-transition ${
-                    activeCategory === category
-                      ? 'bg-accent text-white'
-                      : 'bg-card text-foreground border border-muted hover:bg-muted/50'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {recentlyViewed.length > 0 && (
-            <div id="recently-viewed" className="transition-all duration-300">
-              <RecentlyViewedBanner items={recentlyViewed} />
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredItems.map((item) => (
-              <div key={item.id} onClick={() => addToRecentlyViewed(item)}>
-                <FoodCard 
-                  item={item} 
-                  isFavorite={favorites.includes(item.id)}
-                  onFavoriteToggle={() => toggleFavorite(item.id)}
-                />
-              </div>
-            ))}
-            {filteredItems.length === 0 && (
-              <div className="col-span-full py-16 text-center">
-                <h3 className="text-xl font-medium text-foreground theme-transition">No items found</h3>
-                <p className="text-foreground/60 mt-2 theme-transition">Try adjusting your filters</p>
-                <Button 
-                  variant="outline" 
-                  className="mt-4"
-                  onClick={resetFilters}
-                >
-                  Reset Filters
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <CheckoutModal 
-        isOpen={isCheckoutOpen} 
-        onClose={() => setIsCheckoutOpen(false)}
-        onComplete={handleOrderComplete}
-      />
-
-      <SuccessModal
-        isOpen={isSuccessOpen}
-        onClose={() => setIsSuccessOpen(false)}
-      />
-
-      <FavoritesDrawer 
-        isOpen={isFavoritesOpen} 
-        onClose={() => setIsFavoritesOpen(false)}
-        items={favoritedItems}
-        onFavoriteToggle={toggleFavorite}
-      />
-    </Layout>
-  );
-
-  // New function for random item selection
-  function handleRandomItem() {
-    const randomIndex = Math.floor(Math.random() * foodItems.length);
-    setRandomItem(foodItems[randomIndex]);
-  }
-};
-
-export default Index;
+                            onClick={() => handleSortOptionChange(option.id
