@@ -1,7 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { 
   NavigationMenu,
@@ -23,7 +21,6 @@ import {
 import { useSearchHistory } from '../hooks/useSearchHistory';
 import { Search, History, Clock, Sparkles, ChefHat } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { Toggle } from "@/components/ui/toggle";
 import { saveFavoritesToCookies } from "../utils/cookieUtils";
 
 interface NavigationItem {
@@ -68,7 +65,6 @@ const foodPreferences = [
 const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isCommandOpen, setIsCommandOpen] = useState(false);
   const { history, addToHistory, removeFromHistory, clearHistory } = useSearchHistory();
@@ -156,53 +152,10 @@ const Navigation = () => {
               </kbd>
             </button>
           </NavigationMenuItem>
-          
-          {/* Theme toggle - More stylish version */}
-          <NavigationMenuItem>
-            <Toggle 
-              pressed={theme === 'dark'} 
-              onPressedChange={toggleTheme}
-              className={cn(
-                navigationMenuTriggerStyle(),
-                "text-base font-medium bg-transparent hover:bg-transparent data-[state=on]:bg-transparent"
-              )}
-              variant="outline"
-            >
-              <div className="w-10 h-5 rounded-full bg-muted relative overflow-hidden">
-                <motion.div 
-                  className="absolute inset-0 flex"
-                  initial={false}
-                  animate={{
-                    x: theme === 'dark' ? 20 : 0
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
-                    <motion.div
-                      animate={{
-                        scale: theme === 'dark' ? 1 : 0
-                      }}
-                    >
-                      {theme === 'dark' ? '🌙' : ''}
-                    </motion.div>
-                  </div>
-                  <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
-                    <motion.div
-                      animate={{
-                        scale: theme === 'light' ? 1 : 0
-                      }}
-                    >
-                      {theme === 'light' ? '☀️' : ''}
-                    </motion.div>
-                  </div>
-                </motion.div>
-              </div>
-            </Toggle>
-          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
 
-      {/* Mobile menu */}
+      {/* Mobile menu button */}
       <button 
         className="md:hidden p-2 rounded-md focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
@@ -258,48 +211,6 @@ const Navigation = () => {
                 <span>Быстрый поиск</span>
                 <Search className="h-4 w-4" />
               </button>
-            </div>
-            <div className="flex items-center justify-between px-4 py-2">
-              <span className="text-base font-medium">Тема</span>
-              <div className="flex items-center space-x-2">
-                {/* Mobile theme toggle */}
-                <Toggle 
-                  pressed={theme === 'dark'} 
-                  onPressedChange={toggleTheme}
-                  className="bg-transparent hover:bg-transparent data-[state=on]:bg-transparent p-1"
-                  variant="outline"
-                >
-                  <div className="w-10 h-5 rounded-full bg-muted relative overflow-hidden">
-                    <motion.div 
-                      className="absolute inset-0 flex"
-                      initial={false}
-                      animate={{
-                        x: theme === 'dark' ? 20 : 0
-                      }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    >
-                      <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
-                        <motion.div
-                          animate={{
-                            scale: theme === 'dark' ? 1 : 0
-                          }}
-                        >
-                          {theme === 'dark' ? '🌙' : ''}
-                        </motion.div>
-                      </div>
-                      <div className="w-1/2 h-full bg-background rounded-full flex items-center justify-center shadow-md">
-                        <motion.div
-                          animate={{
-                            scale: theme === 'light' ? 1 : 0
-                          }}
-                        >
-                          {theme === 'light' ? '☀️' : ''}
-                        </motion.div>
-                      </div>
-                    </motion.div>
-                  </div>
-                </Toggle>
-              </div>
             </div>
           </nav>
         </motion.div>

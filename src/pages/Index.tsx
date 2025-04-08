@@ -4,7 +4,7 @@ import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, Heart, History, Filter, SlidersHorizontal, X } from 'lucide-react';
+import { Search, X, SlidersHorizontal } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -15,11 +15,9 @@ import {
   SheetDescription, 
   SheetHeader, 
   SheetTitle, 
-  SheetTrigger,
-  SheetFooter
+  SheetTrigger
 } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
-import { Slider } from '@/components/ui/slider';
 
 const foodItems: FoodItem[] = [
   {
@@ -188,7 +186,7 @@ const foodItems: FoodItem[] = [
     name: 'Утка по-пекински',
     price: 690,
     image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Хрустящая утка с тонкими блин��иками, огурцом, зеленым луком и сладким соусом хойсин.'
+    description: 'Хрустящая утка с тонкими блин��иками, огурц��м, зеленым луком и сладким соусом хойсин.'
   }
 ];
 
@@ -204,7 +202,6 @@ const Index = () => {
   const [randomItem, setRandomItem] = useState<FoodItem | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortOption, setSortOption] = useState<string | null>(null);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -371,6 +368,17 @@ const Index = () => {
     setRandomItem(null);
   };
 
+  useEffect(() => {
+    if (recentlyViewed.length === 0 && foodItems.length > 0) {
+      const randomIndexes = Array.from({ length: Math.min(4, foodItems.length) }, () => 
+        Math.floor(Math.random() * foodItems.length)
+      );
+      const uniqueIndexes = [...new Set(randomIndexes)];
+      const randomItems = uniqueIndexes.map(index => foodItems[index]);
+      setRecentlyViewed(randomItems);
+    }
+  }, [foodItems, recentlyViewed.length]);
+
   return (
     <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
@@ -487,15 +495,16 @@ const Index = () => {
                 item={item}
                 isFavorite={favorites.includes(item.id)}
                 onFavoriteToggle={() => toggleFavorite(item.id)}
+                onClick={() => addToRecentlyViewed(item)}
               />
             ))}
           </div>
           
           {recentlyViewed.length > 0 && (
-            <div id="recently-viewed" className="mt-16 p-6 bg-card/50 backdrop-blur-sm rounded-xl">
+            <div id="recently-viewed" className="mt-16">
               <RecentlyViewedBanner 
                 items={recentlyViewed} 
-                onItemClick={addToRecentlyViewed} 
+                onItemClick={addToRecentlyViewed}
               />
             </div>
           )}

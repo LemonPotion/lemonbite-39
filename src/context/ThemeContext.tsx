@@ -20,11 +20,24 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     localStorage.setItem('theme', theme);
     
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    // Apply transition class for smoother theme changes
+    document.documentElement.classList.add('theme-transition');
+    
+    // Set a timeout to apply the theme class to ensure the transition works properly
+    const timeoutId = setTimeout(() => {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      
+      // Remove the transition class after the theme change is complete
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transition');
+      }, 300);
+    }, 50);
+    
+    return () => clearTimeout(timeoutId);
   }, [theme]);
 
   const toggleTheme = () => {
