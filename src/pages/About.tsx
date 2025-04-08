@@ -56,9 +56,18 @@ const AboutUs = () => {
           variants={containerVariants}
         >
           <motion.div className="text-center mb-16" variants={itemVariants}>
-            <div className="inline-block bg-accent/10 dark:bg-accent/20 p-4 rounded-full mb-5">
+            <motion.div 
+              className="inline-block bg-accent/10 dark:bg-accent/20 p-4 rounded-full mb-5"
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{ 
+                duration: 20, 
+                repeat: Infinity, 
+                ease: "linear"
+              }}
+            >
               <ChefHat size={48} className="text-accent" />
-            </div>
+            </motion.div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-foreground">
               О сервисе <span className="text-accent">LemonBite</span>
             </h1>
