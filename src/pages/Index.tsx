@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -443,4 +444,103 @@ const Index = () => {
                             key={option.id}
                             variant={sortOption === option.id ? "default" : "outline"}
                             className="justify-start"
-                            onClick={() => handleSortOptionChange(option.id
+                            onClick={() => handleSortOptionChange(option.id)}
+                          >
+                            {option.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium">Категории</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {categories.map(category => (
+                          <Button
+                            key={category}
+                            variant={activeCategory === category ? "default" : "outline"}
+                            className="justify-start"
+                            onClick={() => handleCategoryClick(category)}
+                          >
+                            {category}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Button 
+                      variant="ghost" 
+                      className="w-full" 
+                      onClick={resetFilters}
+                    >
+                      Сбросить все фильтры
+                    </Button>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </div>
+          
+          {/* Category Pills */}
+          <div className="mb-8 overflow-x-auto pb-2">
+            <div className="flex space-x-2 min-w-max">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryClick(category)}
+                  className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
+                    activeCategory === category 
+                      ? 'bg-accent text-white' 
+                      : 'bg-card hover:bg-muted/80 text-foreground'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Food Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+            {filteredItems.map(item => (
+              <FoodCard
+                key={item.id}
+                item={item}
+                isFavorite={favorites.includes(item.id)}
+                onFavoriteToggle={() => toggleFavorite(item.id)}
+              />
+            ))}
+          </div>
+          
+          {/* Recently Viewed */}
+          {recentlyViewed.length > 0 && (
+            <div id="recently-viewed" className="mt-16 p-6 bg-card/50 backdrop-blur-sm rounded-xl">
+              <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Modals */}
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        onCompleteOrder={handleOrderComplete}
+      />
+      
+      <SuccessModal
+        isOpen={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
+      />
+      
+      {/* Favorites Drawer */}
+      <FavoritesDrawer
+        isOpen={isFavoritesOpen}
+        onClose={() => setIsFavoritesOpen(false)}
+        items={favoritedItems}
+      />
+    </Layout>
+  );
+};
+
+export default Index;
