@@ -9,9 +9,23 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
-import { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
-import { Search } from 'lucide-react';
+import { 
+  Command, 
+  CommandDialog, 
+  CommandInput, 
+  CommandList, 
+  CommandEmpty, 
+  CommandGroup, 
+  CommandItem,
+  CommandSeparator,
+  CommandHistoryItem 
+} from "@/components/ui/command";
+import { useSearchHistory } from '../hooks/useSearchHistory';
+import { Search, History, Clock, Sparkles, ChefHat, Filter } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { saveFavoritesToCookies } from "../utils/cookieUtils";
 
 interface NavigationItem {
   name: string;
@@ -43,12 +57,31 @@ const foodCategories = [
   'Основные блюда'
 ];
 
+// Price ranges
+const priceRanges = [
+  { name: 'До 250₽', min: 0, max: 250 },
+  { name: '250₽-350₽', min: 250, max: 350 },
+  { name: '350₽-500₽', min: 350, max: 500 },
+  { name: 'Более 500₽', min: 500, max: Infinity }
+];
+
+// Food preferences
+const foodPreferences = [
+  'Вегетарианское',
+  'Мясное',
+  'Острое',
+  'Сладкое',
+  'Национальные кухни'
+];
+
 const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const { history, addToHistory, removeFromHistory, clearHistory } = useSearchHistory();
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Keyboard shortcut for command menu
   useEffect(() => {
@@ -65,7 +98,42 @@ const Navigation = () => {
 
   // Handle food category selection
   const handleCategorySelect = (category: string) => {
+    addToHistory(category);
     navigate('/?category=' + encodeURIComponent(category));
+    setIsCommandOpen(false);
+  };
+  
+  // Handle random food suggestion
+  const handleRandomFood = () => {
+    addToHistory('Случайное блюдо');
+    navigate('/?random=true');
+    setIsCommandOpen(false);
+  };
+  
+  // Handle price range selection
+  const handlePriceRangeSelect = (range: { min: number, max: number, name: string }) => {
+    addToHistory(`Цена: ${range.name}`);
+    navigate(`/?minPrice=${range.min}&maxPrice=${range.max}`);
+    setIsCommandOpen(false);
+  };
+  
+  // Handle search input
+  const handleSearchInput = (value: string) => {
+    setSearchQuery(value);
+  };
+  
+  // Handle search execution
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      addToHistory(searchQuery);
+      navigate(`/?search=${encodeURIComponent(searchQuery)}`);
+      setIsCommandOpen(false);
+    }
+  };
+  
+  // Handle history item selection
+  const handleHistorySelect = (term: string) => {
+    navigate(`/?search=${encodeURIComponent(term)}`);
     setIsCommandOpen(false);
   };
 
@@ -103,6 +171,23 @@ const Navigation = () => {
                 <span className="text-xs">⌘</span>K
               </kbd>
             </button>
+          </NavigationMenuItem>
+          
+          {/* Theme toggle switch */}
+          <NavigationMenuItem>
+            <div className={cn(
+              navigationMenuTriggerStyle(),
+              "text-base font-medium flex items-center gap-2"
+            )}>
+              <Switch 
+                id="theme-mode" 
+                checked={theme === 'dark'}
+                onCheckedChange={toggleTheme}
+              />
+              <Label htmlFor="theme-mode" className="cursor-pointer">
+                {theme === 'dark' ? 'Тёмная' : 'Светлая'}
+              </Label>
+            </div>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
@@ -164,16 +249,65 @@ const Navigation = () => {
                 <Search className="h-4 w-4" />
               </button>
             </div>
+            <div className="flex items-center justify-between px-4 py-2">
+              <span className="text-base font-medium">Тема</span>
+              <div className="flex items-center space-x-2">
+                <Switch 
+                  id="mobile-theme-mode" 
+                  checked={theme === 'dark'}
+                  onCheckedChange={toggleTheme}
+                />
+                <Label htmlFor="mobile-theme-mode" className="cursor-pointer">
+                  {theme === 'dark' ? 'Тёмная' : 'Светлая'}
+                </Label>
+              </div>
+            </div>
           </nav>
         </motion.div>
       )}
 
-      {/* Command Menu (Search) */}
+      {/* Enhanced Command Menu (Search) */}
       <CommandDialog open={isCommandOpen} onOpenChange={setIsCommandOpen}>
-        <Command>
-          <CommandInput placeholder="Поиск по меню и категориям..." />
+        <Command onKeyDown={(e) => {
+          // Submit on Enter key
+          if (e.key === 'Enter' && !e.defaultPrevented) {
+            handleSearch();
+          }
+        }}>
+          <CommandInput 
+            placeholder="Поиск по меню, категориям, ценам..." 
+            value={searchQuery}
+            onValueChange={handleSearchInput}
+          />
           <CommandList>
             <CommandEmpty>Ничего не найдено.</CommandEmpty>
+            
+            {/* Show search history if exists */}
+            {history.length > 0 && (
+              <>
+                <CommandGroup heading="История поиска">
+                  {history.map((item) => (
+                    <CommandHistoryItem 
+                      key={item} 
+                      onSelect={() => handleHistorySelect(item)}
+                      onClear={() => removeFromHistory(item)}
+                    >
+                      {item}
+                    </CommandHistoryItem>
+                  ))}
+                  {history.length > 1 && (
+                    <CommandItem 
+                      onSelect={clearHistory}
+                      className="justify-end text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      Очистить историю
+                    </CommandItem>
+                  )}
+                </CommandGroup>
+                <CommandSeparator />
+              </>
+            )}
+            
             <CommandGroup heading="Меню">
               <CommandItem onSelect={() => {
                 navigate('/');
@@ -188,22 +322,42 @@ const Navigation = () => {
                 <span>О сервисе</span>
               </CommandItem>
             </CommandGroup>
+            
             <CommandGroup heading="Категории">
               {foodCategories.map((category) => (
                 <CommandItem 
                   key={category}
                   onSelect={() => handleCategorySelect(category)}
                 >
+                  <ChefHat className="mr-2 h-4 w-4" />
                   <span>{category}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
+            
+            <CommandGroup heading="Ценовой диапазон">
+              {priceRanges.map((range) => (
+                <CommandItem 
+                  key={range.name}
+                  onSelect={() => handlePriceRangeSelect(range)}
+                >
+                  <Filter className="mr-2 h-4 w-4" />
+                  <span>{range.name}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+            
             <CommandGroup heading="Дополнительно">
+              <CommandItem onSelect={handleRandomFood}>
+                <Sparkles className="mr-2 h-4 w-4" />
+                <span>Я не знаю что заказать</span>
+              </CommandItem>
               <CommandItem onSelect={() => {
-                navigate('/?random=true');
+                navigate('/?recently=true');
                 setIsCommandOpen(false);
               }}>
-                <span>Я не знаю что заказать</span>
+                <Clock className="mr-2 h-4 w-4" />
+                <span>Недавно просмотренные</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>

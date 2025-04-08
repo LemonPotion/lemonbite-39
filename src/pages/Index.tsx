@@ -1,14 +1,26 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, Heart } from 'lucide-react';
+import { Search, Heart, History, Filter, SlidersHorizontal } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetDescription, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger,
+  SheetFooter
+} from "@/components/ui/sheet";
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 
 const foodItems: FoodItem[] = [
   {
@@ -191,27 +203,64 @@ const Index = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [randomItem, setRandomItem] = useState<FoodItem | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
+  const [sortOption, setSortOption] = useState<string | null>(null);
   
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Parse query params
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const category = params.get('category');
-    const random = params.get('random');
     
+    // Handle category filter
+    const category = params.get('category');
     if (category) {
       setActiveCategory(category);
       navigate('/', { replace: true });
     }
     
+    // Handle random food recommendation
+    const random = params.get('random');
     if (random === 'true') {
       const randomIndex = Math.floor(Math.random() * foodItems.length);
       setRandomItem(foodItems[randomIndex]);
       navigate('/', { replace: true });
     }
+    
+    // Handle search query
+    const search = params.get('search');
+    if (search) {
+      setSearchQuery(search);
+      navigate('/', { replace: true });
+    }
+    
+    // Handle price range
+    const minPrice = params.get('minPrice');
+    const maxPrice = params.get('maxPrice');
+    if (minPrice && maxPrice) {
+      setPriceRange([Number(minPrice), Number(maxPrice)]);
+      navigate('/', { replace: true });
+    }
+    
+    // Handle recently viewed
+    const recently = params.get('recently');
+    if (recently === 'true') {
+      // Just to highlight the recently viewed section
+      const recentlyViewedElement = document.getElementById('recently-viewed');
+      if (recentlyViewedElement) {
+        recentlyViewedElement.scrollIntoView({ behavior: 'smooth' });
+        recentlyViewedElement.classList.add('ring-2', 'ring-accent', 'rounded-lg');
+        setTimeout(() => {
+          recentlyViewedElement.classList.remove('ring-2', 'ring-accent', 'rounded-lg');
+        }, 2000);
+      }
+      navigate('/', { replace: true });
+    }
   }, [location, navigate]);
 
+  // Load favorites from cookies
   useEffect(() => {
     const savedFavorites = getFavoritesFromCookies();
     if (savedFavorites.length > 0) {
@@ -251,6 +300,19 @@ const Index = () => {
     setActiveCategory(prev => prev === category ? null : category);
   };
 
+  const resetFilters = () => {
+    setActiveFilter(null);
+    setActiveCategory(null);
+    setSearchQuery('');
+    setPriceRange([0, 800]);
+    setSortOption(null);
+  };
+
+  const handleSortOptionChange = (option: string) => {
+    setSortOption(option);
+  };
+
+  // Get all categories from the items
   const categories = [...new Set(foodItems.map(item => {
     if (item.name.toLowerCase().includes('бургер')) return 'Фаст-фуд';
     if (item.name.toLowerCase().includes('пицца')) return 'Пицца';
@@ -267,16 +329,22 @@ const Index = () => {
     return 'Основные блюда';
   }))];
 
-  const filteredItems = foodItems.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+  // Apply all filters to the items
+  let filteredItems = foodItems.filter(item => {
+    // Search query filter
+    const matchesSearch = searchQuery ? 
+      (item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+       item.description.toLowerCase().includes(searchQuery.toLowerCase())) :
+      true;
     
     if (!matchesSearch) return false;
     
+    // Favorites filter
     if (activeFilter === 'favorites') {
       return favorites.includes(item.id);
     }
 
+    // Category filter
     if (activeCategory) {
       const itemCategory = 
         item.name.toLowerCase().includes('бургер') ? 'Фаст-фуд' :
@@ -296,8 +364,22 @@ const Index = () => {
       return itemCategory === activeCategory;
     }
     
-    return true;
+    // Price range filter
+    return item.price >= priceRange[0] && item.price <= priceRange[1];
   });
+
+  // Apply sorting if selected
+  if (sortOption) {
+    if (sortOption === 'price-low-high') {
+      filteredItems = [...filteredItems].sort((a, b) => a.price - b.price);
+    } else if (sortOption === 'price-high-low') {
+      filteredItems = [...filteredItems].sort((a, b) => b.price - a.price);
+    } else if (sortOption === 'name-a-z') {
+      filteredItems = [...filteredItems].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === 'name-z-a') {
+      filteredItems = [...filteredItems].sort((a, b) => b.name.localeCompare(a.name));
+    }
+  }
 
   const favoritedItems = foodItems.filter(item => favorites.includes(item.id));
 
@@ -339,6 +421,64 @@ const Index = () => {
                   className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
                 />
               </div>
+              <Sheet open={showFilters} onOpenChange={setShowFilters}>
+                <SheetTrigger asChild>
+                  <button className="ml-2 p-3 bg-card border border-muted rounded-lg text-foreground hover:bg-muted/50 transition-colors theme-transition">
+                    <SlidersHorizontal size={18} />
+                  </button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Фильтры и сортировка</SheetTitle>
+                    <SheetDescription>
+                      Настройте параметры поиска блюд
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="py-6 space-y-6">
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium">Ценовой диапазон</h3>
+                      <Slider
+                        defaultValue={priceRange}
+                        min={0}
+                        max={800}
+                        step={10}
+                        value={priceRange}
+                        onValueChange={(value) => setPriceRange(value as [number, number])}
+                        className="my-4"
+                      />
+                      <div className="flex justify-between text-sm text-muted-foreground">
+                        <span>{priceRange[0]}₽</span>
+                        <span>{priceRange[1]}₽</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium">Сортировка</h3>
+                      <div className="grid grid-cols-1 gap-2">
+                        {[
+                          { id: 'price-low-high', label: 'По возрастанию цены' },
+                          { id: 'price-high-low', label: 'По убыванию цены' },
+                          { id: 'name-a-z', label: 'По алфавиту (А-Я)' },
+                          { id: 'name-z-a', label: 'По алфавиту (Я-А)' }
+                        ].map(option => (
+                          <Button
+                            key={option.id}
+                            variant={sortOption === option.id ? "default" : "outline"}
+                            className="justify-start"
+                            onClick={() => handleSortOptionChange(option.id)}
+                          >
+                            {option.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <SheetFooter>
+                    <Button variant="outline" onClick={resetFilters}>Сбросить</Button>
+                    <Button onClick={() => setShowFilters(false)}>Применить</Button>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
 
@@ -353,6 +493,14 @@ const Index = () => {
             >
               <Heart size={16} className={activeFilter === 'favorites' ? 'text-white' : 'text-foreground/50'} />
               Favorites
+            </button>
+            
+            <button 
+              onClick={() => handleRandomItem()}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-colors theme-transition bg-card border-muted text-foreground hover:bg-muted/50"
+            >
+              <History size={16} className="text-foreground/50" />
+              Случайное блюдо
             </button>
           </div>
 
@@ -375,7 +523,9 @@ const Index = () => {
           </div>
 
           {recentlyViewed.length > 0 && (
-            <RecentlyViewedBanner items={recentlyViewed} />
+            <div id="recently-viewed" className="transition-all duration-300">
+              <RecentlyViewedBanner items={recentlyViewed} />
+            </div>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -391,7 +541,14 @@ const Index = () => {
             {filteredItems.length === 0 && (
               <div className="col-span-full py-16 text-center">
                 <h3 className="text-xl font-medium text-foreground theme-transition">No items found</h3>
-                <p className="text-foreground/60 mt-2 theme-transition">Try adjusting your search</p>
+                <p className="text-foreground/60 mt-2 theme-transition">Try adjusting your filters</p>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={resetFilters}
+                >
+                  Reset Filters
+                </Button>
               </div>
             )}
           </div>
@@ -417,6 +574,12 @@ const Index = () => {
       />
     </Layout>
   );
+
+  // New function for random item selection
+  function handleRandomItem() {
+    const randomIndex = Math.floor(Math.random() * foodItems.length);
+    setRandomItem(foodItems[randomIndex]);
+  }
 };
 
 export default Index;

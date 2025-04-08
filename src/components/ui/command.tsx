@@ -1,7 +1,8 @@
+
 import * as React from "react"
 import { type DialogProps } from "@radix-ui/react-dialog"
 import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
+import { Search, History } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
@@ -140,6 +141,40 @@ const CommandShortcut = ({
 }
 CommandShortcut.displayName = "CommandShortcut"
 
+// New component to show search history with a clear icon
+const CommandHistoryItem = React.forwardRef<
+  React.ElementRef<typeof CommandPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & {
+    onClear?: () => void
+  }
+>(({ className, children, onClear, ...props }, ref) => (
+  <CommandPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center justify-between rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
+      className
+    )}
+    {...props}
+  >
+    <div className="flex items-center gap-2">
+      <History className="h-4 w-4 opacity-50" />
+      {children}
+    </div>
+    {onClear && (
+      <button
+        className="ml-auto text-xs text-muted-foreground hover:text-foreground"
+        onClick={(e) => {
+          e.stopPropagation()
+          onClear()
+        }}
+      >
+        ✕
+      </button>
+    )}
+  </CommandPrimitive.Item>
+))
+CommandHistoryItem.displayName = "CommandHistoryItem"
+
 export {
   Command,
   CommandDialog,
@@ -150,4 +185,5 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
+  CommandHistoryItem,
 }
