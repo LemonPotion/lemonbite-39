@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, ShoppingBag } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from '../context/ThemeContext';
 import Navigation from './Navigation';
+import { Switch } from '@/components/ui/switch';
 
 interface HeaderProps {
   onCartClick: () => void;
@@ -18,30 +19,25 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
     <header className="sticky top-0 z-40 w-full backdrop-blur-lg bg-background/80 border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo - Simplified to just text */}
+          {/* Logo - Text only */}
           <Link to="/" className="flex items-center">
-            <span className="font-bold text-xl text-foreground">LemonBite</span>
+            <span className="font-bold text-xl text-foreground">emonBite</span>
           </Link>
           
           {/* Navigation */}
           <Navigation />
           
           {/* Actions */}
-          <div className="flex items-center space-x-2">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={toggleTheme} 
-              className="rounded-full"
-              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Light</span>
+              <Switch 
+                checked={theme === 'dark'}
+                onCheckedChange={toggleTheme}
+                aria-label="Toggle theme"
+              />
+              <span className="text-sm text-muted-foreground">Dark</span>
+            </div>
             
             <Button 
               variant="outline" 

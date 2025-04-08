@@ -20,10 +20,20 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     localStorage.setItem('theme', theme);
     
+    // Set custom theme properties
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.setProperty('--background', '#1F1F1F');
+      document.documentElement.style.setProperty('--foreground', '#D1CFC0');
+      document.documentElement.style.setProperty('--accent', '#F76F53');
+      document.documentElement.style.setProperty('--accent-foreground', '#ffffff');
     } else {
       document.documentElement.classList.remove('dark');
+      // Reset to default light theme
+      document.documentElement.style.removeProperty('--background');
+      document.documentElement.style.removeProperty('--foreground');
+      document.documentElement.style.removeProperty('--accent');
+      document.documentElement.style.removeProperty('--accent-foreground');
     }
   }, [theme]);
 
