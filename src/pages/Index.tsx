@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -62,7 +61,7 @@ const foodItems: FoodItem[] = [
     id: "0195b363-d60c-799c-a440-c048b08d25e7",
     name: 'Шоколадный торт',
     price: 180,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Насыщенный шоколадный торт с нежным ганашем и свежими ягодами.'
   },
   {
@@ -76,7 +75,7 @@ const foodItems: FoodItem[] = [
     id: "0195b364-569c-7aad-862f-9ecb5a806334",
     name: 'Суши-ассорти',
     price: 450,
-    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
   },
   {
@@ -189,7 +188,7 @@ const foodItems: FoodItem[] = [
     name: 'Утка по-пекински',
     price: 690,
     image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Хрустящая утка с тонкими блинчиками, огурцом, зеленым луком и сладким соусом хойсин.'
+    description: 'Хрустящая утка с тонкими блин��иками, огурцом, зеленым луком и сладким соусом хойсин.'
   }
 ];
 
@@ -481,26 +480,6 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Category Pills */}
-          <div className="mb-8 overflow-x-auto pb-2">
-            <div className="flex space-x-2 min-w-max">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryClick(category)}
-                  className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
-                    activeCategory === category 
-                      ? 'bg-accent text-white' 
-                      : 'bg-card hover:bg-muted/80 text-foreground'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Food Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
             {filteredItems.map(item => (
               <FoodCard
@@ -512,20 +491,21 @@ const Index = () => {
             ))}
           </div>
           
-          {/* Recently Viewed */}
           {recentlyViewed.length > 0 && (
             <div id="recently-viewed" className="mt-16 p-6 bg-card/50 backdrop-blur-sm rounded-xl">
-              <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
+              <RecentlyViewedBanner 
+                items={recentlyViewed} 
+                onItemClick={addToRecentlyViewed} 
+              />
             </div>
           )}
         </div>
       </div>
       
-      {/* Modals */}
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
-        onCompleteOrder={handleOrderComplete}
+        onComplete={handleOrderComplete}
       />
       
       <SuccessModal
@@ -533,11 +513,11 @@ const Index = () => {
         onClose={() => setIsSuccessOpen(false)}
       />
       
-      {/* Favorites Drawer */}
       <FavoritesDrawer
         isOpen={isFavoritesOpen}
         onClose={() => setIsFavoritesOpen(false)}
         items={favoritedItems}
+        onFavoriteToggle={toggleFavorite}
       />
     </Layout>
   );

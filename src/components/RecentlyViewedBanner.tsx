@@ -6,9 +6,10 @@ import { toast } from 'sonner';
 
 interface RecentlyViewedBannerProps {
   items: FoodItem[];
+  onItemClick?: (item: FoodItem) => void;
 }
 
-const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) => {
+const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items, onItemClick }) => {
   const { addItem } = useCart();
   const bannerRef = useRef<HTMLDivElement>(null);
   const [isAdding, setIsAdding] = useState<string | null>(null);
@@ -40,6 +41,11 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items }) =>
     setTimeout(() => {
       setIsAdding(null);
     }, 300);
+    
+    // Call onItemClick if provided
+    if (onItemClick) {
+      onItemClick(item);
+    }
   };
 
   if (items.length === 0) return null;
