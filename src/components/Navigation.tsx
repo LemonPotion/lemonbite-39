@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { 
@@ -10,7 +10,7 @@ import {
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
-import { Search, Command as CommandIcon } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 interface NavigationItem {
@@ -29,8 +29,23 @@ const navigationItems: NavigationItem[] = [
   }
 ];
 
+// Food categories for search
+const foodCategories = [
+  'Фаст-фуд',
+  'Пицца',
+  'Салаты',
+  'Паста',
+  'Азиатская',
+  'Десерты',
+  'Морепродукты',
+  'Супы',
+  'Мясные блюда',
+  'Основные блюда'
+];
+
 const Navigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isCommandOpen, setIsCommandOpen] = useState(false);
@@ -47,6 +62,12 @@ const Navigation = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  // Handle food category selection
+  const handleCategorySelect = (category: string) => {
+    navigate('/?category=' + encodeURIComponent(category));
+    setIsCommandOpen(false);
+  };
 
   return (
     <div className="flex items-center justify-center flex-grow">
@@ -150,35 +171,39 @@ const Navigation = () => {
       {/* Command Menu (Search) */}
       <CommandDialog open={isCommandOpen} onOpenChange={setIsCommandOpen}>
         <Command>
-          <CommandInput placeholder="Поиск по меню..." />
+          <CommandInput placeholder="Поиск по меню и категориям..." />
           <CommandList>
             <CommandEmpty>Ничего не найдено.</CommandEmpty>
             <CommandGroup heading="Меню">
               <CommandItem onSelect={() => {
-                window.location.href = '/';
+                navigate('/');
                 setIsCommandOpen(false);
               }}>
                 <span>Главная</span>
               </CommandItem>
               <CommandItem onSelect={() => {
-                window.location.href = '/about';
+                navigate('/about');
                 setIsCommandOpen(false);
               }}>
                 <span>О сервисе</span>
               </CommandItem>
             </CommandGroup>
             <CommandGroup heading="Категории">
-              <CommandItem>
-                <span>Фаст-фуд</span>
-              </CommandItem>
-              <CommandItem>
-                <span>Пицца</span>
-              </CommandItem>
-              <CommandItem>
-                <span>Десерты</span>
-              </CommandItem>
-              <CommandItem>
-                <span>Азиатская кухня</span>
+              {foodCategories.map((category) => (
+                <CommandItem 
+                  key={category}
+                  onSelect={() => handleCategorySelect(category)}
+                >
+                  <span>{category}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+            <CommandGroup heading="Дополнительно">
+              <CommandItem onSelect={() => {
+                navigate('/?random=true');
+                setIsCommandOpen(false);
+              }}>
+                <span>Я не знаю что заказать</span>
               </CommandItem>
             </CommandGroup>
           </CommandList>

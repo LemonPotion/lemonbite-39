@@ -8,6 +8,7 @@ import { Search, Heart } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const foodItems: FoodItem[] = [
   {
@@ -63,7 +64,7 @@ const foodItems: FoodItem[] = [
     id: "0195b364-569c-7aad-862f-9ecb5a806334",
     name: 'Суши-ассорти',
     price: 450,
-    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
   },
   {
@@ -189,6 +190,27 @@ const Index = () => {
   const [recentlyViewed, setRecentlyViewed] = useState<FoodItem[]>([]);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [randomItem, setRandomItem] = useState<FoodItem | null>(null);
+  
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get('category');
+    const random = params.get('random');
+    
+    if (category) {
+      setActiveCategory(category);
+      navigate('/', { replace: true });
+    }
+    
+    if (random === 'true') {
+      const randomIndex = Math.floor(Math.random() * foodItems.length);
+      setRandomItem(foodItems[randomIndex]);
+      navigate('/', { replace: true });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     const savedFavorites = getFavoritesFromCookies();
@@ -291,6 +313,19 @@ const Index = () => {
               Discover our carefully crafted dishes made with the freshest ingredients
             </p>
           </div>
+          
+          {randomItem && (
+            <div className="mb-8 p-6 bg-accent/10 rounded-xl">
+              <h2 className="text-xl font-bold mb-4 text-center">Рекомендуем попробовать:</h2>
+              <div className="max-w-md mx-auto">
+                <FoodCard 
+                  item={randomItem}
+                  isFavorite={favorites.includes(randomItem.id)}
+                  onFavoriteToggle={() => toggleFavorite(randomItem.id)}
+                />
+              </div>
+            </div>
+          )}
           
           <div className="relative mb-8 flex justify-center">
             <div className="flex items-center w-full max-w-md">

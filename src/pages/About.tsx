@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import CheckoutModal from '../components/CheckoutModal';
@@ -56,18 +55,9 @@ const AboutUs = () => {
           variants={containerVariants}
         >
           <motion.div className="text-center mb-16" variants={itemVariants}>
-            <motion.div 
-              className="inline-block bg-accent/10 dark:bg-accent/20 p-4 rounded-full mb-5"
-              initial={{ rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{ 
-                duration: 20, 
-                repeat: Infinity, 
-                ease: "linear"
-              }}
-            >
+            <div className="inline-block bg-accent/10 dark:bg-accent/20 p-4 rounded-full mb-5">
               <ChefHat size={48} className="text-accent" />
-            </motion.div>
+            </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-foreground">
               О сервисе <span className="text-accent">LemonBite</span>
             </h1>
