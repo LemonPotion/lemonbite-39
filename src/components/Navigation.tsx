@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -19,9 +20,10 @@ import {
   CommandHistoryItem 
 } from "@/components/ui/command";
 import { useSearchHistory } from '../hooks/useSearchHistory';
-import { Search, History, Clock, Sparkles, ChefHat } from 'lucide-react';
+import { Search, History, Clock, Sparkles, ChefHat, Utensils, Tag } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { saveFavoritesToCookies } from "../utils/cookieUtils";
+import { toast } from "sonner";
 
 interface NavigationItem {
   name: string;
@@ -58,6 +60,13 @@ const foodPreferences = [
   'Национальные кухни'
 ];
 
+// Popular ingredients for search suggestions
+const popularIngredients = [
+  'курица', 'говядина', 'свинина', 'рыба', 'грибы', 
+  'сыр', 'томаты', 'огурцы', 'картофель', 'рис',
+  'морепродукты', 'авокадо', 'шоколад', 'ягоды', 'орехи'
+];
+
 const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,6 +74,7 @@ const Navigation = () => {
   const [isCommandOpen, setIsCommandOpen] = useState(false);
   const { history, addToHistory, removeFromHistory, clearHistory } = useSearchHistory();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   
   // Keyboard shortcut for command menu
   useEffect(() => {
@@ -78,6 +88,26 @@ const Navigation = () => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  // Generate search suggestions based on input
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      // Generate ingredient-based suggestions
+      const ingredientSuggestions = popularIngredients
+        .filter(ingredient => ingredient.includes(searchQuery.toLowerCase()))
+        .map(ingredient => `Блюда с ${ingredient}`);
+      
+      // Generate category-based suggestions
+      const categorySuggestions = foodCategories
+        .filter(category => category.toLowerCase().includes(searchQuery.toLowerCase()))
+        .map(category => `${category} кухня`);
+      
+      // Combine suggestions and limit to 5
+      setSearchSuggestions([...ingredientSuggestions, ...categorySuggestions].slice(0, 5));
+    } else {
+      setSearchSuggestions([]);
+    }
+  }, [searchQuery]);
 
   // Handle food category selection
   const handleCategorySelect = (category: string) => {
@@ -105,6 +135,14 @@ const Navigation = () => {
       navigate(`/?search=${encodeURIComponent(searchQuery)}`);
       setIsCommandOpen(false);
     }
+  };
+  
+  // Handle suggestion selection
+  const handleSuggestionSelect = (suggestion: string) => {
+    addToHistory(suggestion);
+    navigate(`/?search=${encodeURIComponent(suggestion)}`);
+    setIsCommandOpen(false);
+    toast.success(`Поиск по запросу: ${suggestion}`);
   };
   
   // Handle history item selection
@@ -227,6 +265,21 @@ const Navigation = () => {
           />
           <CommandList>
             <CommandEmpty>Ничего не найдено.</CommandEmpty>
+            
+            {/* Show search suggestions if available */}
+            {searchSuggestions.length > 0 && (
+              <CommandGroup heading="Предлагаем поискать">
+                {searchSuggestions.map((suggestion, index) => (
+                  <CommandItem
+                    key={`suggestion-${index}`}
+                    onSelect={() => handleSuggestionSelect(suggestion)}
+                  >
+                    <Tag className="mr-2 h-4 w-4" />
+                    <span>{suggestion}</span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
             
             {/* Show search history if exists */}
             {history.length > 0 && (

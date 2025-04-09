@@ -1,11 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles } from 'lucide-react';
+import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -188,7 +187,7 @@ const foodItems: FoodItem[] = [
     name: 'Утка по-пекински',
     price: 690,
     image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Хрустящая утка с тонкими блин��иками, огурц��м, зеленым луком и сладким соусом хойсин.'
+    description: 'Хрустящая утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
   }
 ];
 
@@ -206,7 +205,8 @@ const Index = () => {
   const [sortOption, setSortOption] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   const [isRandomItemAnimating, setIsRandomItemAnimating] = useState(false);
-  
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const { addItem } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -284,7 +284,6 @@ const Index = () => {
     });
   };
 
-  // Updated to make filters mutually exclusive
   const handleFilterClick = (filter: string) => {
     if (activeFilter === filter) {
       setActiveFilter(null);
@@ -294,7 +293,6 @@ const Index = () => {
     }
   };
 
-  // Updated to make categories mutually exclusive with filters
   const handleCategoryClick = (category: string) => {
     if (activeCategory === category) {
       setActiveCategory(null);
@@ -397,6 +395,26 @@ const Index = () => {
     }, 300);
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const addToHistory = (query: string) => {
+    // Add search term to history
+  };
+
   useEffect(() => {
     if (recentlyViewed.length === 0 && foodItems.length > 0) {
       const randomIndexes = Array.from({ length: Math.min(4, foodItems.length) }, () => 
@@ -421,7 +439,6 @@ const Index = () => {
             </p>
           </div>
           
-          {/* Recently Viewed Section - At the top */}
           {recentlyViewed.length > 0 && (
             <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner 
@@ -431,7 +448,6 @@ const Index = () => {
             </div>
           )}
           
-          {/* Enhanced Random Item Recommendation */}
           <AnimatePresence mode="wait">
             {randomItem && (
               <motion.div 
@@ -521,7 +537,6 @@ const Index = () => {
                           <Button
                             onClick={() => {
                               addToRecentlyViewed(randomItem);
-                              const { addItem } = useCart();
                               addItem(randomItem);
                             }}
                             size="sm"
@@ -539,7 +554,6 @@ const Index = () => {
           
           <div className="relative mb-8">
             <div className="flex flex-wrap gap-3 items-center justify-center mb-4">
-              {/* Favorites Button */}
               <Button
                 variant={activeFilter === 'favorites' ? "default" : "outline"}
                 className="flex items-center gap-2"
@@ -549,7 +563,6 @@ const Index = () => {
                 Избранное
               </Button>
               
-              {/* Category Buttons */}
               {categories.map(category => (
                 <Button
                   key={category}
@@ -562,7 +575,6 @@ const Index = () => {
               ))}
             </div>
             
-            {/* Search input and filter */}
             <div className="flex items-center w-full justify-center mb-6">
               <div className="flex items-center w-full max-w-md">
                 <div className="relative flex-grow">
@@ -573,7 +585,26 @@ const Index = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && searchQuery.trim()) {
+                        if (searchQuery.trim()) {
+                          addToHistory(searchQuery);
+                          const firstResult = document.querySelector('.food-card-shadow');
+                          if (firstResult) {
+                            firstResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }
+                        }
+                      }
+                    }}
                   />
+                  {searchQuery && (
+                    <button 
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground theme-transition"
+                      onClick={() => setSearchQuery('')}
+                    >
+                      <X size={16} />
+                    </button>
+                  )}
                 </div>
                 <Sheet open={showFilters} onOpenChange={setShowFilters}>
                   <SheetTrigger asChild>
@@ -653,6 +684,22 @@ const Index = () => {
           </div>
         </div>
       </div>
+      
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            onClick={handleScrollToTop}
+            className="fixed bottom-6 right-6 p-3 bg-accent text-white rounded-full shadow-lg hover:bg-accent/90 z-50 transition-all"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={20} />
+          </motion.button>
+        )}
+      </AnimatePresence>
       
       <CheckoutModal
         isOpen={isCheckoutOpen}
