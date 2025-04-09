@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -11,9 +10,9 @@ interface FoodCardProps {
   item: FoodItem;
   isFavorite?: boolean;
   onFavoriteToggle?: () => void;
+  onClick?: () => void;
 }
 
-// Function to determine food tags based on item name
 const generateFoodTags = (name: string): string[] => {
   const lowerName = name.toLowerCase();
   const tags: string[] = [];
@@ -31,25 +30,22 @@ const generateFoodTags = (name: string): string[] => {
   if (lowerName.includes('греч')) tags.push('Греческая');
   if (lowerName.includes('тай')) tags.push('Тайская');
   
-  // Add default tag if none matched
   if (tags.length === 0) tags.push('Основное блюдо');
   
   return tags;
 }
 
-// Generate calorie and prep time information
 const generateFoodInfo = (name: string): { calories: number; prepTime: number; spicyLevel: number } => {
-  // Use a deterministic way to generate info based on food name
   const nameSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
   
   return {
-    calories: 200 + (nameSum % 600), // Between 200-800 calories
-    prepTime: 10 + (nameSum % 20),   // Between 10-30 minutes
-    spicyLevel: nameSum % 4          // Between 0-3 (not spicy to very spicy)
+    calories: 200 + (nameSum % 600),
+    prepTime: 10 + (nameSum % 20),
+    spicyLevel: nameSum % 4
   };
 }
 
-const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavoriteToggle }) => {
+const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavoriteToggle, onClick }) => {
   const { theme } = useTheme();
   const { addItem } = useCart();
   const [isHovered, setIsHovered] = useState(false);
@@ -59,25 +55,29 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [foodInfo] = useState(generateFoodInfo(item.name));
 
-  // New feature - Random cook time
   const [cookTime] = useState({
-    cookTime: Math.floor(Math.random() * 20) + 10, // 10-29 minutes
+    cookTime: Math.floor(Math.random() * 20) + 10,
   });
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent dialog from opening when clicking add button
+    e.stopPropagation();
     setIsAdding(true);
     addItem(item);
     
-    // Show toast with animation
     toast.success(`${item.name} добавлен в корзину!`, {
       description: `${item.price.toFixed(2)} р`
     });
     
-    // Reset animations after they complete
     setTimeout(() => {
       setIsAdding(false);
     }, 300);
+  };
+
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    setIsDialogOpen(true);
   };
 
   return (
@@ -86,7 +86,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
         className="food-card-shadow rounded-xl overflow-hidden transition-all duration-300 hover:translate-y-[-5px] cursor-pointer relative h-[450px] w-full flex flex-col bg-card border border-border"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsDialogOpen(true)}
+        onClick={handleCardClick}
       >
         <div className="relative h-48 overflow-hidden flex-shrink-0">
           {!isImageLoaded && (
@@ -129,7 +129,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
             </span>
           </div>
           
-          {/* Food Info Metrics */}
           <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
             <div className="flex items-center">
               <Utensils size={12} className="mr-1" />
@@ -173,7 +172,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
               }}
             />
             
-            {/* Chef badge on selected items */}
             <div className="absolute bottom-3 left-3 bg-card/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center shadow-sm">
               <ChefHat size={16} className="text-accent mr-1" />
               <span className="text-xs font-medium">От шеф-повара</span>
@@ -189,7 +187,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
               </DialogTitle>
             </DialogHeader>
             
-            {/* Detailed Food Information */}
             <div className="my-4 flex flex-wrap gap-3">
               <Badge variant="outline" className="bg-card/60 text-foreground">
                 <Utensils size={14} className="mr-1" /> {foodInfo.calories} калорий

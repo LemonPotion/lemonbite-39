@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -202,6 +203,8 @@ const Index = () => {
   const [randomItem, setRandomItem] = useState<FoodItem | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortOption, setSortOption] = useState<string | null>(null);
+  // Adding the missing priceRange state
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   
   const location = useLocation();
   const navigate = useNavigate();
