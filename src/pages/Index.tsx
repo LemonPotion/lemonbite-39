@@ -5,7 +5,7 @@ import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, X, SlidersHorizontal } from 'lucide-react';
+import { Search, X, SlidersHorizontal, Heart, RefreshCw } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -19,6 +19,7 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const foodItems: FoodItem[] = [
   {
@@ -203,8 +204,8 @@ const Index = () => {
   const [randomItem, setRandomItem] = useState<FoodItem | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [sortOption, setSortOption] = useState<string | null>(null);
-  // Adding the missing priceRange state
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
+  const [isRandomItemAnimating, setIsRandomItemAnimating] = useState(false);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -368,7 +369,20 @@ const Index = () => {
   const favoritedItems = foodItems.filter(item => favorites.includes(item.id));
 
   const dismissRandomItem = () => {
-    setRandomItem(null);
+    setIsRandomItemAnimating(true);
+    setTimeout(() => {
+      setRandomItem(null);
+      setIsRandomItemAnimating(false);
+    }, 300);
+  };
+
+  const generateRandomItem = () => {
+    setIsRandomItemAnimating(true);
+    setTimeout(() => {
+      const randomIndex = Math.floor(Math.random() * foodItems.length);
+      setRandomItem(foodItems[randomIndex]);
+      setIsRandomItemAnimating(false);
+    }, 300);
   };
 
   useEffect(() => {
@@ -395,99 +409,172 @@ const Index = () => {
             </p>
           </div>
           
-          {randomItem && (
-            <div className="mb-8 p-6 bg-accent/10 rounded-xl relative">
-              <button 
-                onClick={dismissRandomItem}
-                className="absolute top-3 right-3 p-1 rounded-full bg-background/80 hover:bg-background text-foreground transition-colors"
-                aria-label="Close recommendation"
-              >
-                <X size={18} />
-              </button>
-              <h2 className="text-xl font-bold mb-4 text-center">Рекомендуем попробовать:</h2>
-              <div className="max-w-md mx-auto">
-                <FoodCard 
-                  item={randomItem}
-                  isFavorite={favorites.includes(randomItem.id)}
-                  onFavoriteToggle={() => toggleFavorite(randomItem.id)}
-                />
-              </div>
+          {/* Recently Viewed Section - Moved to top */}
+          {recentlyViewed.length > 0 && (
+            <div id="recently-viewed" className="mb-8">
+              <RecentlyViewedBanner 
+                items={recentlyViewed} 
+                onItemClick={addToRecentlyViewed}
+              />
             </div>
           )}
           
-          <div className="relative mb-8 flex justify-center">
-            <div className="flex items-center w-full max-w-md">
-              <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={18} />
-                <input
-                  type="text"
-                  placeholder="Search for dishes..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
-                />
-              </div>
-              <Sheet open={showFilters} onOpenChange={setShowFilters}>
-                <SheetTrigger asChild>
-                  <button className="ml-2 p-3 bg-card border border-muted rounded-lg text-foreground hover:bg-muted/50 transition-colors theme-transition">
-                    <SlidersHorizontal size={18} />
-                  </button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>Фильтры и сортировка</SheetTitle>
-                    <SheetDescription>
-                      Настройте параметры поиска блюд
-                    </SheetDescription>
-                  </SheetHeader>
-                  <div className="py-6 space-y-6">
-                    <div className="space-y-2">
-                      <h3 className="text-sm font-medium">Сортировка</h3>
-                      <div className="grid grid-cols-1 gap-2">
-                        {[
-                          { id: 'price-low-high', label: 'По возрастанию цены' },
-                          { id: 'price-high-low', label: 'По убыванию цены' },
-                          { id: 'name-a-z', label: 'По алфавиту (А-Я)' },
-                          { id: 'name-z-a', label: 'По алфавиту (Я-А)' }
-                        ].map(option => (
-                          <Button
-                            key={option.id}
-                            variant={sortOption === option.id ? "default" : "outline"}
-                            className="justify-start"
-                            onClick={() => handleSortOptionChange(option.id)}
-                          >
-                            {option.label}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <h3 className="text-sm font-medium">Категории</h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        {categories.map(category => (
-                          <Button
-                            key={category}
-                            variant={activeCategory === category ? "default" : "outline"}
-                            className="justify-start"
-                            onClick={() => handleCategoryClick(category)}
-                          >
-                            {category}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-
+          {/* Random Item Recommendation with Animation */}
+          <AnimatePresence mode="wait">
+            {randomItem && (
+              <motion.div 
+                className="mb-8 p-6 bg-accent/10 rounded-xl relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                key={randomItem.id + '-recommendation'}
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h2 className="text-xl font-bold text-foreground">Рекомендуем попробовать:</h2>
+                  <div className="flex gap-2">
                     <Button 
-                      variant="ghost" 
-                      className="w-full" 
-                      onClick={resetFilters}
+                      variant="outline" 
+                      size="icon" 
+                      onClick={generateRandomItem}
+                      disabled={isRandomItemAnimating}
+                      className="h-8 w-8 rounded-full text-foreground"
                     >
-                      Сбросить все фильтры
+                      <RefreshCw size={16} className={isRandomItemAnimating ? "animate-spin" : ""} />
+                      <span className="sr-only">Generate new recommendation</span>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      onClick={dismissRandomItem}
+                      className="h-8 w-8 rounded-full text-foreground"
+                    >
+                      <X size={16} />
+                      <span className="sr-only">Close recommendation</span>
                     </Button>
                   </div>
-                </SheetContent>
-              </Sheet>
+                </div>
+                <div className="max-w-md mx-auto">
+                  <FoodCard 
+                    item={randomItem}
+                    isFavorite={favorites.includes(randomItem.id)}
+                    onFavoriteToggle={() => toggleFavorite(randomItem.id)}
+                    onClick={() => addToRecentlyViewed(randomItem)}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          <div className="relative mb-8">
+            <div className="flex flex-wrap gap-3 items-center justify-center mb-4">
+              {/* Favorites Button */}
+              <Button
+                variant={activeFilter === 'favorites' ? "default" : "outline"}
+                className="flex items-center gap-2"
+                onClick={() => handleFilterClick('favorites')}
+              >
+                <Heart size={16} className={activeFilter === 'favorites' ? "text-white" : "text-foreground"} />
+                Избранное
+              </Button>
+              
+              {/* Show Favorites Drawer Button */}
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={() => setIsFavoritesOpen(true)}
+              >
+                <Heart size={16} className="text-red-500" fill="currentColor" />
+                Показать избранное
+              </Button>
+              
+              {/* Categories Buttons */}
+              {categories.map(category => (
+                <Button
+                  key={category}
+                  variant={activeCategory === category ? "default" : "outline"}
+                  className="text-sm"
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+            
+            <div className="flex items-center w-full justify-center mb-6">
+              <div className="flex items-center w-full max-w-md">
+                <div className="relative flex-grow">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={18} />
+                  <input
+                    type="text"
+                    placeholder="Search for dishes..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
+                  />
+                </div>
+                <Sheet open={showFilters} onOpenChange={setShowFilters}>
+                  <SheetTrigger asChild>
+                    <button className="ml-2 p-3 bg-card border border-muted rounded-lg text-foreground hover:bg-muted/50 transition-colors theme-transition">
+                      <SlidersHorizontal size={18} />
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Фильтры и сортировка</SheetTitle>
+                      <SheetDescription>
+                        Настройте параметры поиска блюд
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="py-6 space-y-6">
+                      <div className="space-y-2">
+                        <h3 className="text-sm font-medium">Сортировка</h3>
+                        <div className="grid grid-cols-1 gap-2">
+                          {[
+                            { id: 'price-low-high', label: 'По возрастанию цены' },
+                            { id: 'price-high-low', label: 'По убыванию цены' },
+                            { id: 'name-a-z', label: 'По алфавиту (А-Я)' },
+                            { id: 'name-z-a', label: 'По алфавиту (Я-А)' }
+                          ].map(option => (
+                            <Button
+                              key={option.id}
+                              variant={sortOption === option.id ? "default" : "outline"}
+                              className="justify-start"
+                              onClick={() => handleSortOptionChange(option.id)}
+                            >
+                              {option.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <h3 className="text-sm font-medium">Категории</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {categories.map(category => (
+                            <Button
+                              key={category}
+                              variant={activeCategory === category ? "default" : "outline"}
+                              className="justify-start"
+                              onClick={() => handleCategoryClick(category)}
+                            >
+                              {category}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Button 
+                        variant="ghost" 
+                        className="w-full" 
+                        onClick={resetFilters}
+                      >
+                        Сбросить все фильтры
+                      </Button>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
             </div>
           </div>
           
@@ -502,15 +589,6 @@ const Index = () => {
               />
             ))}
           </div>
-          
-          {recentlyViewed.length > 0 && (
-            <div id="recently-viewed" className="mt-16">
-              <RecentlyViewedBanner 
-                items={recentlyViewed} 
-                onItemClick={addToRecentlyViewed}
-              />
-            </div>
-          )}
         </div>
       </div>
       
