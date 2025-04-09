@@ -59,7 +59,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
         };
         
         // Log the order data
-        console.log('Submitting order:', orderData);
+        console.log('Отправка заказа:', orderData);
         
         const response = await fetch('http://localhost:5058/api/v1/Order', {
           method: 'POST',

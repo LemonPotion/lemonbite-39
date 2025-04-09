@@ -13,25 +13,25 @@ const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ onContinue }) => {
       <button 
         onClick={onContinue}
         className="absolute top-3 right-3 text-blue-400 hover:text-blue-600 transition-colors"
-        aria-label="Close"
+        aria-label="Закрыть"
       >
         <X size={18} />
       </button>
       
       <div className="text-center space-y-5">
         <h1 className="text-2xl font-bold text-gray-700">
-          A fresh approach to food delivery
+          Свежий подход к доставке еды
         </h1>
         
         <p className="text-gray-600">
-          We bring chef-quality meals to your doorstep in minutes.
+          Мы доставляем блюда ресторанного качества к вашей двери за считанные минуты.
         </p>
         
         <Button 
           onClick={onContinue}
           className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-150"
         >
-          Explore Menu
+          Посмотреть меню
         </Button>
       </div>
     </div>

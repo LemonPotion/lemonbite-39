@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -114,7 +115,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
             className={`w-full h-full object-cover transition-transform duration-500 food-image-hover ${isHovered ? 'scale-105' : 'scale-100'} ${isImageLoaded ? 'image-fade-in' : 'opacity-0'}`}
             onLoad={() => setIsImageLoaded(true)}
             onError={(e) => {
-              console.log("Image error for:", item.name);
+              console.log("Ошибка загрузки изображения:", item.name);
               (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
               setIsImageLoaded(true);
             }}
@@ -152,7 +153,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
             onClick={handleAddToCart}
             className={`w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide 
               transition-all duration-200 cart-button-add bg-accent text-white shadow-sm mt-auto hover:bg-accent/90 ${isAdding ? 'scale-95' : ''}`}
-            aria-label="Add to cart"
+            aria-label="Добавить в корзину"
           >
             <Plus size={16} className="mr-1" />
             Добавить в корзину

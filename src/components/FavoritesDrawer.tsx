@@ -27,7 +27,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
       <div className="fixed inset-0 bg-foreground/20 bg-opacity-25 z-40" onClick={onClose} />
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-background shadow-lg z-50 overflow-y-auto transition-transform duration-300 transform-gpu">
         <div className="p-4 border-b border-muted flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-foreground">Your Favorites</h2>
+          <h2 className="text-xl font-semibold text-foreground">Избранное</h2>
           <button onClick={onClose} className="text-foreground/60 hover:text-foreground">
             <X size={20} />
           </button>
@@ -37,7 +37,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
           {items.length === 0 ? (
             <div className="text-center py-10">
               <Heart className="mx-auto h-12 w-12 text-muted-foreground" />
-              <p className="mt-4 text-foreground/60">You haven't added any favorites yet</p>
+              <p className="mt-4 text-foreground/60">У вас пока нет избранных блюд</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -69,7 +69,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                         variant="outline"
                         className="text-xs px-3 py-1 h-8 border-muted text-accent hover:bg-muted/50"
                       >
-                        Add to Cart
+                        Добавить в корзину
                       </Button>
                     </div>
                   </div>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -432,10 +433,10 @@ const Index = () => {
         <div className="mb-12">
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
             <h1 className="text-4xl font-bold text-foreground theme-transition">
-              Our <span className="text-accent">Menu</span>
+              Наше <span className="text-accent">Меню</span>
             </h1>
             <p className="text-lg text-foreground/80 max-w-lg text-center theme-transition">
-              Discover our carefully crafted dishes made with the freshest ingredients
+              Откройте для себя наши тщательно приготовленные блюда из самых свежих ингредиентов
             </p>
           </div>
           
@@ -478,7 +479,7 @@ const Index = () => {
                         >
                           <RefreshCw size={18} />
                         </motion.div>
-                        <span className="sr-only">Generate new recommendation</span>
+                        <span className="sr-only">Другая рекомендация</span>
                       </Button>
                       <Button 
                         variant="outline" 
@@ -487,7 +488,7 @@ const Index = () => {
                         className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
                       >
                         <X size={18} />
-                        <span className="sr-only">Close recommendation</span>
+                        <span className="sr-only">Закрыть рекомендацию</span>
                       </Button>
                     </div>
                   </div>
@@ -581,7 +582,7 @@ const Index = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={18} />
                   <input
                     type="text"
-                    placeholder="Search for dishes..."
+                    placeholder="Поиск блюд..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
@@ -694,7 +695,7 @@ const Index = () => {
             transition={{ duration: 0.2 }}
             onClick={handleScrollToTop}
             className="fixed bottom-6 right-6 p-3 bg-accent text-white rounded-full shadow-lg hover:bg-accent/90 z-50 transition-all"
-            aria-label="Scroll to top"
+            aria-label="Прокрутить наверх"
           >
             <ArrowUp size={20} />
           </motion.button>

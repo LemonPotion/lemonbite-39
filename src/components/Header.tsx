@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo - Simplified to just text */}
           <Link to="/" className="flex items-center">
-            <span className="font-bold text-xl text-foreground">LemonBite</span>
+            <span className="font-bold text-xl text-foreground">ЛимонНямка</span>
           </Link>
           
           {/* Navigation */}
@@ -78,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
               <Badge className="absolute -top-1 -right-1 py-0 px-1.5 h-5 min-w-[1.25rem] flex items-center justify-center">
                 {cartItemCount}
               </Badge>
-              <span className="sr-only">Open cart</span>
+              <span className="sr-only">Открыть корзину</span>
             </Button>
           </div>
         </div>
