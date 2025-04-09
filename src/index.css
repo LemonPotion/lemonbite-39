@@ -191,6 +191,113 @@
   }
 }
 
+/* Menu item hover animation */
+@keyframes menuItemHover {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.menu-item-hover {
+  background-size: 200% 200%;
+  transition: all 0.3s ease;
+}
+
+.menu-item-hover:hover {
+  animation: menuItemHover 1.5s ease infinite;
+  background-image: linear-gradient(90deg, var(--accent-foreground) 0%, var(--accent) 50%, var(--accent-foreground) 100%);
+  background-size: 200% 200%;
+}
+
+/* Menu dropdown animation */
+@keyframes dropdownEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-enter {
+  animation: dropdownEnter 0.2s ease-out forwards;
+}
+
+/* Menu item slide animation */
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+/* Collapsible animation for dropdown menus */
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.animate-collapsible-down {
+  animation: collapsible-down 0.2s ease-out;
+}
+
+.animate-collapsible-up {
+  animation: collapsible-up 0.2s ease-out;
+}
+
+/* Menu icon hover effect */
+.menu-icon {
+  transition: transform 0.2s ease;
+}
+
+.menu-icon:hover {
+  transform: translateY(-2px);
+}
+
+/* Subtle background shift for menu items */
+.bg-shift {
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  transition: background-position 0.3s ease;
+}
+
+.bg-shift:hover {
+  background-position: 100% 100%;
+}
+
 /* New calming styles */
 .bg-calm-primary {
   @apply bg-[#F77A54];
