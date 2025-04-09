@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -373,7 +374,8 @@ const Navigation = () => {
                     ))}
                   </CommandGroup>
                 </motion.div>
-              </AnimatePresence>
+              )}
+            </AnimatePresence>
             
             {/* Show search history with animation */}
             <AnimatePresence>
