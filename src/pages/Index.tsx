@@ -5,7 +5,7 @@ import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, X, SlidersHorizontal, Heart, RefreshCw } from 'lucide-react';
+import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -284,12 +284,24 @@ const Index = () => {
     });
   };
 
+  // Updated to make filters mutually exclusive
   const handleFilterClick = (filter: string) => {
-    setActiveFilter(prev => prev === filter ? null : filter);
+    if (activeFilter === filter) {
+      setActiveFilter(null);
+    } else {
+      setActiveFilter(filter);
+      setActiveCategory(null);
+    }
   };
 
+  // Updated to make categories mutually exclusive with filters
   const handleCategoryClick = (category: string) => {
-    setActiveCategory(prev => prev === category ? null : category);
+    if (activeCategory === category) {
+      setActiveCategory(null);
+    } else {
+      setActiveCategory(category);
+      setActiveFilter(null);
+    }
   };
 
   const resetFilters = () => {
@@ -409,7 +421,7 @@ const Index = () => {
             </p>
           </div>
           
-          {/* Recently Viewed Section - Moved to top */}
+          {/* Recently Viewed Section - At the top */}
           {recentlyViewed.length > 0 && (
             <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner 
@@ -419,48 +431,107 @@ const Index = () => {
             </div>
           )}
           
-          {/* Random Item Recommendation with Animation */}
+          {/* Enhanced Random Item Recommendation */}
           <AnimatePresence mode="wait">
             {randomItem && (
               <motion.div 
-                className="mb-8 p-6 bg-accent/10 rounded-xl relative"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                className="mb-8 overflow-hidden"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
                 key={randomItem.id + '-recommendation'}
               >
-                <div className="flex justify-between items-start mb-3">
-                  <h2 className="text-xl font-bold text-foreground">Рекомендуем попробовать:</h2>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      onClick={generateRandomItem}
-                      disabled={isRandomItemAnimating}
-                      className="h-8 w-8 rounded-full text-foreground"
-                    >
-                      <RefreshCw size={16} className={isRandomItemAnimating ? "animate-spin" : ""} />
-                      <span className="sr-only">Generate new recommendation</span>
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      onClick={dismissRandomItem}
-                      className="h-8 w-8 rounded-full text-foreground"
-                    >
-                      <X size={16} />
-                      <span className="sr-only">Close recommendation</span>
-                    </Button>
+                <div className="bg-gradient-to-r from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 rounded-2xl p-6 shadow-md">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="text-accent" size={24} />
+                      <h2 className="text-2xl font-bold text-foreground">Рекомендуем попробовать</h2>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={generateRandomItem}
+                        disabled={isRandomItemAnimating}
+                        className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
+                      >
+                        <motion.div
+                          animate={{ rotate: isRandomItemAnimating ? 360 : 0 }}
+                          transition={{ duration: 0.5, ease: "easeInOut" }}
+                        >
+                          <RefreshCw size={18} />
+                        </motion.div>
+                        <span className="sr-only">Generate new recommendation</span>
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={dismissRandomItem}
+                        className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
+                      >
+                        <X size={18} />
+                        <span className="sr-only">Close recommendation</span>
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="max-w-md mx-auto">
-                  <FoodCard 
-                    item={randomItem}
-                    isFavorite={favorites.includes(randomItem.id)}
-                    onFavoriteToggle={() => toggleFavorite(randomItem.id)}
-                    onClick={() => addToRecentlyViewed(randomItem)}
-                  />
+                  
+                  <motion.div 
+                    key={randomItem.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col md:flex-row gap-6 items-center"
+                  >
+                    <div className="w-full md:w-1/3">
+                      <motion.div 
+                        whileHover={{ scale: 1.03 }}
+                        transition={{ duration: 0.2 }}
+                        className="relative rounded-xl overflow-hidden shadow-lg aspect-square"
+                      >
+                        <img
+                          src={randomItem.image}
+                          alt={randomItem.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </motion.div>
+                    </div>
+                    <div className="w-full md:w-2/3 flex flex-col justify-center">
+                      <h3 className="text-2xl font-bold mb-2 text-foreground">{randomItem.name}</h3>
+                      <p className="text-foreground/70 mb-4">{randomItem.description}</p>
+                      <div className="flex gap-4 justify-start">
+                        <span className="text-accent font-bold text-xl">₽{randomItem.price}</span>
+                        <div className="flex gap-3">
+                          <Button
+                            onClick={() => {
+                              toggleFavorite(randomItem.id);
+                              addToRecentlyViewed(randomItem);
+                            }}
+                            variant="outline"
+                            size="sm"
+                            className="gap-1"
+                          >
+                            <Heart
+                              className={favorites.includes(randomItem.id) ? "text-red-500 fill-red-500" : "text-foreground"}
+                              size={16}
+                            />
+                            {favorites.includes(randomItem.id) ? 'В избранном' : 'В избранное'}
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              addToRecentlyViewed(randomItem);
+                              const { addItem } = useCart();
+                              addItem(randomItem);
+                            }}
+                            size="sm"
+                          >
+                            Добавить в корзину
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
               </motion.div>
             )}
@@ -478,17 +549,7 @@ const Index = () => {
                 Избранное
               </Button>
               
-              {/* Show Favorites Drawer Button */}
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={() => setIsFavoritesOpen(true)}
-              >
-                <Heart size={16} className="text-red-500" fill="currentColor" />
-                Показать избранное
-              </Button>
-              
-              {/* Categories Buttons */}
+              {/* Category Buttons */}
               {categories.map(category => (
                 <Button
                   key={category}
@@ -501,6 +562,7 @@ const Index = () => {
               ))}
             </div>
             
+            {/* Search input and filter */}
             <div className="flex items-center w-full justify-center mb-6">
               <div className="flex items-center w-full max-w-md">
                 <div className="relative flex-grow">

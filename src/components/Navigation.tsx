@@ -32,10 +32,6 @@ const navigationItems: NavigationItem[] = [
   {
     name: 'Главная',
     path: '/'
-  },
-  {
-    name: 'О сервисе',
-    path: '/about'
   }
 ];
 
@@ -264,12 +260,6 @@ const Navigation = () => {
                 setIsCommandOpen(false);
               }}>
                 <span>Главная</span>
-              </CommandItem>
-              <CommandItem onSelect={() => {
-                navigate('/about');
-                setIsCommandOpen(false);
-              }}>
-                <span>О сервисе</span>
               </CommandItem>
             </CommandGroup>
             
