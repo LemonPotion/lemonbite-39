@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo - Simplified to just text */}
           <Link to="/" className="flex items-center">
-            <span className="font-bold text-xl text-foreground">LemonBite</span>
+            <span className="font-bold text-xl text-foreground">ЛимонНямка</span>
           </Link>
           
           {/* Navigation */}
