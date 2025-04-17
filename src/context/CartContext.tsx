@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 export interface FoodItem {
@@ -21,6 +22,7 @@ interface CartContextType {
   totalItems: number;
   totalPrice: number;
   addToCart: (item: FoodItem) => void; // Adding this alias for addItem
+  getTotalPrice: () => number; // Adding the missing method
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -37,6 +39,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     setTotalItems(itemCount);
     setTotalPrice(price);
+  }, [items]);
+
+  const getTotalPrice = useCallback(() => {
+    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
   }, [items]);
 
   const addItem = useCallback((item: FoodItem) => {
@@ -91,7 +97,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       clearCart,
       totalItems,
       totalPrice,
-      addToCart
+      addToCart,
+      getTotalPrice
     }}>
       {children}
     </CartContext.Provider>
