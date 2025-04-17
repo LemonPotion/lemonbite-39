@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -66,7 +65,7 @@ const foodItems: FoodItem[] = [
   },
   {
     id: "0195b364-0a6d-7c46-bee2-0fe79d171a8c",
-    name: 'Рыбные тако',
+    name: '��ыбные тако',
     price: 290,
     image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Жареная рыба с капустным салатом, авокадо и лаймовым кремом в кукурузных тортильях.'
@@ -207,6 +206,7 @@ const Index = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   const [isRandomItemAnimating, setIsRandomItemAnimating] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [orderDetails, setOrderDetails] = useState({ phoneNumber: '', address: '' });
   const { addItem } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
@@ -262,7 +262,7 @@ const Index = () => {
   }, []);
 
   const handleOrderComplete = (phoneNumber: string, address: string) => {
-    console.log('Order placed with:', { phoneNumber, address });
+    setOrderDetails({ phoneNumber, address });
     setIsCheckoutOpen(false);
     setIsSuccessOpen(true);
   };
@@ -711,6 +711,7 @@ const Index = () => {
       <SuccessModal
         isOpen={isSuccessOpen}
         onClose={() => setIsSuccessOpen(false)}
+        orderDetails={orderDetails}
       />
       
       <FavoritesDrawer

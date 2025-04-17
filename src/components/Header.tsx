@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Clock, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Navigation from './Navigation';
@@ -9,6 +9,13 @@ import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 import { Switch } from '@/components/ui/switch';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
   onCartClick: () => void;
@@ -17,6 +24,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
   const { items } = useCart();
   const { theme, toggleTheme } = useTheme();
+  const isMobile = useIsMobile();
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
   
   const springTransition = { 
@@ -51,12 +59,39 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
             </motion.span>
           </Link>
           
-          {/* Navigation */}
-          <Navigation />
+          {/* Navigation - Show full nav on desktop, dropdown on mobile */}
+          {isMobile ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Navigation menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[200px]">
+                <DropdownMenuItem asChild>
+                  <Link to="/">Меню</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/history">История заказов</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="justify-between">
+                  <span>Тема</span>
+                  <Switch 
+                    checked={theme === 'dark'} 
+                    onCheckedChange={toggleTheme} 
+                    className="bg-background border-muted"
+                  />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Navigation />
+          )}
           
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            {/* Theme Switch */}
+            {/* Theme Switch - Desktop only */}
             <div className="hidden md:flex items-center gap-2">
               <Switch 
                 checked={theme === 'dark'} 
@@ -88,6 +123,34 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                   </motion.div>
                 </div>
               </Switch>
+            </div>
+            
+            {/* History button - Desktop only */}
+            <div className="hidden md:block">
+              <Link to="/history">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="rounded-full btn-pop"
+                >
+                  <Clock className="h-5 w-5" />
+                  <span className="sr-only">История заказов</span>
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile combined button for smaller screens */}
+            <div className="md:hidden">
+              <Link to="/history">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="rounded-full btn-pop"
+                >
+                  <Clock className="h-5 w-5" />
+                  <span className="sr-only">История заказов</span>
+                </Button>
+              </Link>
             </div>
             
             {/* Cart */}
