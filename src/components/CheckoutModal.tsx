@@ -25,32 +25,25 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
   const [phoneError, setPhoneError] = useState('');
-  const [addressError, setAddressError] = useState('');
   const total = getTotalPrice();
   const isMobile = useIsMobile();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Simple validation
+    // Phone validation - only 8 digits
     let valid = true;
     if (!phoneNumber.trim()) {
       setPhoneError('Пожалуйста, введите номер телефона');
       valid = false;
-    } else if (!/^\+?[0-9]{10,15}$/.test(phoneNumber.replace(/\s/g, ''))) {
-      setPhoneError('Пожалуйста, введите корректный номер телефона');
+    } else if (!/^\d{8}$/.test(phoneNumber.replace(/\s/g, ''))) {
+      setPhoneError('Номер телефона должен состоять из 8 цифр');
       valid = false;
     } else {
       setPhoneError('');
     }
 
-    if (!address.trim()) {
-      setAddressError('Пожалуйста, введите адрес доставки');
-      valid = false;
-    } else {
-      setAddressError('');
-    }
-
+    // No validation for address
     if (valid) {
       onComplete(phoneNumber, address);
     }
@@ -103,10 +96,10 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   className="space-y-4 mt-6 pt-4 border-t"
                 >
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Номер телефона</Label>
+                    <Label htmlFor="phone">Номер телефона (8 цифр)</Label>
                     <Input
                       id="phone"
-                      placeholder="+7 (XXX) XXX-XX-XX"
+                      placeholder="12345678"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                     />
@@ -121,7 +114,6 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                     />
-                    {addressError && <p className="text-sm text-destructive">{addressError}</p>}
                   </div>
 
                   <Button type="submit" className="w-full">

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Clock, Menu } from 'lucide-react';
+import { ShoppingBag, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Navigation from './Navigation';
@@ -123,34 +123,6 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                   </motion.div>
                 </div>
               </Switch>
-            </div>
-            
-            {/* History button - Desktop only */}
-            <div className="hidden md:block">
-              <Link to="/history">
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="rounded-full btn-pop"
-                >
-                  <Clock className="h-5 w-5" />
-                  <span className="sr-only">История заказов</span>
-                </Button>
-              </Link>
-            </div>
-
-            {/* Mobile combined button for smaller screens */}
-            <div className="md:hidden">
-              <Link to="/history">
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="rounded-full btn-pop"
-                >
-                  <Clock className="h-5 w-5" />
-                  <span className="sr-only">История заказов</span>
-                </Button>
-              </Link>
             </div>
             
             {/* Cart */}
