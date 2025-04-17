@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -19,7 +20,6 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useIsMobile } from '../hooks/use-mobile';
 
 const foodItems: FoodItem[] = [
   {
@@ -210,7 +210,6 @@ const Index = () => {
   const { addItem } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -430,19 +429,19 @@ const Index = () => {
 
   return (
     <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
-      <div className={`max-w-7xl mx-auto ${isMobile ? 'px-3 py-6' : 'px-4 sm:px-6 lg:px-8 py-12'} theme-transition`}>
-        <div className={`${isMobile ? 'mb-6' : 'mb-12'}`}>
-          <div className={`flex flex-col items-center text-center space-y-${isMobile ? '2' : '4'} ${isMobile ? 'mb-4' : 'mb-8'}`}>
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-bold text-foreground theme-transition`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
+        <div className="mb-12">
+          <div className="flex flex-col items-center text-center space-y-4 mb-8">
+            <h1 className="text-4xl font-bold text-foreground theme-transition">
               Наше <span className="text-accent">Меню</span>
             </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg'} text-foreground/80 max-w-lg text-center theme-transition`}>
+            <p className="text-lg text-foreground/80 max-w-lg text-center theme-transition">
               Откройте для себя наши тщательно приготовленные блюда из самых свежих ингредиентов
             </p>
           </div>
           
           {recentlyViewed.length > 0 && (
-            <div id="recently-viewed" className={`${isMobile ? 'mb-4' : 'mb-8'}`}>
+            <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner 
                 items={recentlyViewed} 
                 onItemClick={addToRecentlyViewed}
@@ -453,18 +452,18 @@ const Index = () => {
           <AnimatePresence mode="wait">
             {randomItem && (
               <motion.div 
-                className={`${isMobile ? 'mb-4' : 'mb-8'} overflow-hidden`}
+                className="mb-8 overflow-hidden"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 key={randomItem.id + '-recommendation'}
               >
-                <div className={`bg-gradient-to-r from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 rounded-2xl ${isMobile ? 'p-4' : 'p-6'} shadow-md`}>
+                <div className="bg-gradient-to-r from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 rounded-2xl p-6 shadow-md">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="text-accent" size={isMobile ? 20 : 24} />
-                      <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-foreground`}>Рекомендуем</h2>
+                      <Sparkles className="text-accent" size={24} />
+                      <h2 className="text-2xl font-bold text-foreground">Рекомендуем попробовать</h2>
                     </div>
                     <div className="flex gap-2">
                       <Button 
@@ -472,22 +471,24 @@ const Index = () => {
                         size="icon" 
                         onClick={generateRandomItem}
                         disabled={isRandomItemAnimating}
-                        className={`${isMobile ? 'h-8 w-8' : 'h-9 w-9'} rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all`}
+                        className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
                       >
                         <motion.div
                           animate={{ rotate: isRandomItemAnimating ? 360 : 0 }}
                           transition={{ duration: 0.5, ease: "easeInOut" }}
                         >
-                          <RefreshCw size={isMobile ? 16 : 18} />
+                          <RefreshCw size={18} />
                         </motion.div>
+                        <span className="sr-only">Другая рекомендация</span>
                       </Button>
                       <Button 
                         variant="outline" 
                         size="icon" 
                         onClick={dismissRandomItem}
-                        className={`${isMobile ? 'h-8 w-8' : 'h-9 w-9'} rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all`}
+                        className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
                       >
-                        <X size={isMobile ? 16 : 18} />
+                        <X size={18} />
+                        <span className="sr-only">Закрыть рекомендацию</span>
                       </Button>
                     </div>
                   </div>
@@ -498,9 +499,9 @@ const Index = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className={`flex flex-col ${isMobile ? '' : 'md:flex-row'} gap-${isMobile ? '4' : '6'} items-center`}
+                    className="flex flex-col md:flex-row gap-6 items-center"
                   >
-                    <div className={`w-full ${isMobile ? '' : 'md:w-1/3'}`}>
+                    <div className="w-full md:w-1/3">
                       <motion.div 
                         whileHover={{ scale: 1.03 }}
                         transition={{ duration: 0.2 }}
@@ -513,10 +514,10 @@ const Index = () => {
                         />
                       </motion.div>
                     </div>
-                    <div className={`w-full ${isMobile ? '' : 'md:w-2/3'} flex flex-col justify-center`}>
-                      <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold mb-2 text-foreground`}>{randomItem.name}</h3>
+                    <div className="w-full md:w-2/3 flex flex-col justify-center">
+                      <h3 className="text-2xl font-bold mb-2 text-foreground">{randomItem.name}</h3>
                       <p className="text-foreground/70 mb-4">{randomItem.description}</p>
-                      <div className={`flex ${isMobile ? 'flex-col gap-3' : 'gap-4 justify-start'}`}>
+                      <div className="flex gap-4 justify-start">
                         <span className="text-accent font-bold text-xl">₽{randomItem.price}</span>
                         <div className="flex gap-3">
                           <Button
@@ -525,7 +526,7 @@ const Index = () => {
                               addToRecentlyViewed(randomItem);
                             }}
                             variant="outline"
-                            size={isMobile ? "sm" : "default"}
+                            size="sm"
                             className="gap-1"
                           >
                             <Heart
@@ -539,7 +540,7 @@ const Index = () => {
                               addToRecentlyViewed(randomItem);
                               addItem(randomItem);
                             }}
-                            size={isMobile ? "sm" : "default"}
+                            size="sm"
                           >
                             Добавить в корзину
                           </Button>
@@ -552,60 +553,67 @@ const Index = () => {
             )}
           </AnimatePresence>
           
-          <div className={`relative ${isMobile ? 'mb-4' : 'mb-8'}`}>
-            <div className={`flex flex-wrap gap-${isMobile ? '2' : '3'} items-center justify-center mb-4`}>
+          <div className="relative mb-8">
+            <div className="flex flex-wrap gap-3 items-center justify-center mb-4">
               <Button
                 variant={activeFilter === 'favorites' ? "default" : "outline"}
                 className="flex items-center gap-2"
-                size={isMobile ? "sm" : "default"}
                 onClick={() => handleFilterClick('favorites')}
               >
-                <Heart size={isMobile ? 14 : 16} className={activeFilter === 'favorites' ? "text-white" : "text-foreground"} />
+                <Heart size={16} className={activeFilter === 'favorites' ? "text-white" : "text-foreground"} />
                 Избранное
               </Button>
               
-              <div className={isMobile ? "flex gap-2 overflow-x-auto pb-2 w-full justify-start pl-1" : ""}>
-                {categories.map(category => (
-                  <Button
-                    key={category}
-                    variant={activeCategory === category ? "default" : "outline"}
-                    className={`text-sm whitespace-nowrap ${isMobile ? "flex-shrink-0" : ""}`}
-                    size={isMobile ? "sm" : "default"}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category}
-                  </Button>
-                ))}
-              </div>
+              {categories.map(category => (
+                <Button
+                  key={category}
+                  variant={activeCategory === category ? "default" : "outline"}
+                  className="text-sm"
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
             
             <div className="flex items-center w-full justify-center mb-6">
-              <div className={`flex items-center w-full ${isMobile ? 'max-w-full' : 'max-w-md'}`}>
+              <div className="flex items-center w-full max-w-md">
                 <div className="relative flex-grow">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={isMobile ? 16 : 18} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={18} />
                   <input
                     type="text"
                     placeholder="Поиск блюд..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className={`w-full pl-10 pr-4 ${isMobile ? 'py-2 text-sm' : 'py-3'} bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition`}
+                    className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && searchQuery.trim()) {
+                        if (searchQuery.trim()) {
+                          addToHistory(searchQuery);
+                          const firstResult = document.querySelector('.food-card-shadow');
+                          if (firstResult) {
+                            firstResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }
+                        }
+                      }
+                    }}
                   />
                   {searchQuery && (
                     <button 
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground theme-transition"
                       onClick={() => setSearchQuery('')}
                     >
-                      <X size={isMobile ? 14 : 16} />
+                      <X size={16} />
                     </button>
                   )}
                 </div>
                 <Sheet open={showFilters} onOpenChange={setShowFilters}>
                   <SheetTrigger asChild>
-                    <button className={`ml-2 ${isMobile ? 'p-2' : 'p-3'} bg-card border border-muted rounded-lg text-foreground hover:bg-muted/50 transition-colors theme-transition`}>
-                      <SlidersHorizontal size={isMobile ? 16 : 18} />
+                    <button className="ml-2 p-3 bg-card border border-muted rounded-lg text-foreground hover:bg-muted/50 transition-colors theme-transition">
+                      <SlidersHorizontal size={18} />
                     </button>
                   </SheetTrigger>
-                  <SheetContent className={isMobile ? "w-[90%]" : "w-[350px]"}>
+                  <SheetContent>
                     <SheetHeader>
                       <SheetTitle>Фильтры и сортировка</SheetTitle>
                       <SheetDescription>
@@ -664,7 +672,7 @@ const Index = () => {
             </div>
           </div>
           
-          <div className={`grid grid-cols-1 ${isMobile ? '' : 'sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'} gap-${isMobile ? '4' : '6'}`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
             {filteredItems.map(item => (
               <FoodCard
                 key={item.id}
@@ -686,10 +694,10 @@ const Index = () => {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.2 }}
             onClick={handleScrollToTop}
-            className={`fixed ${isMobile ? 'bottom-4 right-4 p-2' : 'bottom-6 right-6 p-3'} bg-accent text-white rounded-full shadow-lg hover:bg-accent/90 z-50 transition-all`}
+            className="fixed bottom-6 right-6 p-3 bg-accent text-white rounded-full shadow-lg hover:bg-accent/90 z-50 transition-all"
             aria-label="Прокрутить наверх"
           >
-            <ArrowUp size={isMobile ? 18 : 20} />
+            <ArrowUp size={20} />
           </motion.button>
         )}
       </AnimatePresence>

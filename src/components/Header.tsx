@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Menu } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Navigation from './Navigation';
@@ -9,12 +9,6 @@ import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 import { Switch } from '@/components/ui/switch';
 import { motion } from 'framer-motion';
-import { useIsMobile } from '../hooks/use-mobile';
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetTrigger 
-} from "@/components/ui/sheet";
 
 interface HeaderProps {
   onCartClick: () => void;
@@ -24,7 +18,6 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
   const { items } = useCart();
   const { theme, toggleTheme } = useTheme();
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
-  const isMobile = useIsMobile();
   
   const springTransition = { 
     type: "spring", 
@@ -58,8 +51,8 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
             </motion.span>
           </Link>
           
-          {/* Navigation - Desktop */}
-          {!isMobile && <Navigation />}
+          {/* Navigation */}
+          <Navigation />
           
           {/* Actions */}
           <div className="flex items-center space-x-4">
@@ -96,39 +89,6 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                 </div>
               </Switch>
             </div>
-            
-            {/* Mobile Menu */}
-            {isMobile && (
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Menu className="h-5 w-5" />
-                    <span className="sr-only">Открыть меню</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[80%] sm:w-[350px]">
-                  <div className="flex flex-col h-full">
-                    <div className="py-6">
-                      <Navigation orientation="vertical" />
-                    </div>
-                    <div className="mt-auto py-4 border-t flex items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-foreground/70">Тема:</span>
-                        <Switch 
-                          checked={theme === 'dark'} 
-                          onCheckedChange={toggleTheme} 
-                          className="bg-background border-muted"
-                        >
-                          <div className="w-full h-full relative overflow-hidden">
-                            {theme === 'dark' ? '🌙' : '☀️'}
-                          </div>
-                        </Switch>
-                      </div>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            )}
             
             {/* Cart */}
             <motion.div whileTap={{ scale: 0.95 }} transition={springTransition}>
