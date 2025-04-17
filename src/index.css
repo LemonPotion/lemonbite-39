@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 @tailwind base;
@@ -87,6 +88,7 @@
 .food-card-shadow {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease;
+  will-change: transform;
 }
 
 .food-card-shadow:hover {
@@ -116,6 +118,7 @@
 
 .image-fade-in {
   animation: imageFadeIn 0.3s ease-out;
+  will-change: opacity;
 }
 
 @keyframes imageFadeIn {
@@ -133,27 +136,29 @@
 }
 
 .modal-enter {
-  animation: modalEnter 0.3s forwards;
+  animation: modalEnter 0.3s cubic-bezier(0.17, 0.67, 0.27, 1);
+  will-change: transform, opacity;
 }
 
 @keyframes modalEnter {
   0% {
     opacity: 0;
-    transform: scale(0.98);
+    transform: translateY(-5px);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
 
 .shadow-float {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  will-change: transform, box-shadow;
 }
 
 .shadow-float:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -5px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
 }
 
@@ -162,19 +167,33 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
   }
 }
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* New animations for Recently Viewed */
+/* For better performance, only animate on large screens */
+@media (min-width: 1024px) {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@media (max-width: 1023px) {
+  .animate-float {
+    animation: none;
+  }
+}
+
+/* Optimized animations for Recently Viewed */
 @keyframes slideInFromBottom {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   100% {
     opacity: 1;
@@ -187,39 +206,34 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 }
 
-/* Menu item hover animation */
+/* Menu item hover animation - simplified */
 @keyframes menuItemHover {
   0% {
     background-position: 0% 50%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
   100% {
-    background-position: 0% 50%;
+    background-position: 100% 50%;
   }
 }
 
 .menu-item-hover {
-  background-size: 200% 200%;
+  background-size: 200% 100%;
   transition: all 0.3s ease;
 }
 
 .menu-item-hover:hover {
-  animation: menuItemHover 1.5s ease infinite;
-  background-image: linear-gradient(90deg, var(--accent-foreground) 0%, var(--accent) 50%, var(--accent-foreground) 100%);
-  background-size: 200% 200%;
+  background-position: 100% 50%;
 }
 
-/* Menu dropdown animation */
+/* Menu dropdown animation - simplified */
 @keyframes dropdownEnter {
   0% {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
   100% {
     opacity: 1;
@@ -228,14 +242,15 @@
 }
 
 .dropdown-enter {
-  animation: dropdownEnter 0.2s ease-out forwards;
+  animation: dropdownEnter 0.2s cubic-bezier(0.17, 0.67, 0.27, 1) forwards;
+  will-change: opacity, transform;
 }
 
-/* Menu item slide animation */
+/* Menu item slide animation - simplified */
 @keyframes slideInFromRight {
   0% {
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateX(10px);
   }
   100% {
     opacity: 1;
@@ -244,10 +259,11 @@
 }
 
 .slide-in-right {
-  animation: slideInFromRight 0.3s ease-out forwards;
+  animation: slideInFromRight 0.25s cubic-bezier(0.17, 0.67, 0.27, 1) forwards;
+  will-change: opacity, transform;
 }
 
-/* Collapsible animation for dropdown menus */
+/* Optimized collapsible animations */
 @keyframes collapsible-down {
   from {
     height: 0;
@@ -271,27 +287,28 @@
 }
 
 .animate-collapsible-down {
-  animation: collapsible-down 0.2s ease-out;
+  animation: collapsible-down 0.2s cubic-bezier(0.17, 0.67, 0.27, 1);
+  will-change: height, opacity;
 }
 
 .animate-collapsible-up {
-  animation: collapsible-up 0.2s ease-out;
+  animation: collapsible-up 0.2s cubic-bezier(0.17, 0.67, 0.27, 1);
+  will-change: height, opacity;
 }
 
-/* Menu icon hover effect */
+/* Menu icon hover effect - optimized */
 .menu-icon {
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
+  will-change: transform;
 }
 
 .menu-icon:hover {
   transform: translateY(-2px);
 }
 
-/* Subtle background shift for menu items */
+/* Subtle background shift for menu items - simplified */
 .bg-shift {
-  background-size: 200% 200%;
-  background-position: 0% 0%;
-  transition: background-position 0.3s ease;
+  transition: background-position 0.2s ease;
 }
 
 .bg-shift:hover {
@@ -327,13 +344,13 @@
   @apply bg-white shadow-sm border border-muted rounded-lg transition duration-200 hover:shadow-md;
 }
 
-/* Favorite button pulse effect */
+/* Optimized favorite button pulse effect */
 @keyframes favorite-pulse {
   0% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.15);
+    transform: scale(1.12);
   }
   100% {
     transform: scale(1);
@@ -341,7 +358,8 @@
 }
 
 .favorite-pulse {
-  animation: favorite-pulse 0.3s ease-in-out;
+  animation: favorite-pulse 0.3s cubic-bezier(0.17, 0.67, 0.27, 1);
+  will-change: transform;
 }
 
 /* Food tag styles - updated for theme consistency */
@@ -362,68 +380,46 @@
   @apply bg-accent hover:bg-accent/90 text-white transition-colors duration-200;
 }
 
-/* Add to cart animation */
+/* Add to cart animation - optimized */
 .cart-item-add {
-  transition: all 0.2s ease;
+  transition: transform 0.15s ease;
+  will-change: transform;
 }
 
 .cart-item-add:active {
   transform: scale(0.95);
 }
 
-/* Image hover pulse effect - enhanced */
-@keyframes img-pulse {
-  0% {
-    transform: scale(1);
-    filter: brightness(1);
-  }
-  50% {
-    transform: scale(1.02);
-    filter: brightness(1.05);
-  }
-  100% {
-    transform: scale(1);
-    filter: brightness(1);
-  }
+/* Image hover effect - optimized */
+.food-image-hover {
+  transition: transform 0.4s ease, filter 0.4s ease;
+  will-change: transform, filter;
 }
 
 .food-image-hover:hover {
-  animation: img-pulse 1.5s ease-in-out;
+  filter: brightness(1.03);
 }
 
 /* Dark mode transition */
 .theme-transition {
-  @apply transition-colors duration-300;
+  @apply transition-colors duration-200;
 }
 
-/* Floating animation for UI elements */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Shimmer animation for loading states */
+/* Shimmer animation for loading states - optimized */
 @keyframes shimmer {
   0% {
-    background-position: -200% 0;
+    background-position: -100% 0;
   }
   100% {
-    background-position: 200% 0;
+    background-position: 100% 0;
   }
 }
 
 .animate-shimmer {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: shimmer 1.5s linear infinite;
+  will-change: background-position;
 }
 
 /* Dot animation for loading states */
@@ -457,55 +453,82 @@
   animation: dotPulse 1.4s 0.4s infinite;
 }
 
-/* Confetti animation for celebration moments */
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-20px) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-.confetti-particle {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  animation: confetti-fall 4s linear forwards;
-}
-
-/* Fun badge bounce effect */
+/* Badge bounce effect - optimized */
 @keyframes badge-bounce {
   0%, 100% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
 }
 
 .badge-bounce {
-  animation: badge-bounce 1s ease-in-out;
+  animation: badge-bounce 0.7s cubic-bezier(0.17, 0.67, 0.27, 1);
+  will-change: transform;
 }
 
-/* Custom scrollbar enhancements */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-muted rounded-full hover:bg-muted-foreground/60 transition-colors;
-}
-
-/* Custom backdrop blur overlay */
+/* Custom backdrop blur overlay - optimized */
 .bg-blur-overlay {
   @apply fixed inset-0 bg-black bg-opacity-40 backdrop-blur-[3px] z-40;
 }
+
+/* New subtle button animation */
+.btn-pop {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.btn-pop:hover {
+  transform: scale(1.03);
+}
+
+.btn-pop:active {
+  transform: scale(0.97);
+}
+
+/* New animated border */
+@keyframes border-pulse {
+  0%, 100% {
+    border-color: rgba(var(--accent), 0.4);
+  }
+  50% {
+    border-color: rgba(var(--accent), 0.8);
+  }
+}
+
+.border-pulse {
+  animation: border-pulse 2s ease-in-out infinite;
+  will-change: border-color;
+}
+
+/* Smooth reveal animation for elements */
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-reveal {
+  animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* Staggered reveal for list items */
+.stagger-reveal > * {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.stagger-reveal > *:nth-child(1) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.05s forwards; }
+.stagger-reveal > *:nth-child(2) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.1s forwards; }
+.stagger-reveal > *:nth-child(3) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.15s forwards; }
+.stagger-reveal > *:nth-child(4) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.2s forwards; }
+.stagger-reveal > *:nth-child(5) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.25s forwards; }
+.stagger-reveal > *:nth-child(6) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.3s forwards; }
+.stagger-reveal > *:nth-child(n+7) { animation: reveal 0.5s cubic-bezier(0.17, 0.67, 0.27, 1) 0.35s forwards; }

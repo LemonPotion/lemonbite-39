@@ -10,25 +10,27 @@ interface RecentlyViewedBannerProps {
   onItemClick?: (item: FoodItem) => void;
 }
 
-const bannerVariants = {
-  hidden: { opacity: 0, y: 20 },
+const containerVariants = {
+  hidden: { opacity: 0, y: 15 },
   visible: { 
     opacity: 1, 
     y: 0,
     transition: {
-      duration: 0.6,
-      staggerChildren: 0.1,
-      when: "beforeChildren"
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      when: "beforeChildren",
+      staggerChildren: 0.06
     }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 10 },
   visible: { 
     opacity: 1, 
     y: 0,
-    transition: { type: "spring", stiffness: 300, damping: 20 }
+    transition: { type: "spring", stiffness: 200, damping: 15 }
   }
 };
 
@@ -38,34 +40,18 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items, onIt
   const [isAdding, setIsAdding] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Add animation when the banner appears or updates
-    if (bannerRef.current) {
-      bannerRef.current.classList.add('animate-fade-in');
-      const timer = setTimeout(() => {
-        if (bannerRef.current) {
-          bannerRef.current.classList.remove('animate-fade-in');
-        }
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [items]);
-
   const handleAddToCart = (item: FoodItem) => {
     setIsAdding(item.id);
     addItem(item);
     
-    // Show toast with animation
     toast.success(`${item.name} добавлен в корзину!`, {
       description: `${item.price.toFixed(2)} р`
     });
     
-    // Reset animation state
     setTimeout(() => {
       setIsAdding(null);
     }, 300);
     
-    // Call onItemClick if provided
     if (onItemClick) {
       onItemClick(item);
     }
@@ -77,7 +63,7 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items, onIt
     <motion.div 
       ref={bannerRef}
       className="mb-10 bg-muted rounded-xl p-5 border border-muted transition-all duration-300 hover:shadow-md theme-transition"
-      variants={bannerVariants}
+      variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
@@ -85,7 +71,7 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items, onIt
         className="flex items-center gap-2 mb-4"
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <Clock className="text-accent" size={18} />
         <h3 className="text-lg font-medium text-foreground theme-transition">Недавно просмотренные</h3>
@@ -95,12 +81,12 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items, onIt
         {items.map((item, index) => (
           <motion.div 
             key={item.id} 
-            className="bg-card rounded-lg shadow-sm p-3 flex gap-3 items-center transform transition-all duration-500 hover:shadow-md hover:-translate-y-1 theme-transition overflow-hidden"
+            className="bg-card rounded-lg shadow-sm p-3 flex gap-3 items-center transition-all duration-200 hover:shadow-md theme-transition overflow-hidden"
             variants={itemVariants}
-            whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+            whileHover={{ y: -4, boxShadow: "0 8px 20px -5px rgba(0, 0, 0, 0.07)" }}
           >
             <motion.div
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.08 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
             >
               <img 
@@ -127,17 +113,16 @@ const RecentlyViewedBanner: React.FC<RecentlyViewedBannerProps> = ({ items, onIt
                     onMouseEnter={() => setHoveredItem(item.id)}
                     onMouseLeave={() => setHoveredItem(null)}
                     onClick={() => handleAddToCart(item)}
-                    className={`flex items-center text-xs bg-accent text-white px-2 py-1 rounded-md transition-all duration-300 ${isAdding === item.id ? 'scale-95' : ''}`}
-                    whileHover={{ 
-                      scale: 1.05,
-                      backgroundColor: "var(--accent)"
-                    }}
+                    className={`flex items-center text-xs bg-accent text-white px-2 py-1 rounded-md 
+                      ${isAdding === item.id ? 'scale-95' : ''}`}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                   >
                     <Plus size={12} className="mr-1" />
                     Добавить
                   </motion.button>
+                  
                   {hoveredItem === item.id && (
                     <motion.div 
                       className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs py-1 px-2 rounded whitespace-nowrap z-10"
