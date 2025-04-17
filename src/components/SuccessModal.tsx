@@ -1,97 +1,49 @@
 
-import React, { useEffect } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Dialog } from '@/components/ui/dialog';
-import { useCart } from '../context/CartContext';
-import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
-import { saveOrder, generateOrderId } from '../utils/orderHistoryUtils';
-import { toast } from 'sonner';
+import React from 'react';
+import { CheckCircle, X } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 interface SuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
-  orderDetails?: {
-    phoneNumber: string;
-    address: string;
-  };
 }
 
-const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, orderDetails }) => {
-  const { items, clearCart, getTotalPrice } = useCart();
+const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
+  const { theme } = useTheme();
   
-  useEffect(() => {
-    if (isOpen && items.length > 0 && orderDetails) {
-      // Save order to local storage
-      const newOrder = {
-        id: generateOrderId(),
-        items: items.map(item => ({ item, quantity: item.quantity })),
-        date: new Date().toISOString(),
-        address: orderDetails.address,
-        phoneNumber: orderDetails.phoneNumber,
-        total: getTotalPrice()
-      };
-      
-      saveOrder(newOrder);
-      
-      // Show success toast
-      toast.success("Order saved to history", {
-        description: "You can view and reorder from your order history."
-      });
-      
-      // Clear cart after order is saved
-      clearCart();
-    }
-  }, [isOpen, items, orderDetails, clearCart, getTotalPrice]);
-  
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-center text-2xl">
-            Заказ оформлен!
-          </DialogTitle>
-        </DialogHeader>
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm" onClick={onClose}></div>
+      
+      <div className="bg-card text-card-foreground p-6 rounded-xl shadow-lg w-full max-w-md mx-4 z-50 relative animate-scale-in border border-border">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-1 rounded-full hover:bg-muted transition-colors"
+        >
+          <X className="h-5 w-5 text-muted-foreground" />
+        </button>
         
-        <div className="flex flex-col items-center space-y-4 py-6">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 300, 
-              damping: 20 
-            }}
-            className="bg-green-500 text-white p-3 rounded-full"
-          >
-            <Check size={32} />
-          </motion.div>
+        <div className="text-center">
+          <div className="mx-auto w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
+            <CheckCircle className="h-10 w-10 text-primary" />
+          </div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
-            className="text-center space-y-3"
+          <h2 className="text-2xl font-semibold mb-2 text-foreground">Спасибо за заказ :)</h2>
+          <p className="text-muted-foreground mb-6">
+            Мы получили ваш заказ, скоро с вами свяжется оператор для подтверждения
+          </p>
+          
+          <button
+            onClick={onClose}
+            className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
           >
-            <p className="text-foreground">Спасибо за заказ!</p>
-            <p className="text-muted-foreground text-sm">
-              Мы свяжемся с вами в ближайшее время для подтверждения заказа.
-            </p>
-          </motion.div>
+            Заказать ещё
+          </button>
         </div>
-        
-        <DialogFooter className="sm:justify-center">
-          <Button 
-            onClick={onClose} 
-            className="w-full sm:w-auto"
-          >
-            Закрыть
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
 

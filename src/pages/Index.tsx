@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
-import QuickSearch from '../components/QuickSearch';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
@@ -66,7 +66,7 @@ const foodItems: FoodItem[] = [
   },
   {
     id: "0195b364-0a6d-7c46-bee2-0fe79d171a8c",
-    name: '����ыбные тако',
+    name: 'Рыбные тако',
     price: 290,
     image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Жареная рыба с капустным салатом, авокадо и лаймовым кремом в кукурузных тортильях.'
@@ -188,7 +188,7 @@ const foodItems: FoodItem[] = [
     name: 'Утка по-пекински',
     price: 690,
     image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-    description: 'Хрустящ��я утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
+    description: 'Хрустящая утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
   }
 ];
 
@@ -207,7 +207,6 @@ const Index = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   const [isRandomItemAnimating, setIsRandomItemAnimating] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [orderDetails, setOrderDetails] = useState({ phoneNumber: '', address: '' });
   const { addItem } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
@@ -263,7 +262,7 @@ const Index = () => {
   }, []);
 
   const handleOrderComplete = (phoneNumber: string, address: string) => {
-    setOrderDetails({ phoneNumber, address });
+    console.log('Order placed with:', { phoneNumber, address });
     setIsCheckoutOpen(false);
     setIsSuccessOpen(true);
   };
@@ -439,8 +438,6 @@ const Index = () => {
             <p className="text-lg text-foreground/80 max-w-lg text-center theme-transition">
               Откройте для себя наши тщательно приготовленные блюда из самых свежих ингредиентов
             </p>
-
-            <QuickSearch onRandomItemRequest={generateRandomItem} />
           </div>
           
           {recentlyViewed.length > 0 && (
@@ -606,7 +603,7 @@ const Index = () => {
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground theme-transition"
                       onClick={() => setSearchQuery('')}
                     >
-                      <X size={18} />
+                      <X size={16} />
                     </button>
                   )}
                 </div>
@@ -618,7 +615,7 @@ const Index = () => {
                   </SheetTrigger>
                   <SheetContent>
                     <SheetHeader>
-                      <SheetTitle>Фильтры и ��ортировка</SheetTitle>
+                      <SheetTitle>Фильтры и сортировка</SheetTitle>
                       <SheetDescription>
                         Настройте параметры поиска блюд
                       </SheetDescription>
@@ -714,7 +711,6 @@ const Index = () => {
       <SuccessModal
         isOpen={isSuccessOpen}
         onClose={() => setIsSuccessOpen(false)}
-        orderDetails={orderDetails}
       />
       
       <FavoritesDrawer
