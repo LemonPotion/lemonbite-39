@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
-import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp } from 'lucide-react';
+import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp, Clock } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
@@ -20,6 +20,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import QuickOrder from '../components/QuickOrder';
+import { Link } from 'react-router-dom';
 
 const foodItems: FoodItem[] = [
   {
@@ -449,67 +450,25 @@ const Index = () => {
             </div>
           )}
 
-          <div className="mb-8">
-            <QuickOrder />
-          </div>
-          
-          <AnimatePresence mode="wait">
-            {randomItem && (
-              <motion.div 
-                className="mb-8 overflow-hidden"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                key={randomItem.id + '-recommendation'}
+          <div className="flex justify-between items-center mb-8">
+            <div className="flex gap-2">
+              <Link
+                to="/quick-orders"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors"
               >
-                <div className="bg-gradient-to-r from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 rounded-2xl p-6 shadow-md">
-                  <div className="flex justify-between items-start">
-                    <div className="flex gap-4 items-start">
-                      <img 
-                        src={randomItem.image} 
-                        alt={randomItem.name} 
-                        className="w-24 h-24 rounded-lg object-cover shadow-sm"
-                      />
-                      <div>
-                        <h3 className="font-medium text-lg mb-1">{randomItem.name}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">{randomItem.description}</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-accent font-semibold">₽{randomItem.price}</span>
-                          <Button 
-                            size="sm" 
-                            className="text-xs h-7 px-2" 
-                            onClick={() => {
-                              addItem(randomItem);
-                              dismissRandomItem();
-                            }}
-                          >
-                            Добавить в корзину
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <button 
-                        onClick={dismissRandomItem}
-                        className="p-1 rounded-full hover:bg-muted/50 transition-colors"
-                      >
-                        <X size={18} />
-                      </button>
-                      <button 
-                        onClick={generateRandomItem}
-                        className="p-1 rounded-full hover:bg-muted/50 transition-colors"
-                        title="Показать другое предложение"
-                      >
-                        <RefreshCw size={18} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <Clock className="h-3 w-3" />
+                <span>Quick Orders</span>
+              </Link>
+              <button
+                onClick={() => handleFilterClick('favorites')}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
+                  ${activeFilter === 'favorites' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
+                <Heart className={`h-3 w-3 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
+                <span>Избранное{favorites.length > 0 ? ` (${favorites.length})` : ''}</span>
+              </button>
+            </div>
+          </div>
           
           <div className="mb-6">
             <div className="flex flex-wrap gap-3 items-center justify-between">
