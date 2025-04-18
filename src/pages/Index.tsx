@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -464,4 +465,208 @@ const Index = () => {
                 key={randomItem.id + '-recommendation'}
               >
                 <div className="bg-gradient-to-r from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 rounded-2xl p-6 shadow-md">
-                  <div className="flex justify-between
+                  <div className="flex justify-between items-start">
+                    <div className="flex gap-4 items-start">
+                      <img 
+                        src={randomItem.image} 
+                        alt={randomItem.name} 
+                        className="w-24 h-24 rounded-lg object-cover shadow-sm"
+                      />
+                      <div>
+                        <h3 className="font-medium text-lg mb-1">{randomItem.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">{randomItem.description}</p>
+                        <div className="flex items-center gap-2">
+                          <span className="text-accent font-semibold">₽{randomItem.price}</span>
+                          <Button 
+                            size="sm" 
+                            className="text-xs h-7 px-2" 
+                            onClick={() => {
+                              addItem(randomItem);
+                              dismissRandomItem();
+                            }}
+                          >
+                            Добавить в корзину
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col gap-2">
+                      <button 
+                        onClick={dismissRandomItem}
+                        className="p-1 rounded-full hover:bg-muted/50 transition-colors"
+                      >
+                        <X size={18} />
+                      </button>
+                      <button 
+                        onClick={generateRandomItem}
+                        className="p-1 rounded-full hover:bg-muted/50 transition-colors"
+                        title="Показать другое предложение"
+                      >
+                        <RefreshCw size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-3 items-center justify-between">
+              <div className="relative flex-1 min-w-[200px] max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Поиск блюд..."
+                  className="w-full pl-10 pr-4 py-2 rounded-full border border-input bg-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                )}
+              </div>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
+                    ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80 text-foreground'}`}
+                >
+                  <SlidersHorizontal className="h-3 w-3" />
+                  <span>Фильтры</span>
+                </button>
+                
+                <button
+                  onClick={() => setIsFavoritesOpen(true)}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors"
+                >
+                  <Heart className={`h-3 w-3 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
+                  <span>Избранное{favorites.length > 0 ? ` (${favorites.length})` : ''}</span>
+                </button>
+                
+                <button
+                  onClick={generateRandomItem}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors"
+                >
+                  <Sparkles className="h-3 w-3 text-yellow-500" />
+                  <span>Рекомендация</span>
+                </button>
+              </div>
+            </div>
+            
+            {showFilters && (
+              <div className="mt-4 p-4 bg-muted/40 rounded-lg border border-muted animate-in fade-in-20 slide-in-from-top-5">
+                <div className="flex flex-wrap gap-4 justify-between">
+                  <div className="space-y-2">
+                    <div className="text-sm font-medium">Категории</div>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map((category) => (
+                        <button
+                          key={category}
+                          onClick={() => handleCategoryClick(category)}
+                          className={`px-3 py-1 text-xs rounded-full transition-colors ${
+                            activeCategory === category 
+                              ? 'bg-accent text-accent-foreground' 
+                              : 'bg-muted hover:bg-muted/80'
+                          }`}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="text-sm font-medium">Сортировка</div>
+                    <select 
+                      value={sortOption || ''}
+                      onChange={(e) => handleSortOptionChange(e.target.value || null)}
+                      className="p-2 text-xs rounded border border-input bg-background"
+                    >
+                      <option value="">По умолчанию</option>
+                      <option value="price-low-high">Цена: от низкой к высокой</option>
+                      <option value="price-high-low">Цена: от высокой к низкой</option>
+                      <option value="name-a-z">Название: А-Я</option>
+                      <option value="name-z-a">Название: Я-А</option>
+                    </select>
+                  </div>
+                </div>
+                
+                {(activeFilter || activeCategory || searchQuery || sortOption) && (
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      onClick={resetFilters}
+                      className="text-xs px-3 py-1 text-muted-foreground hover:text-accent transition-colors"
+                    >
+                      Сбросить все фильтры
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredItems.map(item => (
+            <FoodCard 
+              key={item.id}
+              item={item}
+              isFavorite={favorites.includes(item.id)}
+              onFavoriteToggle={() => toggleFavorite(item.id)}
+              onView={() => addToRecentlyViewed(item)}
+            />
+          ))}
+          
+          {filteredItems.length === 0 && (
+            <div className="col-span-full py-12 text-center">
+              <p className="text-lg text-muted-foreground">Блюда не найдены</p>
+              <p className="text-sm text-muted-foreground mt-2">Попробуйте изменить фильтры или поисковый запрос</p>
+              <button
+                onClick={resetFilters}
+                className="mt-4 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm hover:bg-accent/80 transition-colors"
+              >
+                Сбросить фильтры
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {showScrollTop && (
+          <button
+            onClick={handleScrollToTop}
+            className="fixed bottom-6 right-6 p-3 bg-accent/80 text-white rounded-full shadow-md hover:bg-accent transition-colors z-10"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </button>
+        )}
+      </div>
+      
+      <CheckoutModal 
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        onComplete={handleOrderComplete}
+      />
+      
+      <SuccessModal 
+        isOpen={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
+      />
+      
+      <FavoritesDrawer 
+        isOpen={isFavoritesOpen}
+        onClose={() => setIsFavoritesOpen(false)}
+        items={favoritedItems}
+      />
+    </Layout>
+  );
+};
+
+export default Index;
