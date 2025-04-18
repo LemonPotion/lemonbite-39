@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -83,7 +84,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
         className="food-card-hover rounded-xl overflow-hidden bg-card border border-border shadow-sm relative"
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={() => onClick?.(item)}
+        onClick={handleCardClick}
       >
         <div className="relative h-48 overflow-hidden flex-shrink-0">
           {!isImageLoaded && (
