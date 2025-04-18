@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import QuickOrder from '../components/QuickOrder';
 
 const foodItems: FoodItem[] = [
   {
@@ -61,7 +61,7 @@ const foodItems: FoodItem[] = [
     id: "0195b363-d60c-799c-a440-c048b08d25e7",
     name: 'Шоколадный торт',
     price: 180,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Насыщенный шоколадный торт с нежным ганашем и свежими ягодами.'
   },
   {
@@ -75,7 +75,7 @@ const foodItems: FoodItem[] = [
     id: "0195b364-569c-7aad-862f-9ecb5a806334",
     name: 'Суши-ассорти',
     price: 450,
-    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
   },
   {
@@ -448,6 +448,10 @@ const Index = () => {
               />
             </div>
           )}
+
+          <div className="mb-8">
+            <QuickOrder />
+          </div>
           
           <AnimatePresence mode="wait">
             {randomItem && (
@@ -460,267 +464,4 @@ const Index = () => {
                 key={randomItem.id + '-recommendation'}
               >
                 <div className="bg-gradient-to-r from-accent/20 to-accent/5 dark:from-accent/30 dark:to-accent/10 rounded-2xl p-6 shadow-md">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="text-accent" size={24} />
-                      <h2 className="text-2xl font-bold text-foreground">Рекомендуем попробовать</h2>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="icon" 
-                        onClick={generateRandomItem}
-                        disabled={isRandomItemAnimating}
-                        className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
-                      >
-                        <motion.div
-                          animate={{ rotate: isRandomItemAnimating ? 360 : 0 }}
-                          transition={{ duration: 0.5, ease: "easeInOut" }}
-                        >
-                          <RefreshCw size={18} />
-                        </motion.div>
-                        <span className="sr-only">Другая рекомендация</span>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="icon" 
-                        onClick={dismissRandomItem}
-                        className="h-9 w-9 rounded-full text-foreground hover:bg-accent/10 hover:text-accent transition-all"
-                      >
-                        <X size={18} />
-                        <span className="sr-only">Закрыть рекомендацию</span>
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <motion.div 
-                    key={randomItem.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex flex-col md:flex-row gap-6 items-center"
-                  >
-                    <div className="w-full md:w-1/3">
-                      <motion.div 
-                        whileHover={{ scale: 1.03 }}
-                        transition={{ duration: 0.2 }}
-                        className="relative rounded-xl overflow-hidden shadow-lg aspect-square"
-                      >
-                        <img
-                          src={randomItem.image}
-                          alt={randomItem.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </motion.div>
-                    </div>
-                    <div className="w-full md:w-2/3 flex flex-col justify-center">
-                      <h3 className="text-2xl font-bold mb-2 text-foreground">{randomItem.name}</h3>
-                      <p className="text-foreground/70 mb-4">{randomItem.description}</p>
-                      <div className="flex gap-4 justify-start">
-                        <span className="text-accent font-bold text-xl">₽{randomItem.price}</span>
-                        <div className="flex gap-3">
-                          <Button
-                            onClick={() => {
-                              toggleFavorite(randomItem.id);
-                              addToRecentlyViewed(randomItem);
-                            }}
-                            variant="outline"
-                            size="sm"
-                            className="gap-1"
-                          >
-                            <Heart
-                              className={favorites.includes(randomItem.id) ? "text-red-500 fill-red-500" : "text-foreground"}
-                              size={16}
-                            />
-                            {favorites.includes(randomItem.id) ? 'В избранном' : 'В избранное'}
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              addToRecentlyViewed(randomItem);
-                              addItem(randomItem);
-                            }}
-                            size="sm"
-                          >
-                            Добавить в корзину
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-          <div className="relative mb-8">
-            <div className="flex flex-wrap gap-3 items-center justify-center mb-4">
-              <Button
-                variant={activeFilter === 'favorites' ? "default" : "outline"}
-                className="flex items-center gap-2"
-                onClick={() => handleFilterClick('favorites')}
-              >
-                <Heart size={16} className={activeFilter === 'favorites' ? "text-white" : "text-foreground"} />
-                Избранное
-              </Button>
-              
-              {categories.map(category => (
-                <Button
-                  key={category}
-                  variant={activeCategory === category ? "default" : "outline"}
-                  className="text-sm"
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
-            
-            <div className="flex items-center w-full justify-center mb-6">
-              <div className="flex items-center w-full max-w-md">
-                <div className="relative flex-grow">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50 theme-transition" size={18} />
-                  <input
-                    type="text"
-                    placeholder="Поиск блюд..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-card border border-muted rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-accent theme-transition"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && searchQuery.trim()) {
-                        if (searchQuery.trim()) {
-                          addToHistory(searchQuery);
-                          const firstResult = document.querySelector('.food-card-shadow');
-                          if (firstResult) {
-                            firstResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          }
-                        }
-                      }
-                    }}
-                  />
-                  {searchQuery && (
-                    <button 
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground theme-transition"
-                      onClick={() => setSearchQuery('')}
-                    >
-                      <X size={16} />
-                    </button>
-                  )}
-                </div>
-                <Sheet open={showFilters} onOpenChange={setShowFilters}>
-                  <SheetTrigger asChild>
-                    <button className="ml-2 p-3 bg-card border border-muted rounded-lg text-foreground hover:bg-muted/50 transition-colors theme-transition">
-                      <SlidersHorizontal size={18} />
-                    </button>
-                  </SheetTrigger>
-                  <SheetContent>
-                    <SheetHeader>
-                      <SheetTitle>Фильтры и сортировка</SheetTitle>
-                      <SheetDescription>
-                        Настройте параметры поиска блюд
-                      </SheetDescription>
-                    </SheetHeader>
-                    <div className="py-6 space-y-6">
-                      <div className="space-y-2">
-                        <h3 className="text-sm font-medium">Сортировка</h3>
-                        <div className="grid grid-cols-1 gap-2">
-                          {[
-                            { id: 'price-low-high', label: 'По возрастанию цены' },
-                            { id: 'price-high-low', label: 'По убыванию цены' },
-                            { id: 'name-a-z', label: 'По алфавиту (А-Я)' },
-                            { id: 'name-z-a', label: 'По алфавиту (Я-А)' }
-                          ].map(option => (
-                            <Button
-                              key={option.id}
-                              variant={sortOption === option.id ? "default" : "outline"}
-                              className="justify-start"
-                              onClick={() => handleSortOptionChange(option.id)}
-                            >
-                              {option.label}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <h3 className="text-sm font-medium">Категории</h3>
-                        <div className="grid grid-cols-2 gap-2">
-                          {categories.map(category => (
-                            <Button
-                              key={category}
-                              variant={activeCategory === category ? "default" : "outline"}
-                              className="justify-start"
-                              onClick={() => handleCategoryClick(category)}
-                            >
-                              {category}
-                            </Button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <Button 
-                        variant="ghost" 
-                        className="w-full" 
-                        onClick={resetFilters}
-                      >
-                        Сбросить все фильтры
-                      </Button>
-                    </div>
-                  </SheetContent>
-                </Sheet>
-              </div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-            {filteredItems.map(item => (
-              <FoodCard
-                key={item.id}
-                item={item}
-                isFavorite={favorites.includes(item.id)}
-                onFavoriteToggle={() => toggleFavorite(item.id)}
-                onClick={() => addToRecentlyViewed(item)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      <AnimatePresence>
-        {showScrollTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
-            onClick={handleScrollToTop}
-            className="fixed bottom-6 right-6 p-3 bg-accent text-white rounded-full shadow-lg hover:bg-accent/90 z-50 transition-all"
-            aria-label="Прокрутить наверх"
-          >
-            <ArrowUp size={20} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-      
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        onComplete={handleOrderComplete}
-      />
-      
-      <SuccessModal
-        isOpen={isSuccessOpen}
-        onClose={() => setIsSuccessOpen(false)}
-      />
-      
-      <FavoritesDrawer
-        isOpen={isFavoritesOpen}
-        onClose={() => setIsFavoritesOpen(false)}
-        items={favoritedItems}
-        onFavoriteToggle={toggleFavorite}
-      />
-    </Layout>
-  );
-};
-
-export default Index;
+                  <div className="flex justify-between
