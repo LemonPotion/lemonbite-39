@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -7,6 +6,7 @@ import { toast } from 'sonner';
 import { Badge } from './ui/badge';
 import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import Confetti from './animations/Confetti';
 
 interface FoodCardProps {
   item: FoodItem;
@@ -59,23 +59,15 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
   const [cookTime] = useState({
     cookTime: Math.floor(Math.random() * 20) + 10,
   });
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiPosition, setConfettiPosition] = useState({ x: 0, y: 0 });
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsAdding(true);
+    setConfettiPosition({ x: e.clientX, y: e.clientY });
+    setShowConfetti(true);
     addItem(item);
-    
-    toast.success(`${item.name} добавлен в корзину!`, {
-      description: `${item.price.toFixed(2)} р`
-    });
-    
-    setTimeout(() => {
-      setIsAdding(null);
-    }, 300);
-    
-    if (onClick) {
-      onClick();
-    }
+    setTimeout(() => setShowConfetti(false), 1000);
   };
 
   const handleCardClick = () => {
@@ -88,26 +80,10 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
   return (
     <>
       <motion.div 
-        className="food-card-shadow rounded-xl overflow-hidden transition-all duration-300 cursor-pointer relative h-[450px] w-full flex flex-col bg-card border border-border"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          type: "spring",
-          stiffness: 260,
-          damping: 20,
-          mass: 0.4
-        }}
-        whileHover={{ 
-          y: -5,
-          transition: { 
-            type: "spring", 
-            stiffness: 300, 
-            damping: 10 
-          }
-        }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        onClick={handleCardClick}
+        className="food-card-hover rounded-xl overflow-hidden bg-card border border-border shadow-sm relative"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={() => onClick?.(item)}
       >
         <div className="relative h-48 overflow-hidden flex-shrink-0">
           {!isImageLoaded && (
@@ -297,6 +273,10 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           </div>
         </DialogContent>
       </Dialog>
+
+      {showConfetti && (
+        <Confetti x={confettiPosition.x} y={confettiPosition.y} />
+      )}
     </>
   );
 };
