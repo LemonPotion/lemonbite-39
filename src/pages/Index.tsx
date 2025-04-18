@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -62,7 +61,7 @@ const foodItems: FoodItem[] = [
     id: "0195b363-d60c-799c-a440-c048b08d25e7",
     name: 'Шоколадный торт',
     price: 180,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Насыщенный шоколадный торт с нежным ганашем и свежими ягодами.'
   },
   {
@@ -76,7 +75,7 @@ const foodItems: FoodItem[] = [
     id: "0195b364-569c-7aad-862f-9ecb5a806334",
     name: 'Суши-ассорти',
     price: 450,
-    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
     description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
   },
   {
@@ -621,7 +620,7 @@ const Index = () => {
               item={item}
               isFavorite={favorites.includes(item.id)}
               onFavoriteToggle={() => toggleFavorite(item.id)}
-              onView={() => addToRecentlyViewed(item)}
+              onClick={() => addToRecentlyViewed(item)}
             />
           ))}
           
@@ -664,6 +663,7 @@ const Index = () => {
         isOpen={isFavoritesOpen}
         onClose={() => setIsFavoritesOpen(false)}
         items={favoritedItems}
+        onFavoriteToggle={toggleFavorite}
       />
     </Layout>
   );
