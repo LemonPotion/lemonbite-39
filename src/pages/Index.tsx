@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
+import QuickOrder from '../components/QuickOrder';
 import CheckoutModal from '../components/CheckoutModal';
 import SuccessModal from '../components/SuccessModal';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -9,8 +10,7 @@ import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp, Cloc
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const foodItems: FoodItem[] = [
@@ -199,6 +199,7 @@ const Index = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 800]);
   const [isRandomItemAnimating, setIsRandomItemAnimating] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showQuickOrders, setShowQuickOrders] = useState(false);
   const { addItem } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
@@ -440,16 +441,17 @@ const Index = () => {
               />
             </div>
           )}
-
+          
           <div className="flex justify-between items-center mb-8">
             <div className="flex gap-2">
-              <Link
-                to="/quick-orders"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors"
+              <button
+                onClick={() => setShowQuickOrders(!showQuickOrders)}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
+                  ${showQuickOrders ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
               >
                 <Clock className="h-3 w-3" />
                 <span>Quick Orders</span>
-              </Link>
+              </button>
               <button
                 onClick={() => handleFilterClick('favorites')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
@@ -461,6 +463,12 @@ const Index = () => {
             </div>
           </div>
           
+          {showQuickOrders && (
+            <div className="mb-8">
+              <QuickOrder />
+            </div>
+          )}
+
           <div className="mb-6">
             <div className="flex flex-wrap gap-3 items-center justify-between">
               <div className="relative flex-1 min-w-[200px] max-w-md">
