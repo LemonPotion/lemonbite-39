@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -6,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { toast } from 'sonner';
 import { Badge } from './ui/badge';
 import { useTheme } from '../context/ThemeContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface FoodCardProps {
   item: FoodItem;
@@ -70,7 +69,7 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
     });
     
     setTimeout(() => {
-      setIsAdding(null);
+      setIsAdding(false);
     }, 300);
     
     if (onClick) {
@@ -85,25 +84,25 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
     setIsDialogOpen(true);
   };
 
+  const cardVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    hover: { y: -5 }
+  };
+
   return (
     <>
       <motion.div 
         className="food-card-shadow rounded-xl overflow-hidden transition-all duration-300 cursor-pointer relative h-[450px] w-full flex flex-col bg-card border border-border"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial="initial"
+        animate="animate"
+        whileHover="hover"
+        variants={cardVariants}
         transition={{ 
           type: "spring",
-          stiffness: 260,
+          stiffness: 180,
           damping: 20,
-          mass: 0.4
-        }}
-        whileHover={{ 
-          y: -5,
-          transition: { 
-            type: "spring", 
-            stiffness: 300, 
-            damping: 10 
-          }
+          mass: 0.6
         }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
@@ -111,13 +110,13 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
       >
         <div className="relative h-48 overflow-hidden flex-shrink-0">
           {!isImageLoaded && (
-            <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
+            <div className="absolute inset-0 bg-muted flex items-center justify-center">
               <div className="w-8 h-8 rounded-full border-2 border-accent border-t-transparent animate-spin"></div>
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10"></div>
           {isFavorite !== undefined && onFavoriteToggle && (
-            <motion.button 
+            <button 
               onClick={(e) => {
                 e.stopPropagation();
                 onFavoriteToggle();
@@ -125,17 +124,14 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
               className={`absolute top-2 right-2 z-20 p-1.5 rounded-full backdrop-blur-sm ${
                 isFavorite ? 'bg-red-50 dark:bg-red-900/30 text-red-500' : 'bg-white/70 dark:bg-white/10 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-white'
               } transition-transform`}
-              whileTap={{ scale: 1.2 }}
             >
               <Heart size={18} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "favorite-pulse" : ""} />
-            </motion.button>
+            </button>
           )}
-          <motion.img 
+          <img 
             src={item.image} 
             alt={item.name}
-            className={`w-full h-full object-cover food-image-hover ${isImageLoaded ? 'image-fade-in' : 'opacity-0'}`}
-            animate={{ scale: isHovered ? 1.05 : 1 }}
-            transition={{ duration: 0.4 }}
+            className={`w-full h-full object-cover ${isHovered ? 'scale-105' : 'scale-100'} transition-transform duration-400 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
             onLoad={() => setIsImageLoaded(true)}
             onError={(e) => {
               console.log("Ошибка загрузки изображения:", item.name);
@@ -148,13 +144,9 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
         <div className="p-4 flex flex-col flex-grow">
           <div className="flex justify-between items-start mb-2">
             <h3 className="font-medium text-foreground line-clamp-2">{item.name}</h3>
-            <motion.span 
-              className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full shadow-sm flex-shrink-0 ml-2"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+            <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full shadow-sm flex-shrink-0 ml-2">
               {item.price.toFixed(2)} р
-            </motion.span>
+            </span>
           </div>
           
           <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
@@ -170,43 +162,32 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           
           <div className="mb-2 flex flex-wrap gap-1">
             {tags.map((tag, index) => (
-              <motion.span 
+              <span 
                 key={index} 
                 className="food-tag"
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.2 }}
-                whileHover={{ scale: 1.05 }}
               >
                 {tag}
-              </motion.span>
+              </span>
             ))}
           </div>
           
           <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">{item.description}</p>
           
-          <motion.button 
+          <button 
             onClick={handleAddToCart}
             className="w-full py-2 flex items-center justify-center rounded-lg text-sm font-medium tracking-wide 
               btn-pop bg-accent text-white shadow-sm mt-auto hover:bg-accent/90"
             aria-label="Добавить в корзину"
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <Plus size={16} className="mr-1" />
             Добавить в корзину
-          </motion.button>
+          </button>
         </div>
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-card text-card-foreground border-accent/10">
-          <motion.div 
-            className="relative h-64 sm:h-72"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-          >
+          <div className="relative h-64 sm:h-72">
             <img 
               src={item.image} 
               alt={item.name}
@@ -216,84 +197,57 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
               }}
             />
             
-            <motion.div 
-              className="absolute bottom-3 left-3 bg-card/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center shadow-sm"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            >
+            <div className="absolute bottom-3 left-3 bg-card/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center shadow-sm">
               <ChefHat size={16} className="text-accent mr-1" />
               <span className="text-xs font-medium">От шеф-повара</span>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
           
           <div className="p-6">
             <DialogHeader>
               <DialogTitle className="flex justify-between items-center">
                 <span className="truncate text-foreground">{item.name}</span>
-                <motion.span 
-                  className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full flex-shrink-0 ml-2"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
+                <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full flex-shrink-0 ml-2">
                   {item.price.toFixed(2)} р
-                </motion.span>
+                </span>
               </DialogTitle>
             </DialogHeader>
             
-            <motion.div 
-              className="my-4 flex flex-wrap gap-3 stagger-reveal"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
+            <div className="my-4 flex flex-wrap gap-3">
               <Badge variant="outline" className="bg-card/60 text-foreground">
                 <Utensils size={14} className="mr-1" /> {foodInfo.calories} калорий
               </Badge>
               <Badge variant="outline" className="bg-card/60 text-foreground">
                 <Clock size={14} className="mr-1" /> {cookTime.cookTime} мин. приготовления
               </Badge>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              className="my-4"
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div className="my-4">
               <h4 className="text-sm font-medium mb-2 text-foreground">Описание</h4>
               <p className="text-foreground/80">{item.description}</p>
-            </motion.div>
+            </div>
             
             <div className="flex flex-wrap gap-1 mb-6">
               {tags.map((tag, index) => (
-                <motion.span 
+                <span 
                   key={index} 
                   className="inline-block bg-muted/80 px-2 py-1 rounded-full text-xs font-medium text-foreground/70"
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.05 }}
-                  whileHover={{ scale: 1.05 }}
                 >
                   {tag}
-                </motion.span>
+                </span>
               ))}
             </div>
             
-            <motion.button 
+            <button 
               onClick={(e) => {
                 handleAddToCart(e);
                 setIsDialogOpen(false);
               }}
               className="w-full py-3 flex items-center justify-center rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition-colors btn-pop shadow-sm"
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, type: "spring", stiffness: 400, damping: 20 }}
             >
               <Plus size={16} className="mr-1" />
               Добавить в корзину
-            </motion.button>
+            </button>
           </div>
         </DialogContent>
       </Dialog>

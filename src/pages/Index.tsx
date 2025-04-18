@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -8,19 +9,9 @@ import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp, Cloc
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetDescription, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger
-} from "@/components/ui/sheet";
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import QuickOrder from '../components/QuickOrder';
-import { Link } from 'react-router-dom';
 
 const foodItems: FoodItem[] = [
   {
@@ -502,14 +493,6 @@ const Index = () => {
                 </button>
                 
                 <button
-                  onClick={() => setIsFavoritesOpen(true)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors"
-                >
-                  <Heart className={`h-3 w-3 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
-                  <span>Избранное{favorites.length > 0 ? ` (${favorites.length})` : ''}</span>
-                </button>
-                
-                <button
                   onClick={generateRandomItem}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors"
                 >
@@ -604,6 +587,53 @@ const Index = () => {
           >
             <ArrowUp className="h-5 w-5" />
           </button>
+        )}
+
+        {randomItem && (
+          <AnimatePresence>
+            <motion.div 
+              key="random-item"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 300, 
+                damping: 25 
+              }}
+              className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-card p-4 rounded-lg shadow-lg border border-accent/20 max-w-sm w-full z-20 flex items-start gap-4"
+            >
+              <img 
+                src={randomItem.image} 
+                alt={randomItem.name} 
+                className="w-20 h-20 object-cover rounded-md"
+              />
+              <div className="flex-1">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-medium">{randomItem.name}</h3>
+                  <button 
+                    onClick={dismissRandomItem}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{randomItem.description}</p>
+                <div className="flex justify-between items-center mt-2">
+                  <span className="font-semibold text-accent">{randomItem.price} р</span>
+                  <button
+                    onClick={() => {
+                      addItem(randomItem);
+                      dismissRandomItem();
+                    }}
+                    className="text-xs px-3 py-1 bg-accent text-white rounded-full"
+                  >
+                    В корзину
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         )}
       </div>
       
