@@ -82,7 +82,7 @@ const QuickOrder: React.FC = () => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
           <Clock size={18} className="text-[#F77A54]" />
-          <h3 className="text-sm font-medium text-[#2E2E2E]">Быстрый заказ</h3>
+          <h3 className="text-sm font-medium text-[#2E2E2E]">Быстрые заказы</h3>
         </div>
         {!showSavePrompt && <button onClick={saveCurrentOrder} className="text-xs px-3 py-1 bg-[#F77A54]/10 hover:bg-[#F77A54]/20 text-[#F77A54] rounded-full transition-colors flex items-center space-x-1">
             <Bookmark size={14} />
