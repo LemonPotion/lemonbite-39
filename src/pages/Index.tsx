@@ -15,31 +15,31 @@ import { motion, AnimatePresence } from 'framer-motion';
 const foodItems: FoodItem[] = [{
   id: "0195b361-2042-7a65-bc93-0c5cac31e46a",
   name: 'Классический бургер',
-  price: 280,
+  price: 90,
   image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Сочный говяжий котлет с салатом, помидором, сыром и фирменным соусом на поджаренной булочке.'
+  description: 'Сочная говяжая котлета с салатом, помидором, сыром и фирменным соусом на поджаренной булочке.'
 }, {
   id: "0195b362-6206-7f9d-b477-726821cdfe70",
   name: 'Пицца "Маргарита"',
-  price: 350,
-  image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 120,
+  image: 'https://static.1000.menu/img/content-v2/ef/27/10853/picca-margarita-v-domashnix-usloviyax_1608783820_4_max.jpg',
   description: 'Классическая пицца с томатным соусом, свежей моцареллой, базиликом и оливковым маслом.'
 }, {
   id: "0195b362-e16c-7dc6-8622-29031a915e59",
   name: 'Салат "Цезарь"',
-  price: 220,
-  image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 130,
+  image: 'https://ferma-m2.ru/images/shop/recipe_image/crop_shutterstock_1505620307.jpg',
   description: 'Свежий романо, сухарики, пармезан и соус "Цезарь".'
 }, {
   id: "0195b363-2b67-7e55-9471-6b9a1b6bdfba",
   name: 'Паста с курицей',
-  price: 320,
+  price: 80,
   image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Пенне с курицей, сливочным соусом "Альфредо" и свежими травами.'
 }, {
   id: "0195b363-796a-7366-a2f1-bca4518c3390",
   name: 'Овощное жаркое',
-  price: 280,
+  price: 90,
   image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Свежие овощи, обжаренные с тофу в ароматном соусе, подаются с рисом.'
 }, {
@@ -51,109 +51,103 @@ const foodItems: FoodItem[] = [{
 }, {
   id: "0195b364-0a6d-7c46-bee2-0fe79d171a8c",
   name: 'Рыбные тако',
-  price: 290,
+  price: 125,
   image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Жареная рыба с капустным салатом, авокадо и лаймовым кремом в кукурузных тортильях.'
 }, {
   id: "0195b364-569c-7aad-862f-9ecb5a806334",
   name: 'Суши-ассорти',
-  price: 450,
+  price: 220,
   image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
 }, {
   id: "0195b364-9b4d-7852-8c63-064f39aa7323",
   name: 'Бефстроганов',
-  price: 380,
+  price: 120,
   image: 'https://images.unsplash.com/photo-1608835291093-394b0c943a75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Нежные кусочки говядины с грибами в сливочном соусе, подаются с яичной лапшой.'
 }, {
   id: "0195b364-cc5f-7238-b93c-6a778ed837f3",
   name: 'Пад Тай с креветками',
-  price: 340,
+  price: 130,
   image: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Рисовая лапша с креветками, тофу, ростками фасоли, арахисом и тамариндовым соусом.'
 }, {
   id: "0195b364-ff06-7ef1-a854-e407f2ee800e",
   name: 'Греческий гирос',
-  price: 260,
+  price: 90,
   image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Пряное мясо, свежие овощи и соус дзадзики в теплой питe.'
 }, {
   id: "0195b365-4c34-7ecf-aebb-327fb9767f87",
   name: 'Грибное ризотто',
-  price: 300,
+  price: 125,
   image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Кремовый рис Арборио, медленно приготовленный с грибами, белым вином и пармезаном.'
 }, {
   id: "0195b365-7f2a-8c9d-4e5f-6g7h8i9j0k1l",
   name: 'Тирамису',
-  price: 230,
-  image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 80,
+  image: 'https://lasunka.com/s165-prew.jpg',
   description: 'Классический итальянский десерт с нежным кремом, кофе и какао.'
 }, {
   id: "0195b365-8d9e-0f1g-2h3i-4j5k6l7m8n9o",
   name: 'Борщ украинский',
-  price: 240,
-  image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 115,
+  image: 'https://i.ytimg.com/vi/4C-ewlHTq2E/maxresdefault.jpg',
   description: 'Традиционный украинский суп со свеклой, капустой, и сметаной.'
 }, {
   id: "0195b365-9p0q-1r2s-3t4u-5v6w7x8y9z0a",
   name: 'Пельмени сибирские',
-  price: 290,
-  image: 'https://images.unsplash.com/photo-1589187151053-5ec8818e661b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 80,
+  image: 'https://images.gastronom.ru/OJ1rNL0xLnRuf9mNmOWUPV9BWWK-ivUk6Yck05IqXxE/pr:recipe-preview-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzLzI4NDA1OTE2LTM4ZDMtNDYwMC1hMjYyLTc1NzFkNjc3MDdlZi5qcGc',
   description: 'Домашние пельмени с мясной начинкой, подаются со сметаной.'
 }, {
   id: "0195b366-0b1c-2d3e-4f5g-6h7i8j9k0l1m",
   name: 'Стейк Рибай',
-  price: 720,
+  price: 180,
   image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Сочный стейк из мраморной говядины, приготовленный на гриле.'
 }, {
   id: "0195b366-2n3o-4p5q-6r7s-8t9u0v1w2x3y",
   name: 'Том Ям',
-  price: 310,
+  price: 178,
   image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Острый тайский суп с креветками, грибами и ароматными травами.'
 }, {
   id: "0195b366-4z5a-6b7c-8d9e-0f1g2h3i4j5k",
   name: 'Хачапури по-аджарски',
-  price: 270,
-  image: 'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 130,
+  image: 'https://zira.uz/wp-content/uploads/2017/10/hachapuri-1.jpg',
   description: 'Традиционная грузинская выпечка с сыром и яйцом.'
 }, {
   id: "0195b366-6l7m-8n9o-0p1q-2r3s4t5u6v7w",
   name: 'Чизкейк Нью-Йорк',
-  price: 250,
-  image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+  price: 80,
+  image: 'https://la-torta.ua/content/uploads/images/12-cake.jpg',
   description: 'Классический американский чизкейк с нежной сырной начинкой и ягодным соусом.'
 }, {
   id: "0195b366-8x9y-0z1a-2b3c-4d5e6f7g8h9i",
   name: 'Раменбоул с курицей',
-  price: 340,
+  price: 156,
   image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Питательный японский суп с лапшой, куриным филе, яйцом и овощами.'
 }, {
-  id: "0195b367-0j1k-2l3m-4n5o-6p7q8r9s0t1u",
-  name: 'Фалафель в питe',
-  price: 220,
-  image: 'https://images.unsplash.com/photo-1619860860774-1e2e14a78d99?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Хрустящие шарики из нута с хумусом, свежими овощами и соусом в мягкой питe.'
-}, {
   id: "0195b367-2v3w-4x5y-6z7a-8b9c0d1e2f3g",
   name: 'Осьминог на гриле',
-  price: 650,
+  price: 230,
   image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Нежные щупальца осьминога, приготовленные на гриле с оливковым маслом и зеленью.'
 }, {
   id: "0195b367-4h5i-6j7k-8l9m-0n1o2p3q4r5s",
   name: 'Паэлья с морепродуктами',
-  price: 520,
+  price: 168,
   image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Традиционное испанское блюдо из риса с шафраном, креветками, мидиями и кальмарами.'
 }, {
   id: "0195b367-6t7u-8v9w-0x1y-2z3a4b5c6d7e",
   name: 'Утка по-пекински',
-  price: 690,
+  price: 230,
   image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Хрустящая утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
 }];
