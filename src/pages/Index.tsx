@@ -11,6 +11,7 @@ import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
 const foodItems: FoodItem[] = [{
   id: "0195b361-2042-7a65-bc93-0c5cac31e46a",
   name: 'Классический бургер',
@@ -156,6 +157,7 @@ const foodItems: FoodItem[] = [{
   image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Хрустящая утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
 }];
+
 const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -177,6 +179,7 @@ const Index = () => {
   } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const category = params.get('category');
@@ -226,12 +229,14 @@ const Index = () => {
       });
     }
   }, [location, navigate]);
+
   useEffect(() => {
     const savedFavorites = getFavoritesFromCookies();
     if (savedFavorites.length > 0) {
       setFavorites(savedFavorites);
     }
   }, []);
+
   const handleOrderComplete = (phoneNumber: string, address: string) => {
     console.log('Order placed with:', {
       phoneNumber,
@@ -240,6 +245,7 @@ const Index = () => {
     setIsCheckoutOpen(false);
     setIsSuccessOpen(true);
   };
+
   const toggleFavorite = (itemId: string) => {
     setFavorites(prev => {
       const newFavorites = prev.includes(itemId) ? prev.filter(id => id !== itemId) : [...prev, itemId];
@@ -247,12 +253,14 @@ const Index = () => {
       return newFavorites;
     });
   };
+
   const addToRecentlyViewed = (item: FoodItem) => {
     setRecentlyViewed(prev => {
       const filtered = prev.filter(i => i.id !== item.id);
       return [item, ...filtered].slice(0, 4);
     });
   };
+
   const handleFilterClick = (filter: string) => {
     if (activeFilter === filter) {
       setActiveFilter(null);
@@ -261,6 +269,7 @@ const Index = () => {
       setActiveCategory(null);
     }
   };
+
   const handleCategoryClick = (category: string) => {
     if (activeCategory === category) {
       setActiveCategory(null);
@@ -269,6 +278,7 @@ const Index = () => {
       setActiveFilter(null);
     }
   };
+
   const resetFilters = () => {
     setActiveFilter(null);
     setActiveCategory(null);
@@ -276,9 +286,11 @@ const Index = () => {
     setSortOption(null);
     setPriceRange([0, 800]);
   };
+
   const handleSortOptionChange = (option: string) => {
     setSortOption(option);
   };
+
   const categories = [...new Set(foodItems.map(item => {
     if (item.name.toLowerCase().includes('бургер')) return 'Фаст-фуд';
     if (item.name.toLowerCase().includes('пицца')) return 'Пицца';
@@ -291,6 +303,7 @@ const Index = () => {
     if (item.name.toLowerCase().includes('стейк') || item.name.toLowerCase().includes('утка')) return 'Мясные блюда';
     return 'Основные блюда';
   }))];
+
   let filteredItems = foodItems.filter(item => {
     const matchesSearch = searchQuery ? item.name.toLowerCase().includes(searchQuery.toLowerCase()) || item.description.toLowerCase().includes(searchQuery.toLowerCase()) : true;
     if (!matchesSearch) return false;
@@ -303,6 +316,7 @@ const Index = () => {
     }
     return true;
   });
+
   if (sortOption) {
     if (sortOption === 'price-low-high') {
       filteredItems = [...filteredItems].sort((a, b) => a.price - b.price);
@@ -314,7 +328,9 @@ const Index = () => {
       filteredItems = [...filteredItems].sort((a, b) => b.name.localeCompare(a.name));
     }
   }
+
   const favoritedItems = foodItems.filter(item => favorites.includes(item.id));
+
   const dismissRandomItem = () => {
     setIsRandomItemAnimating(true);
     setTimeout(() => {
@@ -322,20 +338,42 @@ const Index = () => {
       setIsRandomItemAnimating(false);
     }, 300);
   };
+
   const generateRandomItem = () => {
     setIsRandomItemAnimating(true);
+    const currentItem = randomItem;
+    
+    const element = document.querySelector('.recommendation-card');
+    if (element) {
+      element.classList.add('scale-95', 'opacity-0');
+    }
+    
     setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * foodItems.length);
-      setRandomItem(foodItems[randomIndex]);
+      let newItem;
+      do {
+        const randomIndex = Math.floor(Math.random() * foodItems.length);
+        newItem = foodItems[randomIndex];
+      } while (currentItem && newItem.id === currentItem.id);
+      
+      setRandomItem(newItem);
       setIsRandomItemAnimating(false);
+      
+      setTimeout(() => {
+        const element = document.querySelector('.recommendation-card');
+        if (element) {
+          element.classList.remove('scale-95', 'opacity-0');
+        }
+      }, 50);
     }, 300);
   };
+
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
   };
+
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
@@ -343,9 +381,11 @@ const Index = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const addToHistory = (query: string) => {
     // Add search term to history
   };
+
   useEffect(() => {
     if (recentlyViewed.length === 0 && foodItems.length > 0) {
       const randomIndexes = Array.from({
@@ -356,7 +396,9 @@ const Index = () => {
       setRecentlyViewed(randomItems);
     }
   }, [foodItems, recentlyViewed.length]);
-  return <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
+
+  return (
+    <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
         <div className="mb-12">
           <div className="flex flex-col items-center text-center space-y-4 mb-8">
@@ -368,47 +410,66 @@ const Index = () => {
             </p>
           </div>
           
-          {randomItem && <motion.div initial={{
-          opacity: 0,
-          y: 20
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} exit={{
-          opacity: 0,
-          y: 20
-        }} className="mb-8 bg-gradient-to-r from-accent/10 to-accent/5 backdrop-blur-sm border border-accent/20 rounded-2xl p-6 shadow-lg">
+          {randomItem && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="recommendation-card mb-8 bg-gradient-to-r from-accent/10 to-accent/5 backdrop-blur-sm border border-accent/20 rounded-2xl p-6 shadow-lg transition-all duration-300"
+            >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-yellow-500" />
                   Рекомендация для вас
                 </h3>
                 <div className="flex items-center gap-2">
-                  <button onClick={generateRandomItem} className="p-2 hover:bg-accent/10 rounded-full transition-colors" title="Обновить рекомендацию">
+                  <motion.button 
+                    onClick={generateRandomItem}
+                    whileHover={{ scale: 1.1, rotate: 180 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-2 hover:bg-accent/10 rounded-full transition-colors"
+                    title="Обновить рекомендацию"
+                  >
                     <RefreshCw size={18} className="text-muted-foreground hover:text-foreground" />
-                  </button>
-                  <button onClick={dismissRandomItem} className="text-muted-foreground hover:text-foreground transition-colors">
+                  </motion.button>
+                  <motion.button 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setRandomItem(null)}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     <X size={18} />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
               <div className="flex gap-6">
-                <img src={randomItem.image} alt={randomItem.name} className="w-32 h-32 object-cover rounded-xl shadow-md" />
+                <motion.img 
+                  src={randomItem.image}
+                  alt={randomItem.name}
+                  className="w-32 h-32 object-cover rounded-xl shadow-md"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
                 <div className="flex-1">
                   <h4 className="text-xl font-medium mb-2">{randomItem.name}</h4>
                   <p className="text-muted-foreground mb-4">{randomItem.description}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-2xl font-semibold text-accent">{randomItem.price} р</span>
-                    <button onClick={() => {
-                  addItem(randomItem);
-                  dismissRandomItem();
-                }} className="px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium hover:bg-accent/90 transition-colors">
+                    <motion.button 
+                      onClick={() => addItem(randomItem)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium hover:bg-accent/90 transition-colors"
+                    >
                       В корзину
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               </div>
-            </motion.div>}
+            </motion.div>
+          )}
 
           {recentlyViewed.length > 0 && <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
@@ -516,6 +577,8 @@ const Index = () => {
       <SuccessModal isOpen={isSuccessOpen} onClose={() => setIsSuccessOpen(false)} />
       
       <FavoritesDrawer isOpen={isFavoritesOpen} onClose={() => setIsFavoritesOpen(false)} items={favoritedItems} onFavoriteToggle={toggleFavorite} />
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Index;
