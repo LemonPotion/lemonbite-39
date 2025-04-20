@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import FoodCard from '../components/FoodCard';
@@ -433,6 +432,51 @@ const Index = () => {
             </p>
           </div>
           
+          {randomItem && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="mb-8 bg-gradient-to-r from-accent/10 to-accent/5 backdrop-blur-sm border border-accent/20 rounded-2xl p-6 shadow-lg"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-medium flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-yellow-500" />
+                  Рекомендация для вас
+                </h3>
+                <button 
+                  onClick={dismissRandomItem}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              <div className="flex gap-6">
+                <img 
+                  src={randomItem.image} 
+                  alt={randomItem.name} 
+                  className="w-32 h-32 object-cover rounded-xl shadow-md"
+                />
+                <div className="flex-1">
+                  <h4 className="text-xl font-medium mb-2">{randomItem.name}</h4>
+                  <p className="text-muted-foreground mb-4">{randomItem.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-semibold text-accent">{randomItem.price} р</span>
+                    <button
+                      onClick={() => {
+                        addItem(randomItem);
+                        dismissRandomItem();
+                      }}
+                      className="px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium hover:bg-accent/90 transition-colors"
+                    >
+                      В корзину
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {recentlyViewed.length > 0 && (
             <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner 
@@ -442,8 +486,8 @@ const Index = () => {
             </div>
           )}
           
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex gap-2">
+          <div className="flex flex-col space-y-4 mb-8">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setShowQuickOrders(!showQuickOrders)}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
@@ -460,14 +504,21 @@ const Index = () => {
                 <Heart className={`h-3 w-3 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
                 <span>Избранное{favorites.length > 0 ? ` (${favorites.length})` : ''}</span>
               </button>
+              <button
+                onClick={generateRandomItem}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors ml-auto"
+              >
+                <Sparkles className="h-3 w-3 text-yellow-500" />
+                <span>Получить рекомендацию</span>
+              </button>
             </div>
+
+            {showQuickOrders && (
+              <div className="w-full">
+                <QuickOrder />
+              </div>
+            )}
           </div>
-          
-          {showQuickOrders && (
-            <div className="mb-8">
-              <QuickOrder />
-            </div>
-          )}
 
           <div className="mb-6">
             <div className="flex flex-wrap gap-3 items-center justify-between">
@@ -595,53 +646,6 @@ const Index = () => {
           >
             <ArrowUp className="h-5 w-5" />
           </button>
-        )}
-
-        {randomItem && (
-          <AnimatePresence>
-            <motion.div 
-              key="random-item"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 300, 
-                damping: 25 
-              }}
-              className="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-card p-4 rounded-lg shadow-lg border border-accent/20 max-w-sm w-full z-20 flex items-start gap-4"
-            >
-              <img 
-                src={randomItem.image} 
-                alt={randomItem.name} 
-                className="w-20 h-20 object-cover rounded-md"
-              />
-              <div className="flex-1">
-                <div className="flex justify-between items-start">
-                  <h3 className="font-medium">{randomItem.name}</h3>
-                  <button 
-                    onClick={dismissRandomItem}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-                <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{randomItem.description}</p>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="font-semibold text-accent">{randomItem.price} р</span>
-                  <button
-                    onClick={() => {
-                      addItem(randomItem);
-                      dismissRandomItem();
-                    }}
-                    className="text-xs px-3 py-1 bg-accent text-white rounded-full"
-                  >
-                    В корзину
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
         )}
       </div>
       
