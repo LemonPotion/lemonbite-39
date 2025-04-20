@@ -11,6 +11,7 @@ import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+
 const foodItems: FoodItem[] = [{
   id: "0195b361-2042-7a65-bc93-0c5cac31e46a",
   name: 'Классический бургер',
@@ -156,6 +157,7 @@ const foodItems: FoodItem[] = [{
   image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
   description: 'Хрустящая утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
 }];
+
 const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
@@ -368,24 +370,33 @@ const Index = () => {
             </p>
           </div>
           
-          {randomItem && <motion.div initial={{
-          opacity: 0,
-          y: 20
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} exit={{
-          opacity: 0,
-          y: 20
-        }} className="mb-8 bg-gradient-to-r from-accent/10 to-accent/5 backdrop-blur-sm border border-accent/20 rounded-2xl p-6 shadow-lg">
+          {randomItem && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="mb-8 bg-gradient-to-r from-accent/10 to-accent/5 backdrop-blur-sm border border-accent/20 rounded-2xl p-6 shadow-lg"
+            >
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium flex items-center gap-2">
                   <Sparkles className="h-5 w-5 text-yellow-500" />
                   Рекомендация для вас
                 </h3>
-                <button onClick={dismissRandomItem} className="text-muted-foreground hover:text-foreground transition-colors">
-                  <X size={18} />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={generateRandomItem}
+                    className="p-2 hover:bg-accent/10 rounded-full transition-colors"
+                    title="Обновить рекомендацию"
+                  >
+                    <RefreshCw size={18} className="text-muted-foreground hover:text-foreground" />
+                  </button>
+                  <button 
+                    onClick={dismissRandomItem} 
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
               </div>
               <div className="flex gap-6">
                 <img src={randomItem.image} alt={randomItem.name} className="w-32 h-32 object-cover rounded-xl shadow-md" />
@@ -403,7 +414,8 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>}
+            </motion.div>
+          )}
 
           {recentlyViewed.length > 0 && <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
@@ -411,17 +423,40 @@ const Index = () => {
           
           <div className="flex flex-col space-y-4 mb-8">
             <div className="flex flex-wrap items-center gap-2">
-              <button onClick={() => setShowQuickOrders(!showQuickOrders)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
-                  ${showQuickOrders ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}>
-                <Clock className="h-3 w-3" />
-                <span>Quick Orders</span>
+              <button 
+                onClick={() => setShowQuickOrders(!showQuickOrders)} 
+                className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${showQuickOrders ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
+                <Clock className="h-4 w-4" />
+                <span>Быстрые заказы</span>
               </button>
-              <button onClick={() => handleFilterClick('favorites')} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
-                  ${activeFilter === 'favorites' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}>
-                <Heart className={`h-3 w-3 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
+
+              <button 
+                onClick={() => handleFilterClick('favorites')} 
+                className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${activeFilter === 'favorites' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
+                <Heart className={`h-4 w-4 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
                 <span>Избранное{favorites.length > 0 ? ` (${favorites.length})` : ''}</span>
               </button>
-              
+
+              <button 
+                onClick={() => setShowFilters(!showFilters)} 
+                className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+                <span>Фильтры</span>
+              </button>
+
+              <button 
+                onClick={generateRandomItem} 
+                className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-muted hover:bg-muted/80 transition-colors"
+              >
+                <Sparkles className="h-4 w-4 text-yellow-500" />
+                <span>Рекомендация</span>
+              </button>
             </div>
 
             {showQuickOrders && <div className="w-full">
@@ -440,14 +475,14 @@ const Index = () => {
               </div>
               
               <div className="flex gap-2">
-                <button onClick={() => setShowFilters(!showFilters)} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors
-                    ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80 text-foreground'}`}>
-                  <SlidersHorizontal className="h-3 w-3" />
+                <button onClick={() => setShowFilters(!showFilters)} className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80 text-foreground'}`}>
+                  <SlidersHorizontal className="h-4 w-4" />
                   <span>Фильтры</span>
                 </button>
                 
-                <button onClick={generateRandomItem} className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-muted hover:bg-muted/80 transition-colors">
-                  <Sparkles className="h-3 w-3 text-yellow-500" />
+                <button onClick={generateRandomItem} className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-muted hover:bg-muted/80 transition-colors">
+                  <Sparkles className="h-4 w-4 text-yellow-500" />
                   <span>Рекомендация</span>
                 </button>
               </div>
@@ -509,4 +544,5 @@ const Index = () => {
       <FavoritesDrawer isOpen={isFavoritesOpen} onClose={() => setIsFavoritesOpen(false)} items={favoritedItems} onFavoriteToggle={toggleFavorite} />
     </Layout>;
 };
+
 export default Index;
