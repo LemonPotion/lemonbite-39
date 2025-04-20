@@ -82,7 +82,7 @@ const QuickOrder: React.FC = () => {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
           <Clock size={18} className="text-[#F77A54]" />
-          <h3 className="text-sm font-medium text-[#2E2E2E]">Quick Orders</h3>
+          <h3 className="text-sm font-medium text-[#2E2E2E]">Быстрый заказ</h3>
         </div>
         {!showSavePrompt && <button onClick={saveCurrentOrder} className="text-xs px-3 py-1 bg-[#F77A54]/10 hover:bg-[#F77A54]/20 text-[#F77A54] rounded-full transition-colors flex items-center space-x-1">
             <Bookmark size={14} />
@@ -93,15 +93,11 @@ const QuickOrder: React.FC = () => {
       {showSavePrompt ? <div className="bg-[#F2F0E3] p-3 rounded-md mb-2">
           <input type="text" placeholder="Order name (e.g. 'Family Dinner')" value={orderName} onChange={e => setOrderName(e.target.value)} className="w-full mb-2 px-3 py-2 rounded border border-[#F77A54]/20 text-sm focus:outline-none focus:ring-1 focus:ring-[#F77A54]/50" />
           <div className="flex space-x-2">
-            <button onClick={confirmSaveOrder} className="flex-1 text-xs px-3 py-2 bg-[#F77A54] text-white rounded-md transition-colors hover:bg-[#F77A54]/90">
-              Save Order
-            </button>
+            <button onClick={confirmSaveOrder} className="flex-1 text-xs px-3 py-2 bg-[#F77A54] text-white rounded-md transition-colors hover:bg-[#F77A54]/90">Сохранить</button>
             <button onClick={() => {
           setShowSavePrompt(false);
           setOrderName('');
-        }} className="flex-1 text-xs px-3 py-2 bg-gray-200 text-[#2E2E2E] rounded-md transition-colors hover:bg-gray-300">
-              Cancel
-            </button>
+        }} className="flex-1 text-xs px-3 py-2 bg-gray-200 text-[#2E2E2E] rounded-md transition-colors hover:bg-gray-300">Отмена</button>
           </div>
         </div> : <div className="space-y-2 max-h-48 overflow-y-auto">
           {savedOrders.map((order, index) => <div key={index} className="bg-[#F2F0E3] p-2 rounded-md flex items-center justify-between">
