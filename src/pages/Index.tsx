@@ -8,7 +8,7 @@ import { useCart, FoodItem } from '../context/CartContext';
 import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp, Clock } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
-import { saveFavoritesToCookies, getFavoritesFromCookies } from '../utils/cookieUtils';
+import { saveFavoritesToCookies, getFavoritesFromCookies, saveRecentlyViewedToCookies, getRecentlyViewedFromCookies } from '../utils/cookieUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -237,6 +237,13 @@ const Index = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const savedRecentlyViewed = getRecentlyViewedFromCookies();
+    if (savedRecentlyViewed.length > 0) {
+      setRecentlyViewed(savedRecentlyViewed);
+    }
+  }, []);
+
   const handleOrderComplete = (phoneNumber: string, address: string) => {
     console.log('Order placed with:', {
       phoneNumber,
@@ -257,7 +264,9 @@ const Index = () => {
   const addToRecentlyViewed = (item: FoodItem) => {
     setRecentlyViewed(prev => {
       const filtered = prev.filter(i => i.id !== item.id);
-      return [item, ...filtered].slice(0, 4);
+      const newItems = [item, ...filtered].slice(0, 4);
+      saveRecentlyViewedToCookies(newItems);
+      return newItems;
     });
   };
 
@@ -387,13 +396,8 @@ const Index = () => {
   };
 
   useEffect(() => {
-    if (recentlyViewed.length === 0 && foodItems.length > 0) {
-      const randomIndexes = Array.from({
-        length: Math.min(4, foodItems.length)
-      }, () => Math.floor(Math.random() * foodItems.length));
-      const uniqueIndexes = [...new Set(randomIndexes)];
-      const randomItems = uniqueIndexes.map(index => foodItems[index]);
-      setRecentlyViewed(randomItems);
+    if (recentlyViewed.length === 0) {
+      return;
     }
   }, [foodItems, recentlyViewed.length]);
 
@@ -471,9 +475,11 @@ const Index = () => {
             </motion.div>
           )}
 
-          {recentlyViewed.length > 0 && <div id="recently-viewed" className="mb-8">
+          {recentlyViewed.length > 0 && (
+            <div id="recently-viewed" className="mb-8">
               <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
-            </div>}
+            </div>
+          )}
           
           <div className="flex flex-col space-y-4 mb-8">
             <div className="flex flex-wrap items-center gap-2">
