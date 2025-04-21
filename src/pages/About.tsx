@@ -31,10 +31,8 @@ const About = () => {
             доставку
           </h1>
           <p className="mt-6 text-xl md:text-2xl font-semibold text-[#CECCC5] text-center max-w-xl mx-auto">
-            Проект нового поколения, разработанный с&nbsp;
+            Проект доставки, разработанный с&nbsp;
             <span className="text-[#F98553] font-bold"><Heart className="inline w-6 h-6 -mt-1" /> любовью</span>
-            &nbsp;командой&nbsp;
-            <span className="text-[#F98553] font-extrabold">LemonPotion</span>.
           </p>
         </div>
       </section>
@@ -66,7 +64,7 @@ const About = () => {
             <Heart className="text-[#202020]" size={40} />
           </div>
           <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#F98553] mb-2">Сделано с любовью</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#F98553] mb-2">Сделано с вниманием к деталям</h2>
             <p className="text-lg">
               Каждый пиксель создан для вас: мы вкладываем тепло и энергию в каждую деталь продукта.
             </p>
@@ -92,9 +90,9 @@ const About = () => {
             <Users className="text-[#202020]" size={40} />
           </div>
           <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#F98553] mb-2">Мы — LemonPotion</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#F98553] mb-2">Разработчик</h2>
             <p className="text-lg">
-              Команда профессионалов IT и дизайна, которая ставит своей задачей сделать ваш опыт удобным, приятным и ярким.
+              Разработано LemonPotion. Задачей приложения сделать ваш опыт удобным, приятным и ярким.
             </p>
           </div>
         </div>
