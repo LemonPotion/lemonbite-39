@@ -11,6 +11,7 @@ import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
 import { saveFavoritesToCookies, getFavoritesFromCookies, saveRecentlyViewedToCookies, getRecentlyViewedFromCookies } from '../utils/cookieUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const foodItems: FoodItem[] = [{
   id: "0195b361-2042-7a65-bc93-0c5cac31e46a",
@@ -53,7 +54,7 @@ const foodItems: FoodItem[] = [{
   name: 'Рыбные тако',
   price: 125,
   image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Жареная рыба с капустным салатом, авокадо и лаймовым кремом в кукурузных тортильях.'
+  description: 'Жареная рыба с капустным салатом, авокадо и лаймовым кремом в кукуру��ных тортильях.'
 }, {
   id: "0195b364-569c-7aad-862f-9ecb5a806334",
   name: 'Суши-ассорти',
@@ -168,6 +169,7 @@ const Index = () => {
   const [isRandomItemAnimating, setIsRandomItemAnimating] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showQuickOrders, setShowQuickOrders] = useState(false);
+  const [loadingRecommendations, setLoadingRecommendations] = React.useState(false);
   const {
     addItem
   } = useCart();

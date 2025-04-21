@@ -35,6 +35,10 @@ const navigationItems: NavigationItem[] = [
   {
     name: 'Главная',
     path: '/'
+  },
+  {
+    name: 'О нас',
+    path: '/about'
   }
 ];
 
