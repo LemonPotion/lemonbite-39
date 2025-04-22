@@ -91,7 +91,7 @@ const About = () => {
     }]
   };
   return <div className="min-h-screen bg-[#202020] flex flex-col relative">
-      <div className="sticky top-0 z-50 bg-[#202020] px-2 pt-4 border-b border-[#F98553]/20 py-[17px]">
+      <div className="sticky top-0 z-50 bg-[#202020] px-2 pt-4 border-b border-[#F98553]/20 py-[14px]">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
           <Navigation />
         </div>
