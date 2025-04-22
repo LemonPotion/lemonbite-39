@@ -115,11 +115,7 @@ const Layout: React.FC<LayoutProps> = ({
         {children}
       </main>
       
-      <footer className="py-6 px-6 text-center text-sm text-muted-foreground bg-muted/30 border-t border-muted theme-transition backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto">
-          
-        </div>
-      </footer>
+      
     </div>;
 };
 export default Layout;
