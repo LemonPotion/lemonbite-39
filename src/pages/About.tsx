@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Navigation from "../components/Navigation";
 import { BookOpen, Users, Heart, Code, Info, ArrowRight, Star, Rocket, Shield, Compass, Clock, Calendar, Trophy, Coffee, ChefHat, Package } from "lucide-react";
@@ -6,22 +5,23 @@ import { useTheme } from '../context/ThemeContext';
 import { Switch } from '@/components/ui/switch';
 import { motion } from 'framer-motion';
 import { Link } from "react-router-dom";
-
 const About = () => {
-  const { theme, toggleTheme } = useTheme();
+  const {
+    theme,
+    toggleTheme
+  } = useTheme();
   const [scrollY, setScrollY] = useState(0);
-  
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
-    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const containerAnimation = {
-    hidden: { opacity: 0 },
+    hidden: {
+      opacity: 0
+    },
     show: {
       opacity: 1,
       transition: {
@@ -29,45 +29,46 @@ const About = () => {
       }
     }
   };
-
   const itemAnimation = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    show: {
+      opacity: 1,
+      y: 0
+    }
   };
-
-  return (
-    <div className="min-h-screen bg-[#202020] flex flex-col relative">
+  return <div className="min-h-screen bg-[#202020] flex flex-col relative">
       {/* Navigation and Theme Switch */}
       <div className="sticky top-0 z-50 bg-[#202020] px-2 pt-4 border-b border-[#F98553]/20">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
           <Navigation />
-          <div className="flex items-center gap-2">
-            <span className="text-[#CECCC5] text-sm">
-              {theme === 'dark' ? '🌙' : '☀️'}
-            </span>
-            <Switch 
-              checked={theme === 'dark'} 
-              onCheckedChange={toggleTheme}
-              className="data-[state=checked]:bg-[#F98553] data-[state=unchecked]:bg-[#3D3D3D]"
-            />
-          </div>
+          
         </div>
       </div>
 
       {/* Hero Section */}
-      <motion.section 
-        className="w-full mt-10 md:mt-24 flex flex-col items-center text-[#CECCC5]"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <motion.section className="w-full mt-10 md:mt-24 flex flex-col items-center text-[#CECCC5]" initial={{
+      opacity: 0,
+      y: 20
+    }} animate={{
+      opacity: 1,
+      y: 0
+    }} transition={{
+      duration: 0.6
+    }}>
         <div className="bg-[#202020] border border-[#F98553] rounded-[3rem] px-8 py-12 max-w-3xl w-[90vw] mx-auto relative shadow-lg">
-          <motion.h1 
-            className="font-playfair text-4xl md:text-6xl font-extrabold text-center leading-tight mb-5 text-[#F98553]"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
+          <motion.h1 className="font-playfair text-4xl md:text-6xl font-extrabold text-center leading-tight mb-5 text-[#F98553]" initial={{
+          opacity: 0,
+          y: -20
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} transition={{
+          delay: 0.2,
+          duration: 0.5
+        }}>
             Добро пожаловать в{" "}
             <span className="relative px-2 inline-block">
               <span className="text-[#F98553] font-black underline underline-offset-8 decoration-4 decoration-[#F98553]">
@@ -76,12 +77,14 @@ const About = () => {
             </span>{" "}
             доставку
           </motion.h1>
-          <motion.p 
-            className="mt-6 text-xl md:text-2xl font-semibold text-[#CECCC5] text-center max-w-xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
+          <motion.p className="mt-6 text-xl md:text-2xl font-semibold text-[#CECCC5] text-center max-w-xl mx-auto" initial={{
+          opacity: 0
+        }} animate={{
+          opacity: 1
+        }} transition={{
+          delay: 0.4,
+          duration: 0.5
+        }}>
             Проект доставки, разработанный с&nbsp;
             <span className="text-[#F98553] font-bold">
               <Heart className="inline w-6 h-6 -mt-1" /> любовью
@@ -93,50 +96,56 @@ const About = () => {
       {/* Animated Journey Line */}
       <div className="max-w-6xl mx-auto w-full relative mt-16 mb-8 px-4">
         <div className="absolute left-1/2 transform -translate-x-1/2 h-[2px] bg-[#F98553]/30 top-10 w-[80%]"></div>
-        <motion.div 
-          className="w-full flex justify-between relative z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <motion.div 
-            className="flex flex-col items-center"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
+        <motion.div className="w-full flex justify-between relative z-10" initial={{
+        opacity: 0
+      }} animate={{
+        opacity: 1
+      }} transition={{
+        duration: 0.8,
+        delay: 0.2
+      }}>
+          <motion.div className="flex flex-col items-center" whileHover={{
+          scale: 1.05
+        }} transition={{
+          type: "spring",
+          stiffness: 300
+        }}>
             <div className="w-12 h-12 rounded-full bg-[#202020] border-2 border-[#F98553] flex items-center justify-center text-[#F98553]">
               <Package size={24} />
             </div>
             <p className="text-[#CECCC5] mt-2 text-center text-sm">Заказ</p>
           </motion.div>
           
-          <motion.div 
-            className="flex flex-col items-center"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
+          <motion.div className="flex flex-col items-center" whileHover={{
+          scale: 1.05
+        }} transition={{
+          type: "spring",
+          stiffness: 300
+        }}>
             <div className="w-12 h-12 rounded-full bg-[#202020] border-2 border-[#F98553] flex items-center justify-center text-[#F98553]">
               <ChefHat size={24} />
             </div>
             <p className="text-[#CECCC5] mt-2 text-center text-sm">Приготовление</p>
           </motion.div>
           
-          <motion.div 
-            className="flex flex-col items-center"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
+          <motion.div className="flex flex-col items-center" whileHover={{
+          scale: 1.05
+        }} transition={{
+          type: "spring",
+          stiffness: 300
+        }}>
             <div className="w-12 h-12 rounded-full bg-[#202020] border-2 border-[#F98553] flex items-center justify-center text-[#F98553]">
               <Clock size={24} />
             </div>
             <p className="text-[#CECCC5] mt-2 text-center text-sm">Доставка</p>
           </motion.div>
           
-          <motion.div 
-            className="flex flex-col items-center"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
+          <motion.div className="flex flex-col items-center" whileHover={{
+          scale: 1.05
+        }} transition={{
+          type: "spring",
+          stiffness: 300
+        }}>
             <div className="w-12 h-12 rounded-full bg-[#202020] border-2 border-[#F98553] flex items-center justify-center text-[#F98553]">
               <Coffee size={24} />
             </div>
@@ -146,22 +155,13 @@ const About = () => {
       </div>
 
       {/* Main Info Cards */}
-      <motion.section 
-        className="w-full flex flex-col items-center gap-8 mb-12 max-w-6xl mx-auto px-4"
-        variants={containerAnimation}
-        initial="hidden"
-        animate="show"
-      >
+      <motion.section className="w-full flex flex-col items-center gap-8 mb-12 max-w-6xl mx-auto px-4" variants={containerAnimation} initial="hidden" animate="show">
         {/* First Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Code className="text-[#202020]" size={40} />
             </div>
@@ -171,14 +171,10 @@ const About = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Star className="text-[#202020]" size={40} />
             </div>
@@ -188,14 +184,10 @@ const About = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Shield className="text-[#202020]" size={40} />
             </div>
@@ -208,14 +200,10 @@ const About = () => {
 
         {/* Second Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Clock className="text-[#202020]" size={40} />
             </div>
@@ -225,14 +213,10 @@ const About = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Compass className="text-[#202020]" size={40} />
             </div>
@@ -242,14 +226,10 @@ const About = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Calendar className="text-[#202020]" size={40} />
             </div>
@@ -262,14 +242,10 @@ const About = () => {
 
         {/* Third Row - New Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-transform duration-300 hover:transform hover:scale-105" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
               <Trophy className="text-[#202020]" size={40} />
             </div>
@@ -279,14 +255,10 @@ const About = () => {
             </p>
           </motion.div>
 
-          <motion.div 
-            variants={itemAnimation} 
-            className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 md:col-span-2 lg:col-span-2"
-            whileHover={{ 
-              boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
-              borderColor: "#F98553"
-            }}
-          >
+          <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 md:col-span-2 lg:col-span-2" whileHover={{
+          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2), 0 8px 10px -6px rgba(249, 133, 83, 0.1)",
+          borderColor: "#F98553"
+        }}>
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md">
                 <Info className="text-[#202020]" size={40} />
@@ -305,59 +277,75 @@ const About = () => {
         </div>
 
         {/* Full-width Statistics Section */}
-        <motion.div 
-          variants={itemAnimation}
-          className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 mt-8"
-        >
+        <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 mt-8">
           <h2 className="text-3xl font-bold text-[#F98553] mb-6 text-center">Наши Показатели</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="p-4">
-              <motion.div 
-                className="text-4xl font-bold text-[#F98553] mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-              >
+              <motion.div className="text-4xl font-bold text-[#F98553] mb-2" initial={{
+              opacity: 0,
+              scale: 0.5
+            }} whileInView={{
+              opacity: 1,
+              scale: 1
+            }} transition={{
+              duration: 0.5
+            }} viewport={{
+              once: true
+            }}>
                 500+
               </motion.div>
               <p className="text-[#CECCC5]">Ресторанов-партнеров</p>
             </div>
             
             <div className="p-4">
-              <motion.div 
-                className="text-4xl font-bold text-[#F98553] mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-              >
+              <motion.div className="text-4xl font-bold text-[#F98553] mb-2" initial={{
+              opacity: 0,
+              scale: 0.5
+            }} whileInView={{
+              opacity: 1,
+              scale: 1
+            }} transition={{
+              duration: 0.5,
+              delay: 0.1
+            }} viewport={{
+              once: true
+            }}>
                 50к+
               </motion.div>
               <p className="text-[#CECCC5]">Активных пользователей</p>
             </div>
             
             <div className="p-4">
-              <motion.div 
-                className="text-4xl font-bold text-[#F98553] mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
+              <motion.div className="text-4xl font-bold text-[#F98553] mb-2" initial={{
+              opacity: 0,
+              scale: 0.5
+            }} whileInView={{
+              opacity: 1,
+              scale: 1
+            }} transition={{
+              duration: 0.5,
+              delay: 0.2
+            }} viewport={{
+              once: true
+            }}>
                 10к+
               </motion.div>
               <p className="text-[#CECCC5]">Доставок ежедневно</p>
             </div>
             
             <div className="p-4">
-              <motion.div 
-                className="text-4xl font-bold text-[#F98553] mb-2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
+              <motion.div className="text-4xl font-bold text-[#F98553] mb-2" initial={{
+              opacity: 0,
+              scale: 0.5
+            }} whileInView={{
+              opacity: 1,
+              scale: 1
+            }} transition={{
+              duration: 0.5,
+              delay: 0.3
+            }} viewport={{
+              once: true
+            }}>
                 98%
               </motion.div>
               <p className="text-[#CECCC5]">Довольных клиентов</p>
@@ -366,10 +354,7 @@ const About = () => {
         </motion.div>
 
         {/* Developer Info Card */}
-        <motion.div 
-          variants={itemAnimation}
-          className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 mt-4"
-        >
+        <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 mt-4">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="flex items-center justify-center min-w-[6rem] min-h-[6rem] bg-[#F98553] rounded-2xl shadow-md">
               <Users className="text-[#202020]" size={48} />
@@ -385,10 +370,7 @@ const About = () => {
         </motion.div>
 
         {/* Call to Action Section */}
-        <motion.div 
-          variants={itemAnimation}
-          className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 mt-4 overflow-hidden relative"
-        >
+        <motion.div variants={itemAnimation} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 mt-4 overflow-hidden relative">
           <div className="absolute right-0 top-0 h-full w-1/3 bg-[#F98553]/5 transform skew-x-12" />
           <div className="absolute right-10 top-0 h-full w-1/5 bg-[#F98553]/3 transform skew-x-12" />
           
@@ -400,11 +382,11 @@ const About = () => {
             </p>
             
             <Link to="/">
-              <motion.button 
-                className="px-8 py-3 bg-[#F98553] text-[#202020] font-bold rounded-full flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <motion.button className="px-8 py-3 bg-[#F98553] text-[#202020] font-bold rounded-full flex items-center gap-2" whileHover={{
+              scale: 1.05
+            }} whileTap={{
+              scale: 0.95
+            }}>
                 Перейти к заказу
                 <ArrowRight size={20} />
               </motion.button>
@@ -414,13 +396,7 @@ const About = () => {
       </motion.section>
       
       {/* Footer Section */}
-      <footer className="w-full py-12 bg-[#202020] border-t border-[#F98553]/20 mt-auto">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-[#CECCC5] text-sm">© 2023-2025 LemonBite. Все права защищены.</p>
-        </div>
-      </footer>
-    </div>
-  );
+      
+    </div>;
 };
-
 export default About;
