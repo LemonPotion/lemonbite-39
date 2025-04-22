@@ -120,14 +120,14 @@ const About = () => {
           duration: 0.5
         }}>Добро пожаловать в
 удобную доставку</motion.h1>
-          <motion.p className="mt-6 text-xl md:text-2xl text-[#CECCC5] text-center max-w-2xl mx-auto font-light" initial={{
+          <motion.p initial={{
           opacity: 0
         }} animate={{
           opacity: 1
         }} transition={{
           delay: 0.4,
           duration: 0.5
-        }}>Современное высокопроизводительное веб-приложение</motion.p>
+        }} className="mt-6 text-xl text-[#CECCC5] text-center max-w-2xl mx-auto font-light md:text-xl">Современное высокопроизводительное веб-приложение</motion.p>
         </div>
       </motion.section>
 
