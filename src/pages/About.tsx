@@ -108,7 +108,7 @@ const About = () => {
       duration: 0.8,
       ease: "easeOut"
     }}>
-        <div className="bg-[#202020] border border-[#F98553] rounded-[3rem] px-8 py-12 max-w-4xl w-[90vw] mx-auto relative hover:border-opacity-100 transition-all duration-300">
+        <div className="bg-[#202020] rounded-[3rem] px-8 py-12 max-w-4xl w-[90vw] mx-auto relative hover:border-opacity-100 transition-all duration-300">
           <motion.h1 className="font-playfair text-4xl md:text-6xl font-extrabold text-center leading-tight mb-5 text-[#F98553]" initial={{
           opacity: 0,
           y: -20
