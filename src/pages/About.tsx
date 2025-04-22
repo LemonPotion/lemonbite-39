@@ -109,7 +109,7 @@ const About = () => {
       ease: "easeOut"
     }}>
         <div className="bg-[#202020] rounded-[3rem] px-8 py-12 max-w-4xl w-[90vw] mx-auto relative hover:border-opacity-100 transition-all duration-300">
-          <motion.h1 className="font-playfair text-4xl md:text-6xl font-extrabold text-center leading-tight mb-5 text-[#F98553]" initial={{
+          <motion.h1 initial={{
           opacity: 0,
           y: -20
         }} animate={{
@@ -118,7 +118,7 @@ const About = () => {
         }} transition={{
           delay: 0.2,
           duration: 0.5
-        }}>Добро пожаловать в
+        }} className="font-playfair md:text-6xl font-extrabold text-center leading-tight mb-5 text-[#F98553] text-7xl">Добро пожаловать в
 удобную доставку</motion.h1>
           <motion.p initial={{
           opacity: 0
