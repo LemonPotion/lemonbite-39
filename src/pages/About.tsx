@@ -164,7 +164,7 @@ const About = () => {
               Добро пожаловать в удобную доставку
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">Современное высокопроизводительное веб-приложение для обеспечения наилучшего опыта как разработчиков так и пользователей.</p>
+            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg">Современное высокопроизводительное веб-приложение для обеспечения наилучшего опыта как разработчиков так и пользователей.</p>
 
             <motion.div className="flex flex-wrap justify-center gap-4" initial={{
             opacity: 0
