@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Navigation from "../components/Navigation";
 import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as LinkIcon, ChartBar, Sparkles, GitFork, Github } from "lucide-react";
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { Link as RouterLink } from "react-router-dom";
+import AboutPresentation from "../components/AboutPresentation";
+
 const About = () => {
   const {
     theme,
     toggleTheme
   } = useTheme();
   const [scrollY, setScrollY] = useState(0);
+  const [presentationOpen, setPresentationOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -17,6 +21,7 @@ const About = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const containerAnimation = {
     hidden: {
       opacity: 0
@@ -28,6 +33,7 @@ const About = () => {
       }
     }
   };
+
   const itemAnimation = {
     hidden: {
       opacity: 0,
@@ -38,6 +44,7 @@ const About = () => {
       y: 0
     }
   };
+
   const techStacks = {
     backend: [{
       name: "ASP.NET Core",
@@ -90,6 +97,7 @@ const About = () => {
       icon: <Layers className="text-accent" size={40} />
     }]
   };
+
   const FeatureCard = ({
     icon,
     title,
@@ -112,6 +120,7 @@ const About = () => {
       </div>
       <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mb-12"></div>
     </motion.div>;
+
   return <div className="min-h-screen bg-background text-foreground">
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border py-[13px]">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
@@ -317,7 +326,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Interactive demo section */}
+      {/* Interactive demo section with presentation */}
       <section className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="bg-card border border-border rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-xl">
@@ -380,42 +389,38 @@ const About = () => {
                 </motion.div>
               </div>
 
-              <motion.div className="relative mx-auto max-w-5xl rounded-2xl border border-border overflow-hidden shadow-2xl" initial={{
-              opacity: 0,
-              y: 40
-            }} whileInView={{
-              opacity: 1,
-              y: 0
-            }} transition={{
-              duration: 0.7,
-              delay: 0.2
-            }} viewport={{
-              once: true,
-              margin: "-100px"
-            }}>
-                <div className="bg-background/30 backdrop-blur-sm p-3 border-b border-border">
-                  <div className="flex space-x-2">
-                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                    <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+              <div
+                className="bg-card aspect-video flex items-center justify-center p-6 overflow-hidden rounded-2xl shadow-lg relative cursor-pointer transition-all hover:scale-105 hover:shadow-2xl arc-pulse"
+                onClick={() => setPresentationOpen(true)}
+                aria-label="Показать презентацию"
+                tabIndex={0}
+                role="button"
+                onKeyDown={e => (e.key === "Enter" || e.key === " ") && setPresentationOpen(true)}
+                style={{ outline: "none" }}
+              >
+                <div className="flex flex-col items-center justify-center w-full h-full">
+                  <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 text-primary mb-6">
+                    <span className="animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]">
+                      <svg width="48" height="48" viewBox="0 0 24 24" className="mx-auto text-primary"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.05"/><circle cx="12" cy="12" r="8" fill="currentColor" opacity="0.18"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                    </span>
                   </div>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight gradient-text">
+                    Кликните, чтобы открыть презентацию
+                  </h3>
+                  <p className="text-muted-foreground text-base max-w-xl mx-auto">
+                    Быстрый и стильный обзор возможностей.
+                  </p>
                 </div>
-                <div className="bg-card aspect-video flex items-center justify-center p-6 overflow-hidden">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary mb-6">
-                      <Code size={32} />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Готово к вашим задачам</h3>
-                    <p className="text-muted-foreground max-w-md mx-auto">
-                      Современное веб-приложение для доставки еды с открытым исходным кодом
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+                <span className="absolute bottom-3 right-8 animate-pulse">
+                  <svg width="26" height="26" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </span>
+              </div>
+              <AboutPresentation open={presentationOpen} onOpenChange={setPresentationOpen} />
             </div>
           </div>
         </div>
       </section>
     </div>;
 };
+
 export default About;
