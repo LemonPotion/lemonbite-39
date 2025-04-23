@@ -1,15 +1,15 @@
+
 import React, { useEffect, useState } from "react";
 import Navigation from "../components/Navigation";
-import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link, ChartBar } from "lucide-react";
+import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as LinkIcon, ChartBar, Sparkles, GitFork, Github } from "lucide-react";
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { Link as RouterLink } from "react-router-dom";
+
 const About = () => {
-  const {
-    theme,
-    toggleTheme
-  } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const [scrollY, setScrollY] = useState(0);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
@@ -17,10 +17,9 @@ const About = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const containerAnimation = {
-    hidden: {
-      opacity: 0
-    },
+    hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
@@ -28,199 +27,392 @@ const About = () => {
       }
     }
   };
+
   const itemAnimation = {
-    hidden: {
-      opacity: 0,
-      y: 20
-    },
-    show: {
-      opacity: 1,
-      y: 0
-    }
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
   };
+
   const techStacks = {
-    backend: [{
-      name: "ASP.NET Core",
-      description: "Современный кроссплатформенный веб-фреймворк",
-      icon: <Server className="text-[#202020]" size={40} />
-    }, {
-      name: "Entity Framework Core",
-      description: "Современная ORM для .NET",
-      icon: <Database className="text-[#202020]" size={40} />
-    }, {
-      name: ".NET 8",
-      description: "Новейшая платформа .NET",
-      icon: <Code className="text-[#202020]" size={40} />
-    }, {
-      name: "PostgreSQL",
-      description: "Продвинутая база данных с открытым исходным кодом",
-      icon: <Database className="text-[#202020]" size={40} />
-    }, {
-      name: "MediatR",
-      description: "Реализация паттерна CQRS",
-      icon: <Layers className="text-[#202020]" size={40} />
-    }, {
-      name: "AutoMapper",
-      description: "Решение для маппинга объектов",
-      icon: <FileCode className="text-[#202020]" size={40} />
-    }],
-    frontend: [{
-      name: "React 18",
-      description: "Современная UI библиотека",
-      icon: <Laptop className="text-[#202020]" size={40} />
-    }, {
-      name: "TypeScript",
-      description: "Типизированный JavaScript",
-      icon: <Terminal className="text-[#202020]" size={40} />
-    }, {
-      name: "Tailwind CSS",
-      description: "CSS фреймворк основанный на утилитах",
-      icon: <FileCode className="text-[#202020]" size={40} />
-    }, {
-      name: "React Query",
-      description: "Библиотека для получения данных",
-      icon: <Link className="text-[#202020]" size={40} />
-    }, {
-      name: "Framer Motion",
-      description: "Библиотека анимаций",
-      icon: <ChartBar className="text-[#202020]" size={40} />
-    }, {
-      name: "shadcn/ui",
-      description: "Библиотека UI компонентов",
-      icon: <Layers className="text-[#202020]" size={40} />
-    }]
+    backend: [
+      {
+        name: "ASP.NET Core",
+        description: "Современный кроссплатформенный веб-фреймворк",
+        icon: <Server className="text-accent" size={40} />
+      },
+      {
+        name: "Entity Framework Core",
+        description: "Современная ORM для .NET",
+        icon: <Database className="text-accent" size={40} />
+      },
+      {
+        name: ".NET 8",
+        description: "Новейшая платформа .NET",
+        icon: <Code className="text-accent" size={40} />
+      },
+      {
+        name: "PostgreSQL",
+        description: "Продвинутая база данных с открытым исходным кодом",
+        icon: <Database className="text-accent" size={40} />
+      },
+      {
+        name: "MediatR",
+        description: "Реализация паттерна CQRS",
+        icon: <Layers className="text-accent" size={40} />
+      },
+      {
+        name: "AutoMapper",
+        description: "Решение для маппинга объектов",
+        icon: <FileCode className="text-accent" size={40} />
+      }
+    ],
+    frontend: [
+      {
+        name: "React 18",
+        description: "Современная UI библиотека",
+        icon: <Laptop className="text-accent" size={40} />
+      },
+      {
+        name: "TypeScript",
+        description: "Типизированный JavaScript",
+        icon: <Terminal className="text-accent" size={40} />
+      },
+      {
+        name: "Tailwind CSS",
+        description: "CSS фреймворк основанный на утилитах",
+        icon: <FileCode className="text-accent" size={40} />
+      },
+      {
+        name: "React Query",
+        description: "Библиотека для получения данных",
+        icon: <LinkIcon className="text-accent" size={40} />
+      },
+      {
+        name: "Framer Motion",
+        description: "Библиотека анимаций",
+        icon: <ChartBar className="text-accent" size={40} />
+      },
+      {
+        name: "shadcn/ui",
+        description: "Библиотека UI компонентов",
+        icon: <Layers className="text-accent" size={40} />
+      }
+    ]
   };
-  return <div className="min-h-screen bg-[#202020] flex flex-col relative">
-      <div className="sticky top-0 z-50 bg-[#202020] px-2 pt-4 border-b border-[#F98553]/20 py-[13px]">
+
+  const FeatureCard = ({ icon, title, details }) => (
+    <motion.div
+      className="glass-card relative overflow-hidden"
+      whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent opacity-80"></div>
+      <div className="p-6 z-10 relative">
+        <div className="mb-4 flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 text-primary">
+          {icon}
+        </div>
+        <h3 className="text-xl font-bold mb-2">{title}</h3>
+        <p className="text-muted-foreground">{details}</p>
+      </div>
+      <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mb-12"></div>
+    </motion.div>
+  );
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border py-[13px]">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
           <Navigation />
         </div>
       </div>
 
-      {/* Hero Section */}
-      <motion.section className="relative w-full mt-10 md:mt-24 flex flex-col items-center text-[#CECCC5] overflow-hidden" initial={{
-      opacity: 0,
-      y: 20
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} transition={{
-      duration: 0.8,
-      ease: "easeOut"
-    }}>
-        <div className="bg-[#202020] rounded-[3rem] px-8 py-12 max-w-4xl w-[90vw] mx-auto relative hover:border-opacity-100 transition-all duration-300">
-          <motion.h1 initial={{
-          opacity: 0,
-          y: -20
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          delay: 0.2,
-          duration: 0.5
-        }} className="font-playfair md:text-6xl font-extrabold text-center leading-tight mb-5 text-[#F98553] text-7xl">Добро пожаловать в
-удобную доставку</motion.h1>
-          <motion.p initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          delay: 0.4,
-          duration: 0.5
-        }} className="mt-6 text-xl text-[#CECCC5] text-center max-w-2xl mx-auto font-light md:text-xl">Современное высокопроизводительное веб-приложение</motion.p>
+      {/* Hero Section with Parallax */}
+      <section className="relative overflow-hidden py-20 md:py-28">
+        <div className="absolute inset-0 -z-10 opacity-10">
+          <div className="absolute inset-0 bg-grid-pattern"></div>
         </div>
-      </motion.section>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="container mx-auto px-4"
+        >
+          <div className="max-w-3xl mx-auto text-center relative">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="mb-6 inline-block"
+            >
+              <span className="inline-block relative">
+                <Sparkles className="absolute -top-6 -right-6 text-primary w-6 h-6" />
+                <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                  Вдохновлено современными технологиями
+                </span>
+              </span>
+            </motion.div>
+            
+            <h1 className="font-bold text-5xl md:text-7xl tracking-tight mb-6 gradient-text">
+              Добро пожаловать в удобную доставку
+            </h1>
+            
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Современное высокопроизводительное веб-приложение, созданное с использованием передовых технологий для обеспечения наилучшего взаимодействия с пользователем.
+            </p>
 
-      {/* Backend Stack Section */}
-      <motion.section className="w-full flex flex-col items-center gap-8 my-16 max-w-7xl mx-auto px-4" variants={containerAnimation} initial="hidden" animate="show" viewport={{
-      once: true
-    }}>
-        <h2 className="text-3xl font-bold text-[#F98553] mb-8">Серверные Технологии</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {techStacks.backend.map((tech, index) => <motion.div key={tech.name} variants={itemAnimation} whileHover={{
-          scale: 1.05,
-          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2)",
-          borderColor: "#F98553"
-        }} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-all duration-300">
-              <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
-                {tech.icon}
-              </div>
-              <h3 className="text-2xl font-bold text-[#F98553] mb-2">{tech.name}</h3>
-              <p className="text-[#CECCC5] font-light">{tech.description}</p>
-            </motion.div>)}
+            <motion.div
+              className="flex flex-wrap justify-center gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              <RouterLink to="/" className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all">
+                Начать заказ
+              </RouterLink>
+              <a href="https://github.com" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground font-medium hover:bg-secondary/80 transition-all">
+                <Github size={18} />
+                <span>Открыть на GitHub</span>
+              </a>
+            </motion.div>
+
+          </div>
+        </motion.div>
+
+        {/* Floating elements animation */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <motion.div 
+            className="absolute top-[10%] left-[10%] w-20 h-20 rounded-full bg-primary/10 blur-xl"
+            animate={{ 
+              x: [0, 10, 0, -10, 0], 
+              y: [0, -10, 0, 10, 0], 
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 6,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-[20%] right-[15%] w-32 h-32 rounded-full bg-accent/10 blur-xl"
+            animate={{ 
+              x: [0, -15, 0, 15, 0], 
+              y: [0, 15, 0, -15, 0], 
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 7,
+              ease: "easeInOut"
+            }}
+          />
         </div>
-      </motion.section>
+      </section>
 
-      {/* Frontend Stack Section */}
-      <motion.section className="w-full flex flex-col items-center gap-8 my-16 max-w-7xl mx-auto px-4" variants={containerAnimation} initial="hidden" animate="show" viewport={{
-      once: true
-    }}>
-        <h2 className="text-3xl font-bold text-[#F98553] mb-8">Клиентские Технологии</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {techStacks.frontend.map((tech, index) => <motion.div key={tech.name} variants={itemAnimation} whileHover={{
-          scale: 1.05,
-          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2)",
-          borderColor: "#F98553"
-        }} className="w-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-7 transition-all duration-300">
-              <div className="flex items-center justify-center min-w-[4.5rem] min-h-[4.5rem] bg-[#F98553] rounded-2xl shadow-md mb-4">
-                {tech.icon}
-              </div>
-              <h3 className="text-2xl font-bold text-[#F98553] mb-2">{tech.name}</h3>
-              <p className="text-[#CECCC5] font-light">{tech.description}</p>
-            </motion.div>)}
-        </div>
-      </motion.section>
-
-      {/* Features Section */}
-      <motion.section className="w-full flex flex-col items-center gap-8 my-16 max-w-7xl mx-auto px-4" variants={containerAnimation} initial="hidden" animate="show" viewport={{
-      once: true
-    }}>
-        <h2 className="text-3xl font-bold text-[#F98553] mb-8">Ключевые Особенности</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          <motion.div variants={itemAnimation} whileHover={{
-          scale: 1.02,
-          boxShadow: "0 10px 25px -5px rgba(249, 133, 83, 0.2)"
-        }} className="col-span-full bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="flex items-center justify-center min-w-[6rem] min-h-[6rem] bg-[#F98553] rounded-2xl shadow-md">
-                <Code className="text-[#202020]" size={48} />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-[#F98553] mb-4">Современная Архитектура</h3>
-                <ul className="text-[#CECCC5] space-y-2 font-light">
-                  <li>• Чистая архитектура с паттерном CQRS</li>
-                  <li>• Принципы Domain-Driven Design</li>
-                  <li>• Структура готовая к микросервисам</li>
-                  <li>• Типобезопасная интеграция API</li>
-                  <li>• Масштабируемый дизайн базы данных</li>
-                </ul>
-              </div>
-            </div>
+      {/* Tech Stack Showcase - Interactive 3D Cards */}
+      <section className="py-20 relative">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="text-center mb-16"
+          >
+            <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 inline-block">
+              Наш стек технологий
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Построено с использованием лучших технологий</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Наше приложение использует современные инструменты разработки для обеспечения производительности, масштабируемости и поддерживаемости.
+            </p>
           </motion.div>
-        </div>
-      </motion.section>
 
-      {/* Call to Action */}
-      <motion.div variants={itemAnimation} className="w-full max-w-7xl mx-auto px-4 mb-16" whileHover={{
-      scale: 1.02
-    }}>
-        <div className="bg-[#202020] border border-[#F98553] rounded-3xl shadow-lg p-8 overflow-hidden relative">
-          <div className="relative z-10 flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#F98553] mb-6">Поддержите проект</h2>
-            <p className="text-[#CECCC5] text-lg max-w-2xl mb-8 font-light">Поддержите нас на GitHub или предлагайте идеи для развития продукта. </p>
-            <RouterLink to="https://github.com" target="_blank">
-              <motion.button className="px-8 py-3 bg-[#F98553] text-[#202020] font-bold rounded-full flex items-center gap-2 hover:bg-[#F98553]/90 transition-colors" whileHover={{
-              scale: 1.05
-            }} whileTap={{
-              scale: 0.95
-            }}>
-                Открыть на GitHub
-                <FileCode size={20} />
-              </motion.button>
-            </RouterLink>
+          <div className="mb-20">
+            <h3 className="text-2xl font-semibold mb-8 text-center">Серверные технологии</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {techStacks.backend.map((tech) => (
+                <motion.div
+                  key={tech.name}
+                  className="glass-card border border-border bg-card/30 rounded-2xl p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  whileHover={{ 
+                    y: -5,
+                    boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-primary/10 mb-4">
+                      {tech.icon}
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{tech.name}</h3>
+                    <p className="text-muted-foreground">{tech.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-semibold mb-8 text-center">Клиентские технологии</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {techStacks.frontend.map((tech) => (
+                <motion.div
+                  key={tech.name}
+                  className="glass-card border border-border bg-card/30 rounded-2xl p-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  whileHover={{ 
+                    y: -5,
+                    boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-primary/10 mb-4">
+                      {tech.icon}
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{tech.name}</h3>
+                    <p className="text-muted-foreground">{tech.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
-      </motion.div>
-    </div>;
+      </section>
+
+      {/* Features Section with Interactive Elements */}
+      <section className="py-20 bg-gradient-to-b from-background to-background/60">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 inline-block">
+              Возможности
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ключевые особенности</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Наш подход к разработке обеспечивает масштабируемость, надежность и удобство обслуживания вашей системы.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FeatureCard 
+              icon={<Code size={24} />}
+              title="Современная архитектура"
+              details="Чистая архитектура с паттерном CQRS, принципы Domain-Driven Design и структура готовая к микросервисам."
+            />
+            <FeatureCard 
+              icon={<Database size={24} />}
+              title="Эффективная база данных"
+              details="Масштабируемый дизайн базы данных с оптимизированными запросами и кэшированием."
+            />
+            <FeatureCard 
+              icon={<GitFork size={24} />}
+              title="Готово к масштабированию"
+              details="Архитектура, спроектированная для легкого масштабирования по мере роста вашего бизнеса."
+            />
+            <FeatureCard 
+              icon={<Terminal size={24} />}
+              title="Типобезопасность"
+              details="Полная типобезопасность от API до пользовательского интерфейса для предотвращения ошибок во время выполнения."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive demo section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="bg-card border border-border rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-xl">
+            <div className="absolute inset-0 overflow-hidden opacity-10">
+              <svg className="absolute bottom-0 left-0 transform translate-x-80 -translate-y-24" width="640" height="784" fill="none" viewBox="0 0 640 784" aria-hidden="true">
+                <defs>
+                  <pattern id="9ebea6f4-a1f5-4d96-8c4e-4c2abf658047" x="118" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <rect x="0" y="0" width="4" height="4" className="text-primary" fill="currentColor" />
+                  </pattern>
+                </defs>
+                <rect y="72" width="640" height="640" className="text-primary" fill="currentColor" opacity="0.1" />
+                <rect x="118" width="404" height="784" fill="url(#9ebea6f4-a1f5-4d96-8c4e-4c2abf658047)" opacity="0.5" />
+              </svg>
+            </div>
+            <div className="relative z-10">
+              <div className="mx-auto max-w-2xl text-center mb-10 md:mb-16">
+                <motion.h2 
+                  className="text-3xl md:text-4xl font-bold mb-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7 }}
+                  viewport={{ once: true }}
+                >
+                  Поддержите проект
+                </motion.h2>
+                <motion.p 
+                  className="text-xl text-muted-foreground mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  Поддержите нас на GitHub или предлагайте идеи для развития продукта.
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  <RouterLink 
+                    to="https://github.com" 
+                    target="_blank"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all transform hover:-translate-y-1"
+                  >
+                    <Github size={20} />
+                    <span>Открыть на GitHub</span>
+                  </RouterLink>
+                </motion.div>
+              </div>
+
+              <motion.div 
+                className="relative mx-auto max-w-5xl rounded-2xl border border-border overflow-hidden shadow-2xl"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                viewport={{ once: true, margin: "-100px" }}
+              >
+                <div className="bg-background/30 backdrop-blur-sm p-3 border-b border-border">
+                  <div className="flex space-x-2">
+                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                    <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                  </div>
+                </div>
+                <div className="bg-card aspect-video flex items-center justify-center p-6 overflow-hidden">
+                  <div className="text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary mb-6">
+                      <Code size={32} />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">Готово к вашим задачам</h3>
+                    <p className="text-muted-foreground max-w-md mx-auto">
+                      Современное веб-приложение для доставки еды с открытым исходным кодом
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 };
+
 export default About;
