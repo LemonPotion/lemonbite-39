@@ -160,7 +160,7 @@ const About = () => {
               </span>
             </motion.div>
             
-            <h1 className="font-bold text-5xl md:text-7xl tracking-tight mb-6 gradient-text">
+            <h1 className="font-bold text-5xl tracking-tight mb-6 gradient-text py-[16px] md:text-7xl">
               Добро пожаловать в удобную доставку
             </h1>
             
