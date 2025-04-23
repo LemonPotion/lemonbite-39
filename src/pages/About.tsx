@@ -216,7 +216,8 @@ const About = () => {
             <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 inline-block">
               Наш стек технологий
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Построено с использованием лучших технологий</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Удобный стек
+          </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Наше приложение использует современные инструменты разработки для обеспечения производительности, масштабируемости и поддерживаемости.
             </p>
