@@ -4,7 +4,6 @@ import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as Lin
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { Link as RouterLink } from "react-router-dom";
-
 const About = () => {
   const {
     theme,
@@ -18,7 +17,6 @@ const About = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const containerAnimation = {
     hidden: {
       opacity: 0
@@ -92,7 +90,6 @@ const About = () => {
       icon: <Layers className="text-accent" size={40} />
     }]
   };
-
   const FeatureCard = ({
     icon,
     title,
@@ -115,14 +112,16 @@ const About = () => {
       </div>
       <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mb-12"></div>
     </motion.div>;
-
-  return (
-    <motion.div
-      className="min-h-screen bg-background text-foreground"
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: "easeOut" }}
-    >
+  return <motion.div className="min-h-screen bg-background text-foreground" initial={{
+    opacity: 0,
+    y: 30
+  }} animate={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.9,
+    ease: "easeOut"
+  }}>
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border py-[13px]">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
           <Navigation />
@@ -385,41 +384,42 @@ const About = () => {
                 </motion.div>
               </div>
 
-              <motion.div
-                className="relative mx-auto w-full max-w-5xl h-[520px] sm:h-[520px] md:h-[620px] rounded-2xl border border-border overflow-hidden shadow-2xl"
-                initial={{ opacity: 0, y: 40, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                viewport={{ once: true, margin: "-100px" }}
-                style={{
-                  backgroundImage: 'url(https://i.imgur.com/kR7VhAh.png)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  boxShadow: '0 12px 45px 0 rgba(0,0,0,0.18), 0 5px 20px 0 rgba(0,0,0,0.07)',
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
+              <motion.div className="relative mx-auto w-full max-w-5xl h-[520px] sm:h-[520px] md:h-[620px] rounded-2xl border border-border overflow-hidden shadow-2xl" initial={{
+              opacity: 0,
+              y: 40,
+              scale: 0.98
+            }} whileInView={{
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }} transition={{
+              duration: 0.7,
+              delay: 0.2
+            }} viewport={{
+              once: true,
+              margin: "-100px"
+            }} style={{
+              backgroundImage: 'url(https://i.imgur.com/kR7VhAh.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              boxShadow: '0 12px 45px 0 rgba(0,0,0,0.18), 0 5px 20px 0 rgba(0,0,0,0.07)',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
                 <div className="relative z-10 flex flex-col items-center justify-center w-full h-full bg-black/30 md:bg-black/20 backdrop-blur-sm">
                   <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-primary/20 text-primary mb-8 shadow-lg">
                     <Code size={42} />
                   </div>
-                  <h3 className="text-4xl font-extrabold text-white drop-shadow-lg mb-4 tracking-tight">
-                    Готово к вашим задачам
-                  </h3>
-                  <p className="text-xl font-semibold text-neutral-100 max-w-2xl mx-auto mb-6 drop-shadow-md" style={{ textShadow: "0px 2px 16px rgba(0,0,0,0.26)" }}>
-                    Современное веб-приложение для доставки еды с открытым исходным кодом
-                  </p>
+                  <h3 className="text-4xl font-extrabold text-white drop-shadow-lg mb-4 tracking-tight">Готовы сделать первый заказ?</h3>
+                  
                 </div>
               </motion.div>
             </div>
           </div>
         </div>
       </section>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default About;
