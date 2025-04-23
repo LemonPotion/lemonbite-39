@@ -176,7 +176,7 @@ const About = () => {
               <RouterLink to="/" className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all">
                 Начать заказ
               </RouterLink>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground font-medium hover:bg-secondary/80 transition-all">
+              <a href="https://github.com/LemonPotion/lemonbite-39.git" target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary text-secondary-foreground font-medium hover:bg-secondary/80 transition-all">
                 <Github size={18} />
                 <span>Открыть на GitHub</span>
               </a>
@@ -377,7 +377,7 @@ const About = () => {
               }} viewport={{
                 once: true
               }}>
-                  <RouterLink to="https://github.com" target="_blank" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all transform hover:-translate-y-1">
+                  <RouterLink to="https://github.com/LemonPotion/lemonbite-39.git" target="_blank" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all transform hover:-translate-y-1">
                     <Github size={20} />
                     <span>Открыть на GitHub</span>
                   </RouterLink>
