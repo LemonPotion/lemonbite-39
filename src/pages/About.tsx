@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
 import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as LinkIcon, ChartBar, Sparkles, GitFork, Github } from "lucide-react";
@@ -391,29 +390,35 @@ const About = () => {
               </div>
 
               <div
-                className="bg-card aspect-video flex items-center justify-center p-6 overflow-hidden rounded-2xl shadow-lg relative cursor-pointer transition-all hover:scale-105 hover:shadow-2xl arc-pulse"
+                className="bg-background/80 dark:bg-background/90 outline-accent glass border-2 border-accent/10 glass-morphism aspect-video flex flex-col sm:flex-row items-center justify-between p-7 sm:p-12 gap-6 rounded-2xl shadow-lg hover:scale-105 transition-all cursor-pointer relative overflow-hidden"
                 onClick={() => setPresentationOpen(true)}
                 aria-label="Показать презентацию"
                 tabIndex={0}
                 role="button"
                 onKeyDown={e => (e.key === "Enter" || e.key === " ") && setPresentationOpen(true)}
-                style={{ outline: "none" }}
+                style={{ outline: "2.5px solid #9b87f5", minHeight: "285px", outlineOffset: -6 }}
               >
-                <div className="flex flex-col items-center justify-center w-full h-full">
-                  <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 text-primary mb-6">
-                    <span className="animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]">
-                      <svg width="48" height="48" viewBox="0 0 24 24" className="mx-auto text-primary"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.05"/><circle cx="12" cy="12" r="8" fill="currentColor" opacity="0.18"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg>
+                <div className="flex-1 flex flex-col items-center justify-center w-full h-full">
+                  <div className="inline-flex items-center justify-center w-28 h-28 rounded-full bg-primary/15 text-primary mb-6 shadow">
+                    <span className="animate-[pulse_1.8s_cubic-bezier(0.4,0,0.6,1)_infinite]">
+                      <svg width="54" height="54" viewBox="0 0 24 24" className="mx-auto text-primary">
+                        <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.10"/>
+                        <circle cx="12" cy="12" r="8" fill="currentColor" opacity="0.20"/>
+                        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                      </svg>
                     </span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight gradient-text">
+                  <h3 className="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight gradient-text drop-shadow arc-font">
                     Кликните, чтобы открыть презентацию
                   </h3>
-                  <p className="text-muted-foreground text-base max-w-xl mx-auto">
-                    Быстрый и стильный обзор возможностей.
+                  <p className="text-muted-foreground text-lg max-w-xl mx-auto font-medium mt-2">
+                    Интерактивный обзор возможностей – теперь с картинками!
                   </p>
                 </div>
-                <span className="absolute bottom-3 right-8 animate-pulse">
-                  <svg width="26" height="26" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <span className="absolute bottom-6 right-10 animate-pulse">
+                  <svg width="30" height="30" fill="none" viewBox="0 0 24 24">
+                    <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </span>
               </div>
               <AboutPresentation open={presentationOpen} onOpenChange={setPresentationOpen} />
