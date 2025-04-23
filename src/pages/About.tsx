@@ -408,7 +408,7 @@ const About = () => {
               alignItems: "center",
               justifyContent: "center"
             }}>
-                <div className="relative z-10 flex flex-col items-center justify-center w-full h-full bg-black/30">
+                <div className="relative z-10 flex flex-col items-center justify-center bg-black/30">
                   <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-primary/20 text-primary mb-8 shadow-lg">
                     <Code size={42} />
                   </div>
