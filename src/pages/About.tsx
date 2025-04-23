@@ -4,6 +4,7 @@ import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as Lin
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import { Link as RouterLink } from "react-router-dom";
+
 const About = () => {
   const {
     theme,
@@ -17,6 +18,7 @@ const About = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const containerAnimation = {
     hidden: {
       opacity: 0
@@ -90,6 +92,7 @@ const About = () => {
       icon: <Layers className="text-accent" size={40} />
     }]
   };
+
   const FeatureCard = ({
     icon,
     title,
@@ -112,14 +115,20 @@ const About = () => {
       </div>
       <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mb-12"></div>
     </motion.div>;
-  return <div className="min-h-screen bg-background text-foreground">
+
+  return (
+    <motion.div
+      className="min-h-screen bg-background text-foreground"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: "easeOut" }}
+    >
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border py-[13px]">
         <div className="flex items-center justify-between max-w-7xl mx-auto w-full px-4">
           <Navigation />
         </div>
       </div>
 
-      {/* Hero Section with Parallax */}
       <section className="relative overflow-hidden py-20 md:py-28">
         <div className="absolute inset-0 -z-10 opacity-10">
           <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -177,7 +186,6 @@ const About = () => {
           </div>
         </motion.div>
 
-        {/* Floating elements animation */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <motion.div className="absolute top-[10%] left-[10%] w-20 h-20 rounded-full bg-primary/10 blur-xl" animate={{
           x: [0, 10, 0, -10, 0],
@@ -198,7 +206,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Tech Stack Showcase - Interactive 3D Cards */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4">
           <motion.div initial={{
@@ -285,7 +292,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Features Section with Interactive Elements */}
       <section className="py-20 bg-gradient-to-b from-background to-background/60">
         <div className="container mx-auto px-4">
           <motion.div className="text-center mb-16" initial={{
@@ -317,7 +323,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Interactive demo section */}
       <section className="py-24 relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="bg-card border border-border rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-xl">
@@ -380,42 +385,41 @@ const About = () => {
                 </motion.div>
               </div>
 
-              <motion.div className="relative mx-auto max-w-5xl rounded-2xl border border-border overflow-hidden shadow-2xl" initial={{
-              opacity: 0,
-              y: 40
-            }} whileInView={{
-              opacity: 1,
-              y: 0
-            }} transition={{
-              duration: 0.7,
-              delay: 0.2
-            }} viewport={{
-              once: true,
-              margin: "-100px"
-            }}>
-                <div className="bg-background/30 backdrop-blur-sm p-3 border-b border-border">
-                  <div className="flex space-x-2">
-                    <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                    <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+              <motion.div
+                className="relative mx-auto w-full max-w-5xl h-[520px] sm:h-[520px] md:h-[620px] rounded-2xl border border-border overflow-hidden shadow-2xl"
+                initial={{ opacity: 0, y: 40, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                viewport={{ once: true, margin: "-100px" }}
+                style={{
+                  backgroundImage: 'url(https://i.imgur.com/kR7VhAh.png)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  boxShadow: '0 12px 45px 0 rgba(0,0,0,0.18), 0 5px 20px 0 rgba(0,0,0,0.07)',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <div className="relative z-10 flex flex-col items-center justify-center w-full h-full bg-black/30 md:bg-black/20 backdrop-blur-sm">
+                  <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-primary/20 text-primary mb-8 shadow-lg">
+                    <Code size={42} />
                   </div>
-                </div>
-                <div className="bg-card aspect-video flex items-center justify-center p-6 overflow-hidden">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary mb-6">
-                      <Code size={32} />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2">Готово к вашим задачам</h3>
-                    <p className="text-muted-foreground max-w-md mx-auto">
-                      Современное веб-приложение для доставки еды с открытым исходным кодом
-                    </p>
-                  </div>
+                  <h3 className="text-4xl font-extrabold text-white drop-shadow-lg mb-4 tracking-tight">
+                    Готово к вашим задачам
+                  </h3>
+                  <p className="text-xl font-semibold text-neutral-100 max-w-2xl mx-auto mb-6 drop-shadow-md" style={{ textShadow: "0px 2px 16px rgba(0,0,0,0.26)" }}>
+                    Современное веб-приложение для доставки еды с открытым исходным кодом
+                  </p>
                 </div>
               </motion.div>
             </div>
           </div>
         </div>
       </section>
-    </div>;
+    </motion.div>
+  );
 };
+
 export default About;
