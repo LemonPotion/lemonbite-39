@@ -390,33 +390,34 @@ const About = () => {
               </div>
 
               <div
-                className="bg-background/80 dark:bg-background/90 outline-accent glass border-2 border-accent/10 glass-morphism aspect-video flex flex-col sm:flex-row items-center justify-between p-7 sm:p-12 gap-6 rounded-2xl shadow-lg hover:scale-105 transition-all cursor-pointer relative overflow-hidden"
+                className="group bg-white/50 dark:bg-background/70 backdrop-blur-xl shadow-2xl border-4 border-accent/20 hover:border-accent/40 transition duration-300 outline-accent glass-morphism aspect-video flex flex-col sm:flex-row items-center justify-between p-7 sm:p-12 gap-6 rounded-3xl shadow-lg hover:scale-105 hover:shadow-2xl cursor-pointer relative overflow-hidden"
                 onClick={() => setPresentationOpen(true)}
                 aria-label="Показать презентацию"
                 tabIndex={0}
                 role="button"
                 onKeyDown={e => (e.key === "Enter" || e.key === " ") && setPresentationOpen(true)}
-                style={{ outline: "2.5px solid #9b87f5", minHeight: "285px", outlineOffset: -6 }}
+                style={{ outline: "3px solid #9b87f5", minHeight: "310px", outlineOffset: "-7px" }}
               >
                 <div className="flex-1 flex flex-col items-center justify-center w-full h-full">
-                  <div className="inline-flex items-center justify-center w-28 h-28 rounded-full bg-primary/15 text-primary mb-6 shadow">
+                  <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-primary/15 text-primary mb-6 shadow-2xl border-4 border-white/80 group-hover:bg-primary/30 transition duration-300">
                     <span className="animate-[pulse_1.8s_cubic-bezier(0.4,0,0.6,1)_infinite]">
-                      <svg width="54" height="54" viewBox="0 0 24 24" className="mx-auto text-primary">
-                        <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.10"/>
-                        <circle cx="12" cy="12" r="8" fill="currentColor" opacity="0.20"/>
+                      <svg width="56" height="56" viewBox="0 0 24 24" className="mx-auto text-primary">
+                        <circle cx="12" cy="12" r="11" fill="currentColor" opacity="0.09"/>
+                        <circle cx="12" cy="12" r="7.5" fill="currentColor" opacity="0.14"/>
                         <circle cx="12" cy="12" r="4" fill="currentColor"/>
                       </svg>
                     </span>
                   </div>
-                  <h3 className="text-3xl sm:text-4xl font-extrabold mb-2 tracking-tight gradient-text drop-shadow arc-font">
+                  <h3 className="text-4xl sm:text-5xl font-extrabold mb-2 tracking-tight drop-shadow arc-font gradient-text"
+                    style={{ letterSpacing: "0.01em", fontWeight: 900 }}>
                     Кликните, чтобы открыть презентацию
                   </h3>
-                  <p className="text-muted-foreground text-lg max-w-xl mx-auto font-medium mt-2">
+                  <p className="text-muted-foreground text-lg max-w-xl mx-auto font-semibold mt-3">
                     Интерактивный обзор возможностей – теперь с картинками!
                   </p>
                 </div>
-                <span className="absolute bottom-6 right-10 animate-pulse">
-                  <svg width="30" height="30" fill="none" viewBox="0 0 24 24">
+                <span className="absolute bottom-8 right-12 animate-pulse z-10">
+                  <svg width="34" height="34" fill="none" viewBox="0 0 24 24">
                     <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </span>

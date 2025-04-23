@@ -61,13 +61,15 @@ export default function AboutPresentation({ open, onOpenChange }: AboutPresentat
     if (slide > 0) setSlide(slide - 1);
   };
 
-  // Use glassmorphism and bold typography, images, no gradient backgrounds, just palette.
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogOverlay />
       <DialogContent
-        className="bg-transparent border-0 shadow-2xl max-w-4xl w-[98vw] sm:w-[670px] rounded-3xl p-0"
-        style={{ minHeight: "560px", minWidth: "340px" }}
+        className="
+          bg-white/85 dark:bg-[#23202eF5] border-0 shadow-[0_8px_64px_rgba(40,16,80,0.10),0_2px_8px_rgba(43,39,84,0.08)] 
+          max-w-[900px] md:max-w-[1050px] w-[98vw] rounded-[2.5rem] p-0 overflow-visible
+        "
+        style={{ minHeight: "680px", minWidth: "370px" }}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
@@ -75,34 +77,36 @@ export default function AboutPresentation({ open, onOpenChange }: AboutPresentat
           exit={{ opacity: 0, scale: 0.96 }}
           className="relative w-full h-full"
         >
+          {/* Accent Stripe at Top */}
+          <div className="absolute left-0 top-0 w-full h-3 bg-primary/60 rounded-t-[2.5rem] pointer-events-none z-10"></div>
           {/* Close */}
-          <div className="absolute top-5 right-5 z-10">
+          <div className="absolute top-7 right-7 z-20">
             <DialogClose asChild>
-              <button className="rounded-full p-2 bg-white/80 dark:bg-background/80 hover:bg-primary/20 text-gray-700 dark:text-gray-200 shadow transition focus:outline-none border border-gray-200 dark:border-gray-700">
+              <button className="rounded-full p-2 bg-white/90 dark:bg-background/80 hover:bg-accent/10 text-gray-700 dark:text-gray-200 shadow-lg transition border-2 border-gray-200 dark:border-gray-800 focus:outline-none">
                 <span className="sr-only">Закрыть</span>
-                <svg width="22" height="22" viewBox="0 0 20 20"><line x1="6" y1="6" x2="14" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><line x1="14" y1="6" x2="6" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                <svg width="26" height="26" viewBox="0 0 20 20"><line x1="6" y1="6" x2="14" y2="14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/><line x1="14" y1="6" x2="6" y2="14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg>
               </button>
             </DialogClose>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between h-full p-0 pt-14 md:pt-0 pb-0 md:gap-2 gap-6">
+          <div className="flex flex-col md:flex-row items-stretch justify-between h-full p-0 pt-12 md:pt-0 pb-0 md:gap-2 gap-6">
             {/* Slide image */}
             <motion.div
               key={slide + "_img"}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, scale: 1.08, x: 40 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 0.47 }}
-              className="w-full md:w-1/2 flex justify-center items-center px-0 md:px-8"
-              style={{ minHeight: "350px" }}
+              className="w-full md:w-1/2 flex justify-center items-center px-0 md:px-14"
+              style={{ minHeight: "430px" }}
             >
-              <div className="rounded-3xl overflow-hidden w-full aspect-[16/12] shadow-xl glass border-2 border-white/50 dark:border-gray-800">
+              <div className="rounded-[2rem] overflow-hidden w-full aspect-[16/11] shadow-2xl border-[3.5px] border-primary/20 bg-background/60">
                 <img
                   src={slides[slide].img}
                   alt={slides[slide].title}
-                  className="object-cover w-full h-full min-h-[250px] max-h-[380px] bg-white/80 dark:bg-background"
+                  className="object-cover w-full h-full min-h-[300px] max-h-[430px] bg-white/85 dark:bg-background image-fade-in"
                   draggable={false}
                   loading="lazy"
-                  style={{ borderRadius: "1.4rem", objectFit: "cover" }}
+                  style={{ borderRadius: "2rem", objectFit: "cover" }}
                 />
               </div>
             </motion.div>
@@ -110,64 +114,69 @@ export default function AboutPresentation({ open, onOpenChange }: AboutPresentat
             {/* Slide Content */}
             <motion.div
               key={slide + "_content"}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.48 }}
               className="w-full md:w-1/2 flex flex-col justify-center items-center px-5 md:px-0"
             >
               <div
-                className="glass border-2 border-white/20 dark:border-gray-800 p-8 md:p-10 flex flex-col max-w-lg w-full items-center text-center rounded-3xl shadow-2xl"
+                className="
+                  glass border-[2.5px] border-primary/10 p-7 md:p-12 flex flex-col max-w-lg w-full items-center text-center rounded-[2.2rem] shadow-2xl 
+                  bg-white/96 dark:bg-[#22202B]/90 backdrop-blur-2xl
+                "
                 style={{
-                  background: "rgba(255,255,255,0.95)",
-                  backdropFilter: "blur(24px)"
+                  backdropFilter: "blur(36px)",
                 }}
               >
-                <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 text-primary arc-font tracking-tight leading-tight drop-shadow-sm"
-                  style={{ letterSpacing: "0.02em" }}>
+                <h2 className="text-[2.5rem] sm:text-[3.7rem] font-extrabold leading-tight mb-8 text-primary arc-font tracking-tight drop-shadow-2xl"
+                  style={{ letterSpacing: "0.016em", fontWeight: 900, lineHeight: "1.1" }}>
                   {slides[slide].title}
                 </h2>
-                <p className="text-xl text-gray-700 dark:text-gray-200 font-semibold mb-7 leading-relaxed"
-                  style={{ lineHeight: "1.7" }}>
+                <p className="text-2xl text-gray-700 dark:text-gray-300 font-bold mb-9 leading-normal"
+                  style={{ lineHeight: "1.65" }}>
                   {slides[slide].description}
                 </p>
-                <div className="mt-2 flex gap-4 justify-center items-center">
+                <div className="mt-2 flex gap-6 justify-center items-center">
                   <button
-                    className={`rounded-full p-3 transition bg-background/80 hover:bg-accent/40 border border-gray-200 dark:border-gray-800 shadow ${
-                      slide === 0 ? "opacity-60 pointer-events-none" : ""
+                    className={`rounded-full p-4 transition bg-background/90 hover:bg-accent/40 border-2 border-gray-200 dark:border-gray-800 shadow-md text-2xl ${
+                      slide === 0 ? "opacity-50 pointer-events-none" : ""
                     }`}
                     aria-label="Предыдущий слайд"
                     disabled={slide === 0}
                     onClick={handlePrev}
                   >
-                    <ArrowLeft size={24} />
+                    <ArrowLeft size={29} />
                   </button>
-                  <div className="text-center text-lg font-bold text-gray-700 dark:text-gray-200 select-none tracking-tight">{slide + 1} / {slides.length}</div>
+                  <div className="text-center text-xl font-extrabold text-gray-700 dark:text-gray-200 select-none tracking-tight shadow-sm px-3 py-1 bg-primary/10 rounded-xl">
+                    {slide + 1} <span className="font-semibold text-lg opacity-70">/ {slides.length}</span>
+                  </div>
                   <button
-                    className={`rounded-full p-3 transition bg-background/80 hover:bg-accent/40 border border-gray-200 dark:border-gray-800 shadow ${
-                      slide === slides.length - 1 ? "opacity-60 pointer-events-none" : ""
+                    className={`rounded-full p-4 transition bg-background/90 hover:bg-accent/40 border-2 border-gray-200 dark:border-gray-800 shadow-md text-2xl ${
+                      slide === slides.length - 1 ? "opacity-50 pointer-events-none" : ""
                     }`}
                     aria-label="Следующий слайд"
                     disabled={slide === slides.length - 1}
                     onClick={handleNext}
                   >
-                    <ArrowRight size={24} />
+                    <ArrowRight size={29} />
                   </button>
                 </div>
               </div>
 
               {/* Dots */}
-              <div className="flex justify-center mt-8 gap-2">
+              <div className="flex justify-center mt-10 gap-4">
                 {slides.map((_, idx) => (
                   <button
                     key={idx}
                     aria-label={`Перейти к слайду ${idx + 1}`}
-                    className={`h-3 w-3 rounded-full transition ${
+                    className={`h-5 w-5 rounded-full ring-2 ring-primary/15 ring-offset-2 transition-all border-2 shadow-sm ${
                       idx === slide
-                        ? "bg-primary/80 outline outline-2 outline-primary/20"
-                        : "bg-gray-300/70 dark:bg-gray-600/60"
+                        ? "bg-primary outline outline-2 outline-primary/20 ring-primary/50 scale-110"
+                        : "bg-gray-200/70 dark:bg-gray-800/80"
                     }`}
                     onClick={() => setSlide(idx)}
                     style={{
+                      transition: "background 0.3s, transform 0.2s",
                       boxShadow: idx === slide ? "0 0 0 5px #9b87f520" : undefined
                     }}
                   />
