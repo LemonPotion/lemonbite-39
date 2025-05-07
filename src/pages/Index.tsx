@@ -8,6 +8,7 @@ import { useCart, FoodItem } from '../context/CartContext';
 import { Search, X, SlidersHorizontal, Heart, RefreshCw, Sparkles, ArrowUp, Clock } from 'lucide-react';
 import FavoritesDrawer from '../components/FavoritesDrawer';
 import RecentlyViewedBanner from '../components/RecentlyViewedBanner';
+import RecommendationCard from '../components/RecommendationCard';
 import { saveFavoritesToCookies, getFavoritesFromCookies, saveRecentlyViewedToCookies, getRecentlyViewedFromCookies } from '../utils/cookieUtils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -362,13 +363,6 @@ const Index = () => {
       
       setRandomItem(newItem);
       setIsRandomItemAnimating(false);
-      
-      setTimeout(() => {
-        const element = document.querySelector('.recommendation-card');
-        if (element) {
-          element.classList.remove('scale-95', 'opacity-0');
-        }
-      }, 50);
     }, 300);
   };
 
@@ -401,121 +395,132 @@ const Index = () => {
     <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
         <div className="mb-12">
-          <div className="flex flex-col items-center text-center space-y-4 mb-8">
+          <motion.div 
+            className="flex flex-col items-center text-center space-y-4 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 className="text-4xl font-bold text-foreground theme-transition">
               Наше <span className="text-accent">Меню</span>
             </h1>
             <p className="text-lg text-foreground/80 max-w-lg text-center theme-transition">
               Откройте для себя наши тщательно приготовленные блюда из самых свежих ингредиентов
             </p>
-          </div>
+          </motion.div>
           
           {randomItem && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="recommendation-card mb-8 bg-gradient-to-r from-accent/10 to-accent/5 backdrop-blur-sm border border-accent/20 rounded-2xl p-6 shadow-lg transition-all duration-300"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-yellow-500" />
-                  Рекомендация для вас
-                </h3>
-                <div className="flex items-center gap-2">
-                  <motion.button 
-                    onClick={generateRandomItem}
-                    whileHover={{ scale: 1.1, rotate: 180 }}
-                    whileTap={{ scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                    className="p-2 hover:bg-accent/10 rounded-full transition-colors"
-                    title="Обновить рекомендацию"
-                  >
-                    <RefreshCw size={18} className="text-muted-foreground hover:text-foreground" />
-                  </motion.button>
-                  <motion.button 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => setRandomItem(null)}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <X size={18} />
-                  </motion.button>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <motion.img 
-                  src={randomItem.image}
-                  alt={randomItem.name}
-                  className="w-32 h-32 object-cover rounded-xl shadow-md"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <div className="flex-1">
-                  <h4 className="text-xl font-medium mb-2">{randomItem.name}</h4>
-                  <p className="text-muted-foreground mb-4">{randomItem.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-semibold text-accent">{randomItem.price} р</span>
-                    <motion.button 
-                      onClick={() => addItem(randomItem)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-medium hover:bg-accent/90 transition-colors"
-                    >
-                      В корзину
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <RecommendationCard 
+              item={randomItem} 
+              onDismiss={() => setRandomItem(null)} 
+              onRefresh={generateRandomItem} 
+            />
           )}
 
           {recentlyViewed.length > 0 && (
-            <div id="recently-viewed" className="mb-8">
+            <motion.div 
+              id="recently-viewed" 
+              className="mb-8"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
               <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
-            </div>
+            </motion.div>
           )}
           
-          <div className="flex flex-col space-y-4 mb-8">
+          <motion.div 
+            className="flex flex-col space-y-4 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
+          >
             <div className="flex flex-wrap items-center gap-2">
-              <button onClick={() => setShowQuickOrders(!showQuickOrders)} className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
-                  ${showQuickOrders ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}>
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setShowQuickOrders(!showQuickOrders)} 
+                className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${showQuickOrders ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
                 <Clock className="h-4 w-4" />
                 <span>Быстрые заказы</span>
-              </button>
+              </motion.button>
 
-              <button onClick={() => handleFilterClick('favorites')} className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
-                  ${activeFilter === 'favorites' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}>
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => handleFilterClick('favorites')} 
+                className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${activeFilter === 'favorites' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
                 <Heart className={`h-4 w-4 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : ''}`} />
                 <span>Избранное{favorites.length > 0 ? ` (${favorites.length})` : ''}</span>
-              </button>
+              </motion.button>
 
-              <button onClick={() => setShowFilters(!showFilters)} className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
-                  ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}>
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setShowFilters(!showFilters)} 
+                className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-colors
+                  ${showFilters ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}
+              >
                 <SlidersHorizontal className="h-4 w-4" />
                 <span>Фильтры</span>
-              </button>
+              </motion.button>
 
-              <button onClick={generateRandomItem} className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-muted hover:bg-muted/80 transition-colors">
+              <motion.button 
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={generateRandomItem} 
+                className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-muted hover:bg-muted/80 transition-colors"
+              >
                 <Sparkles className="h-4 w-4 text-yellow-500" />
                 <span>Рекомендация</span>
-              </button>
+              </motion.button>
             </div>
 
-            {showQuickOrders && <div className="w-full">
-                <QuickOrder />
-              </div>}
-          </div>
+            <AnimatePresence>
+              {showQuickOrders && (
+                <motion.div 
+                  className="w-full"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <QuickOrder />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
-          <div className="mb-6">
+          <motion.div 
+            className="mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+          >
             <div className="flex flex-wrap gap-3 items-center justify-between">
               <div className="relative flex-1 min-w-[200px] max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Поиск блюд..." className="w-full pl-10 pr-4 py-2 rounded-full border border-input bg-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all" />
-                {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <input 
+                  type="text" 
+                  value={searchQuery} 
+                  onChange={e => setSearchQuery(e.target.value)} 
+                  placeholder="Поиск блюд..." 
+                  className="w-full pl-10 pr-4 py-2 rounded-full border border-input bg-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all" 
+                />
+                {searchQuery && (
+                  <motion.button 
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    onClick={() => setSearchQuery('')} 
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
                     <X className="h-3 w-3" />
-                  </button>}
+                  </motion.button>
+                )}
               </div>
               
               <div className="flex gap-2">
@@ -525,53 +530,141 @@ const Index = () => {
               </div>
             </div>
             
-            {showFilters && <div className="mt-4 p-4 bg-muted/40 rounded-lg border border-muted animate-in fade-in-20 slide-in-from-top-5">
-                <div className="flex flex-wrap gap-4 justify-between">
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium">Категории</div>
-                    <div className="flex flex-wrap gap-2">
-                      {categories.map(category => <button key={category} onClick={() => handleCategoryClick(category)} className={`px-3 py-1 text-xs rounded-full transition-colors ${activeCategory === category ? 'bg-accent text-accent-foreground' : 'bg-muted hover:bg-muted/80'}`}>
-                          {category}
-                        </button>)}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div 
+                  className="mt-4 p-4 bg-muted/40 rounded-lg border border-muted"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex flex-wrap gap-4 justify-between">
+                    <div className="space-y-2">
+                      <div className="text-sm font-medium">Категории</div>
+                      <div className="flex flex-wrap gap-2">
+                        {categories.map(category => (
+                          <motion.button 
+                            key={category} 
+                            onClick={() => handleCategoryClick(category)} 
+                            className={`px-3 py-1 text-xs rounded-full transition-colors ${activeCategory === category ? 'bg-accent text-accent-foreground' : 'bg-muted hover:bg-muted/80'}`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            {category}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="text-sm font-medium">Сортировка</div>
+                      <select 
+                        value={sortOption || ''} 
+                        onChange={e => handleSortOptionChange(e.target.value || null)} 
+                        className="p-2 text-xs rounded border border-input bg-background"
+                      >
+                        <option value="">По умолчанию</option>
+                        <option value="price-low-high">Цена: от низкой к высокой</option>
+                        <option value="price-high-low">Цена: от высокой к низкой</option>
+                        <option value="name-a-z">Название: А-Я</option>
+                        <option value="name-z-a">Название: Я-А</option>
+                      </select>
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium">Сортировка</div>
-                    <select value={sortOption || ''} onChange={e => handleSortOptionChange(e.target.value || null)} className="p-2 text-xs rounded border border-input bg-background">
-                      <option value="">По умолчанию</option>
-                      <option value="price-low-high">Цена: от низкой к высокой</option>
-                      <option value="price-high-low">Цена: от высокой к низкой</option>
-                      <option value="name-a-z">Название: А-Я</option>
-                      <option value="name-z-a">Название: Я-А</option>
-                    </select>
-                  </div>
-                </div>
-                
-                {(activeFilter || activeCategory || searchQuery || sortOption) && <div className="mt-4 flex justify-end">
-                    <button onClick={resetFilters} className="text-xs px-3 py-1 text-muted-foreground hover:text-accent transition-colors">
-                      Сбросить все фильтры
-                    </button>
-                  </div>}
-              </div>}
-          </div>
+                  {(activeFilter || activeCategory || searchQuery || sortOption) && (
+                    <motion.div 
+                      className="mt-4 flex justify-end"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2, duration: 0.3 }}
+                    >
+                      <button 
+                        onClick={resetFilters} 
+                        className="text-xs px-3 py-1 text-muted-foreground hover:text-accent transition-colors"
+                      >
+                        Сбросить все фильтры
+                      </button>
+                    </motion.div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems.map(item => <FoodCard key={item.id} item={item} isFavorite={favorites.includes(item.id)} onFavoriteToggle={() => toggleFavorite(item.id)} onClick={() => addToRecentlyViewed(item)} />)}
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+        >
+          {filteredItems.map(item => (
+            <motion.div
+              key={item.id}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0 }
+              }}
+              transition={{ duration: 0.4 }}
+            >
+              <FoodCard 
+                item={item} 
+                isFavorite={favorites.includes(item.id)} 
+                onFavoriteToggle={() => toggleFavorite(item.id)} 
+                onClick={() => addToRecentlyViewed(item)} 
+              />
+            </motion.div>
+          ))}
           
-          {filteredItems.length === 0 && <div className="col-span-full py-12 text-center">
+          {filteredItems.length === 0 && (
+            <motion.div 
+              className="col-span-full py-12 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
               <p className="text-lg text-muted-foreground">Блюда не найдены</p>
               <p className="text-sm text-muted-foreground mt-2">Попробуйте изменить фильтры или поисковый запрос</p>
-              <button onClick={resetFilters} className="mt-4 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm hover:bg-accent/80 transition-colors">
+              <motion.button 
+                onClick={resetFilters} 
+                className="mt-4 px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm hover:bg-accent/80 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Сбросить фильтры
-              </button>
-            </div>}
-        </div>
+              </motion.button>
+            </motion.div>
+          )}
+        </motion.div>
         
-        {showScrollTop && <button onClick={handleScrollToTop} className="fixed bottom-6 right-6 p-3 bg-accent/80 text-white rounded-full shadow-md hover:bg-accent transition-colors z-10">
-            <ArrowUp className="h-5 w-5" />
-          </button>}
+        <AnimatePresence>
+          {showScrollTop && (
+            <motion.button 
+              onClick={handleScrollToTop} 
+              className="fixed bottom-6 right-6 p-3 bg-accent/80 text-white rounded-full shadow-md hover:bg-accent transition-colors z-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <ArrowUp className="h-5 w-5" />
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
       
       <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} onComplete={handleOrderComplete} />
