@@ -1,5 +1,5 @@
 
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, RefreshCw, X, ShoppingCart } from 'lucide-react';
 import { FoodItem, useCart } from '../context/CartContext';
@@ -10,16 +10,37 @@ interface RecommendationCardProps {
   onRefresh: () => void;
 }
 
+// Using React.memo to prevent unnecessary re-renders
 const RecommendationCard: React.FC<RecommendationCardProps> = memo(({ item, onDismiss, onRefresh }) => {
   const { addItem } = useCart();
   const [isHovered, setIsHovered] = useState(false);
+
+  // Use useCallback for event handlers to prevent unnecessary re-renders
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+  
+  // Add click handlers with useCallback
+  const handleRefreshClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRefresh();
+  }, [onRefresh]);
+  
+  const handleDismissClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDismiss();
+  }, [onDismiss]);
+  
+  const handleAddToCartClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (item) addItem(item);
+  }, [item, addItem]);
 
   if (!item) return null;
 
   return (
     <AnimatePresence>
       <motion.div 
-        className="relative mb-8 overflow-hidden rounded-2xl shadow-lg"
+        className="relative mb-8 overflow-hidden rounded-2xl shadow-lg animate-gpu"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
@@ -41,7 +62,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = memo(({ item, onDi
             </motion.h3>
             <div className="flex items-center gap-2">
               <motion.button 
-                onClick={onRefresh}
+                onClick={handleRefreshClick}
                 whileHover={{ scale: 1.1, rotate: 180 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.3 }}
@@ -53,7 +74,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = memo(({ item, onDi
               <motion.button 
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={onDismiss}
+                onClick={handleDismissClick}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X size={18} />
@@ -64,20 +85,20 @@ const RecommendationCard: React.FC<RecommendationCardProps> = memo(({ item, onDi
           <div className="flex gap-6 flex-col sm:flex-row">
             <div 
               className="relative overflow-hidden rounded-xl"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <img 
                 src={item.image}
                 alt={item.name}
-                className="w-full sm:w-32 h-32 object-cover rounded-xl shadow-md transition-transform duration-300"
+                className="w-full sm:w-32 h-32 object-cover rounded-xl shadow-md transition-transform duration-300 animate-gpu"
                 style={{ 
                   transform: isHovered ? 'scale(1.05)' : 'scale(1)' 
                 }}
                 loading="lazy"
               />
               <div 
-                className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent transition-opacity duration-300"
+                className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10 transition-opacity duration-300"
                 style={{ opacity: isHovered ? 1 : 0 }}
               />
             </div>
@@ -112,7 +133,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = memo(({ item, onDi
                 </motion.span>
                 
                 <motion.button 
-                  onClick={() => addItem(item)}
+                  onClick={handleAddToCartClick}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, y: 10 }}

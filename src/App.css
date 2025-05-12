@@ -15,6 +15,10 @@ body {
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+  /* Add hardware acceleration for better performance */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -35,6 +39,9 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+    /* Add hardware acceleration for animations */
+    will-change: transform;
+    transform: translateZ(0);
   }
 }
 
@@ -44,4 +51,33 @@ body {
 
 .read-the-docs {
   color: #888;
+}
+
+/* Optimize hover transitions for better performance */
+@media (hover: hover) {
+  .navigation-item {
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+}
+
+/* Use passive listeners for touch events */
+* {
+  touch-action: manipulation;
+}
+
+/* Hardware acceleration for animations */
+.animate-gpu {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize menu transitions */
+.navigation-menu-transition {
+  transition-property: transform, opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
 }
