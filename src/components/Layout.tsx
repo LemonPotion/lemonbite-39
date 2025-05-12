@@ -1,7 +1,10 @@
+
 import React, { useEffect, useRef } from 'react';
 import Header from './Header';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 interface LayoutProps {
   children: React.ReactNode;
   onCartOpen: () => void;
@@ -14,11 +17,12 @@ const Layout: React.FC<LayoutProps> = ({
     theme
   } = useTheme();
   const bgRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
-  // Enhanced parallax background movement
+  // Enhanced parallax background movement - optimized for mobile
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!bgRef.current) return;
+      if (!bgRef.current || isMobile) return;
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
 
@@ -27,10 +31,11 @@ const Layout: React.FC<LayoutProps> = ({
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isMobile]);
+  
   return <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-muted/30 theme-transition relative overflow-hidden">
-      {/* Enhanced Animated Background Elements */}
-      <div className="fixed top-0 left-0 w-full h-full -z-10 opacity-20 dark:opacity-10" ref={bgRef}>
+      {/* Enhanced Animated Background Elements - simplified for mobile */}
+      <div className={`fixed top-0 left-0 w-full h-full -z-10 opacity-20 dark:opacity-10 ${isMobile ? 'hidden md:block' : ''}`} ref={bgRef}>
         {/* Top left shapes */}
         <div className="absolute top-5 left-5 w-20 h-20 rounded-full border-4 border-primary animate-float"></div>
         <div className="absolute top-20 left-24 w-10 h-10 rounded-full bg-accent/50 animate-float" style={{
@@ -88,8 +93,8 @@ const Layout: React.FC<LayoutProps> = ({
       }}></div>
       </div>
       
-      {/* Enhanced Dynamic Background Pattern */}
-      <div className="fixed inset-0 -z-20 opacity-10 dark:opacity-15 overflow-hidden">
+      {/* Enhanced Dynamic Background Pattern - optimized for mobile */}
+      <div className={`fixed inset-0 -z-20 opacity-10 dark:opacity-15 overflow-hidden ${isMobile ? 'opacity-5 dark:opacity-10' : ''}`}>
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_10%_20%,_rgba(0,0,0,0.12)_0%,_transparent_20%)]"></div>
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_80%_50%,_rgba(0,0,0,0.08)_0%,_transparent_20%)]"></div>
         <div className="absolute w-full h-full bg-[radial-gradient(circle_at_30%_70%,_rgba(0,0,0,0.08)_0%,_transparent_30%)]"></div>
@@ -101,9 +106,9 @@ const Layout: React.FC<LayoutProps> = ({
         '--accent-color': theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'
       } as React.CSSProperties}></div>
         
-        {/* Additional grid pattern for more texture */}
+        {/* Additional grid pattern for more texture - optimized for mobile */}
         <div className="absolute inset-0 opacity-30 dark:opacity-40 bg-[linear-gradient(to_right,var(--grid-color)_1px,transparent_1px),linear-gradient(to_bottom,var(--grid-color)_1px,transparent_1px)]" style={{
-        backgroundSize: '30px 30px',
+        backgroundSize: isMobile ? '20px 20px' : '30px 30px',
         '--grid-color': theme === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.04)'
       } as React.CSSProperties}>
         </div>
@@ -111,7 +116,7 @@ const Layout: React.FC<LayoutProps> = ({
       
       <Header onCartClick={onCartOpen} />
       
-      <main className="flex-grow theme-transition">
+      <main className={`flex-grow theme-transition ${isMobile ? 'px-4' : ''}`}>
         {children}
       </main>
       
