@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Menu, X } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Navigation from './Navigation';
@@ -9,8 +9,6 @@ import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 import { Switch } from '@/components/ui/switch';
 import { motion } from 'framer-motion';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface HeaderProps {
   onCartClick: () => void;
@@ -19,7 +17,6 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
   const { items } = useCart();
   const { theme, toggleTheme } = useTheme();
-  const isMobile = useIsMobile();
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
   
   const springTransition = { 
@@ -54,52 +51,12 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
             </motion.span>
           </Link>
           
-          {/* Navigation - Hide on mobile */}
-          <div className="hidden md:block">
-            <Navigation />
-          </div>
-          
-          {/* Mobile Navigation */}
-          {isMobile && (
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[250px] p-0">
-                <div className="flex flex-col h-full">
-                  <div className="p-4 border-b">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-lg">Menu</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs">{theme === 'dark' ? 'Dark' : 'Light'}</span>
-                        <Switch checked={theme === 'dark'} onCheckedChange={toggleTheme} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-1 overflow-auto py-4">
-                    <nav className="flex flex-col space-y-1 px-2">
-                      <Link to="/" className="px-3 py-2 rounded-md hover:bg-muted transition-colors">
-                        Home
-                      </Link>
-                      <Link to="/about" className="px-3 py-2 rounded-md hover:bg-muted transition-colors">
-                        About
-                      </Link>
-                      <Link to="/quick-orders" className="px-3 py-2 rounded-md hover:bg-muted transition-colors">
-                        Quick Orders
-                      </Link>
-                    </nav>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-          )}
+          {/* Navigation */}
+          <Navigation />
           
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            {/* Theme Switch - Hide on mobile */}
+            {/* Theme Switch */}
             <div className="hidden md:flex items-center gap-2">
               <Switch 
                 checked={theme === 'dark'} 
@@ -151,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                     {cartItemCount}
                   </Badge>
                 </motion.div>
-                <span className="sr-only">Open cart</span>
+                <span className="sr-only">Открыть корзину</span>
               </Button>
             </motion.div>
           </div>
