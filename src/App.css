@@ -81,3 +81,28 @@ body {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
 }
+
+/* Blur animation classes */
+.blur-fade-in {
+  animation: blurFadeIn 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.97) forwards;
+  will-change: filter, opacity;
+  transform: translateZ(0);
+}
+
+@keyframes blurFadeIn {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Smooth page transitions */
+.page-transition {
+  transition: filter 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.97), 
+              opacity 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.97);
+  will-change: filter, opacity;
+}
