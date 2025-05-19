@@ -82,9 +82,9 @@ body {
   will-change: transform, opacity;
 }
 
-/* Blur animation classes */
+/* Blur animation classes - now faster */
 .blur-fade-in {
-  animation: blurFadeIn 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.97) forwards;
+  animation: blurFadeIn 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.97) forwards;
   will-change: filter, opacity;
   transform: translateZ(0);
 }
@@ -100,9 +100,10 @@ body {
   }
 }
 
-/* Smooth page transitions */
+/* Smooth page transitions - faster */
 .page-transition {
-  transition: filter 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.97), 
-              opacity 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.97);
+  transition: filter 0.8s cubic-bezier(0.17, 0.67, 0.83, 0.97), 
+              opacity 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.97);
   will-change: filter, opacity;
 }
+
