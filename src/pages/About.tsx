@@ -113,6 +113,9 @@ const About = () => {
     <motion.div 
       className="glass-card relative overflow-hidden"
       variants={itemAnimation}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true }}
       whileHover={{
         y: -5,
         boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
@@ -294,8 +297,11 @@ const About = () => {
                 {techStacks.backend.map(tech => (
                   <motion.div 
                     key={tech.name} 
-                    className="glass-card border border-border bg-card/30 rounded-2xl p-6" 
+                    className="glass-card border border-border bg-card/30 rounded-2xl p-6 h-full" 
                     variants={itemAnimation}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
                     whileHover={{
                       y: -5,
                       boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
@@ -335,8 +341,11 @@ const About = () => {
                 {techStacks.frontend.map(tech => (
                   <motion.div 
                     key={tech.name} 
-                    className="glass-card border border-border bg-card/30 rounded-2xl p-6"
+                    className="glass-card border border-border bg-card/30 rounded-2xl p-6 h-full"
                     variants={itemAnimation}
+                    initial="hidden"
+                    whileInView="show" 
+                    viewport={{ once: true }}
                     whileHover={{
                       y: -5,
                       boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
