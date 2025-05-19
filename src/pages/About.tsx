@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Navigation from "../components/Navigation";
 import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as LinkIcon, ChartBar, Sparkles, GitFork, Github } from "lucide-react";
@@ -287,26 +286,11 @@ const About = () => {
                 Серверные технологии
               </motion.h3>
               
-              <motion.div 
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                variants={containerAnimation}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-50px" }}
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {techStacks.backend.map(tech => (
-                  <motion.div 
+                  <div 
                     key={tech.name} 
-                    className="glass-card border border-border bg-card/30 rounded-2xl p-6 h-full" 
-                    variants={itemAnimation}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-                      transition: { duration: 0.2 }
-                    }}
+                    className="glass-card border border-border bg-card/30 rounded-2xl p-6 h-full"
                   >
                     <div className="flex flex-col items-center text-center">
                       <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-primary/10 mb-4">
@@ -315,9 +299,9 @@ const About = () => {
                       <h3 className="text-xl font-bold mb-2">{tech.name}</h3>
                       <p className="text-muted-foreground">{tech.description}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
 
             <div>
@@ -331,26 +315,11 @@ const About = () => {
                 Клиентские технологии
               </motion.h3>
               
-              <motion.div 
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                variants={containerAnimation}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-50px" }}
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {techStacks.frontend.map(tech => (
-                  <motion.div 
+                  <div 
                     key={tech.name} 
                     className="glass-card border border-border bg-card/30 rounded-2xl p-6 h-full"
-                    variants={itemAnimation}
-                    initial="hidden"
-                    whileInView="show" 
-                    viewport={{ once: true }}
-                    whileHover={{
-                      y: -5,
-                      boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-                      transition: { duration: 0.2 }
-                    }}
                   >
                     <div className="flex flex-col items-center text-center">
                       <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-primary/10 mb-4">
@@ -359,9 +328,9 @@ const About = () => {
                       <h3 className="text-xl font-bold mb-2">{tech.name}</h3>
                       <p className="text-muted-foreground">{tech.description}</p>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
