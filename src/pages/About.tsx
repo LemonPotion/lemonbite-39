@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import Navigation from "../components/Navigation";
 import { Code, Database, Server, Terminal, Laptop, Layers, FileCode, Link as LinkIcon, ChartBar, Sparkles, GitFork, Github } from "lucide-react";
@@ -109,22 +110,7 @@ const About = () => {
   };
   
   const FeatureCard = ({ icon, title, details }) => (
-    <motion.div 
-      className="glass-card relative overflow-hidden"
-      variants={itemAnimation}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-      whileHover={{
-        y: -5,
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-      }} 
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 20
-      }}
-    >
+    <div className="glass-card relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-accent opacity-80"></div>
       <div className="p-6 z-10 relative">
         <div className="mb-4 flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 text-primary">
@@ -134,7 +120,7 @@ const About = () => {
         <p className="text-muted-foreground">{details}</p>
       </div>
       <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mb-12"></div>
-    </motion.div>
+    </div>
   );
 
   return (
@@ -353,18 +339,12 @@ const About = () => {
               </p>
             </motion.div>
 
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
-              variants={containerAnimation}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-50px" }}
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FeatureCard icon={<Code size={24} />} title="Современная архитектура" details="Чистая архитектура с паттерном CQRS, принципы Domain-Driven Design и структура готовая к микросервисам." />
               <FeatureCard icon={<Database size={24} />} title="Эффективная база данных" details="Масштабируемый дизайн базы данных с оптимизированными запросами и кэшированием." />
               <FeatureCard icon={<GitFork size={24} />} title="Готово к масштабированию" details="Архитектура, спроектированная для легкого масштабирования по мере роста вашего бизнеса." />
               <FeatureCard icon={<Terminal size={24} />} title="Типобезопасность" details="Полная типобезопасность от API до пользовательского интерфейса для предотвращения ошибок во время выполнения." />
-            </motion.div>
+            </div>
           </div>
         </section>
 

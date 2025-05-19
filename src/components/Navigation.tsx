@@ -72,33 +72,51 @@ const popularIngredients = [
   'морепродукты', 'авокадо', 'шоколад', 'ягоды', 'орехи'
 ];
 
+// New more stylish animations
 const menuVariants = {
-  hidden: { opacity: 0, y: -5 },
+  hidden: { opacity: 0 },
   visible: { 
-    opacity: 1, 
-    y: 0,
+    opacity: 1,
     transition: { 
-      staggerChildren: 0.05,
-      duration: 0.3,
-      ease: "easeOut"
+      staggerChildren: 0.08,
+      delayChildren: 0.1
     }
   },
   exit: { 
-    opacity: 0, 
-    y: -5,
+    opacity: 0,
     transition: { 
-      staggerChildren: 0.03,
+      staggerChildren: 0.05,
       staggerDirection: -1,
-      duration: 0.2,
-      ease: "easeIn"
+      when: "afterChildren"
     }
   }
 };
 
 const menuItemVariants = {
-  hidden: { opacity: 0, y: -5 },
-  visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -5 }
+  hidden: { 
+    opacity: 0, 
+    y: -20,
+    rotate: -5,
+    scale: 0.9
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20
+    }
+  },
+  exit: { 
+    opacity: 0, 
+    y: -10,
+    transition: {
+      duration: 0.2
+    }
+  }
 };
 
 const Navigation = () => {
@@ -195,8 +213,12 @@ const Navigation = () => {
           variants={menuVariants}
         >
           <NavigationMenuList className="flex justify-center">
-            {navigationItems.map((item) => (
-              <motion.div key={item.name} variants={menuItemVariants}>
+            {navigationItems.map((item, index) => (
+              <motion.div 
+                key={item.name} 
+                variants={menuItemVariants}
+                custom={index}
+              >
                 <NavigationMenuItem>
                   <Link
                     to={item.path}
@@ -206,12 +228,21 @@ const Navigation = () => {
                       location.pathname === item.path ? "bg-accent/50" : ""
                     )}
                   >
-                    <span className="z-10 relative">{item.name}</span>
                     <motion.span 
-                      className="absolute inset-0 bg-accent/10 rounded-md"
-                      initial={{ width: 0 }}
-                      whileHover={{ width: '100%' }}
-                      transition={{ duration: 0.3 }}
+                      className="z-10 relative"
+                      whileHover={{ 
+                        scale: 1.05, 
+                        transition: { duration: 0.2 } 
+                      }}
+                    >{item.name}</motion.span>
+                    <motion.span 
+                      className="absolute inset-0 bg-accent/10 rounded-md -z-10"
+                      initial={{ width: 0, opacity: 0 }}
+                      whileHover={{ 
+                        width: '100%', 
+                        opacity: 1,
+                        transition: { duration: 0.3 } 
+                      }}
                     />
                   </Link>
                 </NavigationMenuItem>
@@ -227,20 +258,44 @@ const Navigation = () => {
                     navigationMenuTriggerStyle(),
                     "text-base font-medium gap-2 relative overflow-hidden group"
                   )}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { 
+                      type: "spring", 
+                      stiffness: 400, 
+                      damping: 25 
+                    } 
+                  }}
+                  whileTap={{ 
+                    scale: 0.97,
+                    transition: { 
+                      type: "spring", 
+                      stiffness: 300, 
+                      damping: 20 
+                    } 
+                  }}
                 >
-                  <Search className="h-4 w-4" />
-                  <span>Поиск</span>
-                  <kbd className="ml-1 pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                    <span className="text-xs">⌘</span>K
-                  </kbd>
+                  <motion.div 
+                    className="flex items-center gap-2"
+                    whileHover={{
+                      x: [0, -2, 3, -2, 0],
+                      transition: { duration: 0.4 }
+                    }}
+                  >
+                    <Search className="h-4 w-4" />
+                    <span>Поиск</span>
+                    <kbd className="ml-1 pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                      <span className="text-xs">⌘</span>K
+                    </kbd>
+                  </motion.div>
                   <motion.span 
                     className="absolute inset-0 bg-accent/10 rounded-md -z-10"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    whileHover={{ 
+                      opacity: 1, 
+                      scale: 1,
+                      transition: { duration: 0.3 } 
+                    }}
                   />
                 </motion.button>
               </NavigationMenuItem>
@@ -255,23 +310,32 @@ const Navigation = () => {
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.95 }}
       >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          className="h-6 w-6 text-foreground" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor"
+        <motion.div
+          initial={false}
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3, ease: "anticipate" }}
         >
-          <motion.path 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth={2} 
-            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
-            initial={false}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          />
-        </svg>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="h-6 w-6 text-foreground" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <motion.path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
+              initial={false}
+              animate={{ 
+                pathLength: 1, 
+                opacity: 1,
+                transition: { duration: 0.3 }
+              }}
+            />
+          </svg>
+        </motion.div>
       </motion.button>
 
       {/* Mobile menu panel with animation */}
@@ -279,10 +343,27 @@ const Navigation = () => {
         {isOpen && (
           <motion.div 
             className="absolute top-16 left-0 right-0 z-50 bg-background border-b border-border shadow-lg md:hidden"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            initial={{ 
+              opacity: 0, 
+              height: 0,
+              clipPath: "inset(0 0 100% 0)"
+            }}
+            animate={{ 
+              opacity: 1, 
+              height: 'auto',
+              clipPath: "inset(0 0 0% 0)"
+            }}
+            exit={{ 
+              opacity: 0, 
+              height: 0,
+              clipPath: "inset(0 0 100% 0)"
+            }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 300, 
+              damping: 30,
+              duration: 0.3
+            }}
           >
             <motion.nav 
               className="px-4 py-4 space-y-3"
@@ -291,11 +372,12 @@ const Navigation = () => {
               animate="visible"
               exit="exit"
             >
-              {navigationItems.map((item) => (
+              {navigationItems.map((item, index) => (
                 <motion.div 
                   key={item.name} 
                   className="space-y-2"
                   variants={menuItemVariants}
+                  custom={index}
                 >
                   <Link 
                     to={item.path}
