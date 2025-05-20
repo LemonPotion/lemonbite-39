@@ -1,19 +1,18 @@
-
 import React, { useEffect, useRef } from 'react';
 import Header from './Header';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
-
 interface LayoutProps {
   children: React.ReactNode;
   onCartOpen: () => void;
 }
-
 const Layout: React.FC<LayoutProps> = ({
   children,
   onCartOpen
 }) => {
-  const { theme } = useTheme();
+  const {
+    theme
+  } = useTheme();
   const bgRef = useRef<HTMLDivElement>(null);
 
   // Enhanced parallax background movement
@@ -29,9 +28,7 @@ const Layout: React.FC<LayoutProps> = ({
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
-  return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-muted/30 theme-transition relative overflow-hidden">
+  return <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-muted/30 theme-transition relative overflow-hidden">
       {/* Enhanced Animated Background Elements */}
       <div className="fixed top-0 left-0 w-full h-full -z-10 opacity-20 dark:opacity-10" ref={bgRef}>
         {/* Top left shapes */}
@@ -117,8 +114,8 @@ const Layout: React.FC<LayoutProps> = ({
       <main className="flex-grow theme-transition">
         {children}
       </main>
-    </div>
-  );
+      
+      
+    </div>;
 };
-
 export default Layout;
