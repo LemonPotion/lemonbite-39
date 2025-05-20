@@ -174,7 +174,7 @@ const About = () => {
                 </span>
               </motion.div>
               
-              <motion.h1 initial={{
+              <motion.h1 className="font-bold text-5xl tracking-tight mb-6 gradient-text py-[16px] md:text-7xl" initial={{
               opacity: 0,
               y: 20
             }} animate={{
@@ -183,7 +183,7 @@ const About = () => {
             }} transition={{
               duration: 0.5,
               delay: 0.2
-            }} className="font-bold text-8xl tracking-tight mb-6 gradient-text py-[16px] md:text-8xl text-center">
+            }}>
                 Добро пожаловать в удобную доставку
               </motion.h1>
               
