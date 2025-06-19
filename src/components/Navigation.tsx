@@ -72,22 +72,14 @@ const popularIngredients = [
   'морепродукты', 'авокадо', 'шоколад', 'ягоды', 'орехи'
 ];
 
-// New more stylish animations
+// Optimized animations with simpler variants
 const menuVariants = {
   hidden: { opacity: 0 },
   visible: { 
     opacity: 1,
     transition: { 
-      staggerChildren: 0.08,
-      delayChildren: 0.1
-    }
-  },
-  exit: { 
-    opacity: 0,
-    transition: { 
       staggerChildren: 0.05,
-      staggerDirection: -1,
-      when: "afterChildren"
+      delayChildren: 0.05
     }
   }
 };
@@ -95,26 +87,43 @@ const menuVariants = {
 const menuItemVariants = {
   hidden: { 
     opacity: 0, 
-    y: -20,
-    rotate: -5,
-    scale: 0.9
+    y: -10
   },
   visible: { 
     opacity: 1, 
     y: 0,
-    rotate: 0,
-    scale: 1,
     transition: {
       type: "spring",
-      stiffness: 260,
-      damping: 20
+      stiffness: 400,
+      damping: 25,
+      mass: 0.5
+    }
+  }
+};
+
+// Optimized mobile menu variants
+const mobileMenuVariants = {
+  hidden: { 
+    opacity: 0, 
+    height: 0,
+    clipPath: "inset(0 0 100% 0)"
+  },
+  visible: { 
+    opacity: 1, 
+    height: 'auto',
+    clipPath: "inset(0 0 0% 0)",
+    transition: {
+      duration: 0.25,
+      ease: "easeOut"
     }
   },
   exit: { 
     opacity: 0, 
-    y: -10,
+    height: 0,
+    clipPath: "inset(0 0 100% 0)",
     transition: {
-      duration: 0.2
+      duration: 0.2,
+      ease: "easeIn"
     }
   }
 };
@@ -218,113 +227,65 @@ const Navigation = () => {
     <div className="flex items-center justify-center flex-grow">
       <NavigationMenu className="hidden md:flex">
         <motion.div
+          variants={menuVariants}
           initial="hidden"
           animate="visible"
-          exit="exit"
-          variants={menuVariants}
         >
           <NavigationMenuList className="flex justify-center">
-            {navigationItems.map((item, index) => (
+            {navigationItems.map((item) => (
               <motion.div 
                 key={item.name} 
                 variants={menuItemVariants}
-                custom={index}
               >
                 <NavigationMenuItem>
                   <Link
                     to={item.path}
                     className={cn(
                       navigationMenuTriggerStyle(),
-                      "text-base font-medium relative overflow-hidden group",
+                      "text-base font-medium relative overflow-hidden group transition-all duration-200",
                       location.pathname === item.path ? "bg-accent/50" : ""
                     )}
                   >
-                    <motion.span 
-                      className="z-10 relative"
-                      whileHover={{ 
-                        scale: 1.05, 
-                        transition: { duration: 0.2 } 
-                      }}
-                    >{item.name}</motion.span>
-                    <motion.span 
-                      className="absolute inset-0 bg-accent/10 rounded-md -z-10"
-                      initial={{ width: 0, opacity: 0 }}
-                      whileHover={{ 
-                        width: '100%', 
-                        opacity: 1,
-                        transition: { duration: 0.3 } 
-                      }}
-                    />
+                    <span className="z-10 relative">{item.name}</span>
+                    <span className="absolute inset-0 bg-accent/10 rounded-md -z-10 scale-0 group-hover:scale-100 transition-transform duration-200 origin-center" />
                   </Link>
                 </NavigationMenuItem>
               </motion.div>
             ))}
             
-            {/* Quick search button with animation */}
+            {/* Quick search button with optimized animation */}
             <motion.div variants={menuItemVariants}>
               <NavigationMenuItem>
-                <motion.button
+                <button
                   onClick={() => setIsCommandOpen(true)}
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    "text-base font-medium gap-2 relative overflow-hidden group"
+                    "text-base font-medium gap-2 relative overflow-hidden group transition-all duration-200"
                   )}
-                  whileHover={{ 
-                    scale: 1.05,
-                    transition: { 
-                      type: "spring", 
-                      stiffness: 400, 
-                      damping: 25 
-                    } 
-                  }}
-                  whileTap={{ 
-                    scale: 0.97,
-                    transition: { 
-                      type: "spring", 
-                      stiffness: 300, 
-                      damping: 20 
-                    } 
-                  }}
                 >
-                  <motion.div 
-                    className="flex items-center gap-2"
-                    whileHover={{
-                      x: [0, -2, 3, -2, 0],
-                      transition: { duration: 0.4 }
-                    }}
-                  >
-                    <Search className="h-4 w-4" />
+                  <div className="flex items-center gap-2">
+                    <Search className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                     <span>Поиск</span>
                     <kbd className="ml-1 pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                       <span className="text-xs">⌘</span>K
                     </kbd>
-                  </motion.div>
-                  <motion.span 
-                    className="absolute inset-0 bg-accent/10 rounded-md -z-10"
-                    initial={{ opacity: 0, scale: 0.6 }}
-                    whileHover={{ 
-                      opacity: 1, 
-                      scale: 1,
-                      transition: { duration: 0.3 } 
-                    }}
-                  />
-                </motion.button>
+                  </div>
+                  <span className="absolute inset-0 bg-accent/10 rounded-md -z-10 scale-0 group-hover:scale-100 transition-transform duration-200 origin-center" />
+                </button>
               </NavigationMenuItem>
             </motion.div>
           </NavigationMenuList>
         </motion.div>
       </NavigationMenu>
 
-      {/* Mobile menu button with animation */}
-      <motion.button 
-        className="md:hidden p-2 rounded-md focus:outline-none"
+      {/* Mobile menu button with optimized animation */}
+      <button 
+        className="md:hidden p-2 rounded-md focus:outline-none transition-transform duration-150 active:scale-95"
         onClick={() => setIsOpen(!isOpen)}
-        whileTap={{ scale: 0.95 }}
       >
         <motion.div
-          initial={false}
           animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: "anticipate" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
         >
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -333,67 +294,41 @@ const Navigation = () => {
             viewBox="0 0 24 24" 
             stroke="currentColor"
           >
-            <motion.path 
+            <path 
               strokeLinecap="round" 
               strokeLinejoin="round" 
               strokeWidth={2} 
               d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
-              initial={false}
-              animate={{ 
-                pathLength: 1, 
-                opacity: 1,
-                transition: { duration: 0.3 }
-              }}
             />
           </svg>
         </motion.div>
-      </motion.button>
+      </button>
 
-      {/* Mobile menu panel with animation */}
+      {/* Mobile menu panel with optimized animation */}
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div 
             className="absolute top-16 left-0 right-0 z-50 bg-background border-b border-border shadow-lg md:hidden"
-            initial={{ 
-              opacity: 0, 
-              height: 0,
-              clipPath: "inset(0 0 100% 0)"
-            }}
-            animate={{ 
-              opacity: 1, 
-              height: 'auto',
-              clipPath: "inset(0 0 0% 0)"
-            }}
-            exit={{ 
-              opacity: 0, 
-              height: 0,
-              clipPath: "inset(0 0 100% 0)"
-            }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 300, 
-              damping: 30,
-              duration: 0.3
-            }}
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
           >
             <motion.nav 
               className="px-4 py-4 space-y-3"
               variants={menuVariants}
               initial="hidden"
               animate="visible"
-              exit="exit"
             >
-              {navigationItems.map((item, index) => (
+              {navigationItems.map((item) => (
                 <motion.div 
                   key={item.name} 
-                  className="space-y-2"
                   variants={menuItemVariants}
-                  custom={index}
                 >
                   <Link 
                     to={item.path}
                     className={cn(
-                      "block px-4 py-2 text-base font-medium rounded-md",
+                      "block px-4 py-2 text-base font-medium rounded-md transition-colors duration-150",
                       location.pathname === item.path ? "bg-accent text-accent-foreground" : "hover:bg-accent/10"
                     )}
                     onClick={() => setIsOpen(false)}
@@ -402,12 +337,9 @@ const Navigation = () => {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div 
-                className="space-y-2"
-                variants={menuItemVariants}
-              >
+              <motion.div variants={menuItemVariants}>
                 <button 
-                  className="w-full flex items-center justify-between px-4 py-2 text-base font-medium rounded-md hover:bg-accent/10"
+                  className="w-full flex items-center justify-between px-4 py-2 text-base font-medium rounded-md hover:bg-accent/10 transition-colors duration-150"
                   onClick={() => {
                     setIsCommandOpen(true);
                     setIsOpen(false);
@@ -422,7 +354,7 @@ const Navigation = () => {
         )}
       </AnimatePresence>
 
-      {/* Enhanced Command Menu (Search) with animations */}
+      {/* Enhanced Command Menu with optimized animations */}
       <CommandDialog open={isCommandOpen} onOpenChange={setIsCommandOpen}>
         <Command onKeyDown={(e) => {
           // Submit on Enter key
@@ -430,74 +362,56 @@ const Navigation = () => {
             handleSearch();
           }
         }}>
-          <motion.div
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-          >
-            <CommandInput 
-              placeholder="Поиск по меню, категориям..." 
-              value={searchQuery}
-              onValueChange={handleSearchInput}
-            />
-          </motion.div>
+          <CommandInput 
+            placeholder="Поиск по меню, категориям..." 
+            value={searchQuery}
+            onValueChange={handleSearchInput}
+          />
           <CommandList>
             <CommandEmpty>Ничего не найдено.</CommandEmpty>
             
-            {/* Show search suggestions with animation */}
+            {/* Show search suggestions with simplified animation */}
             <AnimatePresence>
               {searchSuggestions.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 5 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
                 >
                   <CommandGroup heading="Предлагаем поискать">
                     {searchSuggestions.map((suggestion, index) => (
-                      <motion.div
+                      <CommandItem
                         key={`suggestion-${index}`}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
+                        onSelect={() => handleSuggestionSelect(suggestion)}
                       >
-                        <CommandItem
-                          onSelect={() => handleSuggestionSelect(suggestion)}
-                        >
-                          <Tag className="mr-2 h-4 w-4" />
-                          <span>{suggestion}</span>
-                        </CommandItem>
-                      </motion.div>
+                        <Tag className="mr-2 h-4 w-4" />
+                        <span>{suggestion}</span>
+                      </CommandItem>
                     ))}
                   </CommandGroup>
                 </motion.div>
               )}
             </AnimatePresence>
             
-            {/* Show search history with animation */}
+            {/* Show search history with simplified animation */}
             <AnimatePresence>
               {history.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 5 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }}
                 >
                   <CommandGroup heading="История поиска">
-                    {history.map((item, index) => (
-                      <motion.div
+                    {history.map((item) => (
+                      <CommandHistoryItem 
                         key={item}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
+                        onSelect={() => handleHistorySelect(item)}
+                        onClear={() => removeFromHistory(item)}
                       >
-                        <CommandHistoryItem 
-                          onSelect={() => handleHistorySelect(item)}
-                          onClear={() => removeFromHistory(item)}
-                        >
-                          {item}
-                        </CommandHistoryItem>
-                      </motion.div>
+                        {item}
+                      </CommandHistoryItem>
                     ))}
                     {history.length > 1 && (
                       <CommandItem 
@@ -513,75 +427,51 @@ const Navigation = () => {
               )}
             </AnimatePresence>
             
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              <CommandGroup heading="Меню">
-                <CommandItem onSelect={() => {
-                  navigate('/');
-                  setIsCommandOpen(false);
-                }}>
-                  <span>Главная</span>
-                </CommandItem>
-              </CommandGroup>
-            </motion.div>
+            <CommandGroup heading="Меню">
+              <CommandItem onSelect={() => {
+                navigate('/');
+                setIsCommandOpen(false);
+              }}>
+                <span>Главная</span>
+              </CommandItem>
+            </CommandGroup>
             
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Collapsible className="w-full">
-                <CollapsibleTrigger className="flex w-full items-center py-2 px-3 text-sm font-medium">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <ChefHat className="h-4 w-4" />
-                    <span>Категории</span>
-                    <ChevronDown className="h-4 w-4 ml-auto transition-transform duration-200 ui-open:rotate-180" />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
-                  <div className="pt-1 pb-2">
-                    {foodCategories.map((category, index) => (
-                      <motion.div
-                        key={category}
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.03 }}
-                      >
-                        <CommandItem 
-                          onSelect={() => handleCategorySelect(category)}
-                          className="pl-9"
-                        >
-                          <span>{category}</span>
-                        </CommandItem>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            </motion.div>
+            <Collapsible className="w-full">
+              <CollapsibleTrigger className="flex w-full items-center py-2 px-3 text-sm font-medium">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <ChefHat className="h-4 w-4" />
+                  <span>Категории</span>
+                  <ChevronDown className="h-4 w-4 ml-auto transition-transform duration-200 ui-open:rotate-180" />
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+                <div className="pt-1 pb-2">
+                  {foodCategories.map((category) => (
+                    <CommandItem 
+                      key={category}
+                      onSelect={() => handleCategorySelect(category)}
+                      className="pl-9"
+                    >
+                      <span>{category}</span>
+                    </CommandItem>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
             
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <CommandGroup heading="Дополнительно">
-                <CommandItem onSelect={handleRandomFood}>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  <span>Я не знаю что заказать</span>
-                </CommandItem>
-                <CommandItem onSelect={() => {
-                  navigate('/?recently=true');
-                  setIsCommandOpen(false);
-                }}>
-                  <Clock className="mr-2 h-4 w-4" />
-                  <span>Недавно просмотренные</span>
-                </CommandItem>
-              </CommandGroup>
-            </motion.div>
+            <CommandGroup heading="Дополнительно">
+              <CommandItem onSelect={handleRandomFood}>
+                <Sparkles className="mr-2 h-4 w-4" />
+                <span>Я не знаю что заказать</span>
+              </CommandItem>
+              <CommandItem onSelect={() => {
+                navigate('/?recently=true');
+                setIsCommandOpen(false);
+              }}>
+                <Clock className="mr-2 h-4 w-4" />
+                <span>Недавно просмотренные</span>
+              </CommandItem>
+            </CommandGroup>
           </CommandList>
         </Command>
       </CommandDialog>
