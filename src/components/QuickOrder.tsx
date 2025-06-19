@@ -26,7 +26,7 @@ const QuickOrder: React.FC = () => {
 
   const saveCurrentOrder = () => {
     if (items.length === 0) {
-      toast.error('Your cart is empty. Add items before saving an order.');
+      toast.error('Ваша корзина пуста. Добавьте блюда перед сохранением заказа.');
       return;
     }
     setShowSavePrompt(true);
@@ -34,7 +34,7 @@ const QuickOrder: React.FC = () => {
 
   const confirmSaveOrder = () => {
     if (!orderName.trim()) {
-      toast.error('Please provide a name for your order');
+      toast.error('Пожалуйста, укажите название для вашего заказа');
       return;
     }
     const newOrder = {
@@ -52,7 +52,7 @@ const QuickOrder: React.FC = () => {
     localStorage.setItem('quickOrders', JSON.stringify(updatedOrders));
     setShowSavePrompt(false);
     setOrderName('');
-    toast.success('Order saved for quick reordering!');
+    toast.success('Заказ сохранен для быстрого переоформления!');
   };
 
   const loadOrder = (orderIndex: number) => {
@@ -61,14 +61,14 @@ const QuickOrder: React.FC = () => {
     orderToLoad.items.forEach(item => {
       addItem(item);
     });
-    toast.success(`"${orderToLoad.name}" loaded to your cart!`);
+    toast.success(`"${orderToLoad.name}" загружен в вашу корзину!`);
   };
 
   const deleteOrder = (orderIndex: number) => {
     const updatedOrders = savedOrders.filter((_, index) => index !== orderIndex);
     setSavedOrders(updatedOrders);
     localStorage.setItem('quickOrders', JSON.stringify(updatedOrders));
-    toast.success('Order removed from saved orders');
+    toast.success('Заказ удален из сохраненных');
   };
 
   if (savedOrders.length === 0 && !showSavePrompt) {

@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useMenuItems } from '../hooks/useMenuItems';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -49,15 +50,27 @@ const Index = () => {
     }
     const random = params.get('random');
     if (random === 'true') {
-      const randomIndex = Math.floor(Math.random() * foodItems.length);
-      setRandomItem(foodItems[randomIndex]);
+      if (foodItems.length > 0) {
+        const randomIndex = Math.floor(Math.random() * foodItems.length);
+        setRandomItem(foodItems[randomIndex]);
+        toast.success('Случайное блюдо выбрано!');
+      }
       navigate('/', {
         replace: true
       });
     }
     const search = params.get('search');
     if (search) {
-      setSearchQuery(search);
+      // Check if search is for random dish
+      if (search.toLowerCase().includes('случайное блюдо')) {
+        if (foodItems.length > 0) {
+          const randomIndex = Math.floor(Math.random() * foodItems.length);
+          setRandomItem(foodItems[randomIndex]);
+          toast.success('Случайное блюдо выбрано!');
+        }
+      } else {
+        setSearchQuery(search);
+      }
       navigate('/', {
         replace: true
       });
@@ -226,6 +239,7 @@ const Index = () => {
       
       setRandomItem(newItem);
       setIsRandomItemAnimating(false);
+      toast.success('Новое случайное блюдо выбрано!');
     }, 300);
   };
 
@@ -324,8 +338,6 @@ const Index = () => {
             </motion.div>
           )}
           
-          
-          
           <motion.div 
             className="flex flex-col space-y-4 mb-8"
             initial={{ opacity: 0 }}
@@ -392,8 +404,6 @@ const Index = () => {
             </AnimatePresence>
           </motion.div>
 
-          
-          
           <motion.div 
             className="mb-6"
             initial={{ opacity: 0 }}
@@ -408,16 +418,16 @@ const Index = () => {
                   value={searchQuery} 
                   onChange={e => setSearchQuery(e.target.value)} 
                   placeholder="Поиск блюд..." 
-                  className="w-full pl-10 pr-4 py-2 rounded-full border border-input bg-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all" 
+                  className="w-full pl-10 pr-10 py-2 rounded-full border border-input bg-muted/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all" 
                 />
                 {searchQuery && (
                   <motion.button 
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     onClick={() => setSearchQuery('')} 
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground flex items-center justify-center"
                   >
-                    <X className="h-3 w-3" />
+                    <X className="h-4 w-4" />
                   </motion.button>
                 )}
               </div>

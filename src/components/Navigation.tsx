@@ -184,7 +184,13 @@ const Navigation = () => {
   const handleSearch = () => {
     if (searchQuery.trim()) {
       addToHistory(searchQuery);
-      navigate(`/?search=${encodeURIComponent(searchQuery)}`);
+      
+      // Check if search is for random dish
+      if (searchQuery.toLowerCase().includes('случайное блюдо')) {
+        navigate('/?random=true');
+      } else {
+        navigate(`/?search=${encodeURIComponent(searchQuery)}`);
+      }
       setIsCommandOpen(false);
     }
   };
@@ -199,7 +205,12 @@ const Navigation = () => {
   
   // Handle history item selection
   const handleHistorySelect = (term: string) => {
-    navigate(`/?search=${encodeURIComponent(term)}`);
+    // Check if history term is for random dish
+    if (term.toLowerCase().includes('случайное блюдо')) {
+      navigate('/?random=true');
+    } else {
+      navigate(`/?search=${encodeURIComponent(term)}`);
+    }
     setIsCommandOpen(false);
   };
 
