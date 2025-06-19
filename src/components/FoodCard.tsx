@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
@@ -36,16 +37,6 @@ const generateFoodTags = (name: string): string[] => {
   return tags;
 }
 
-const generateFoodInfo = (name: string): { calories: number; prepTime: number; spicyLevel: number } => {
-  const nameSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-  
-  return {
-    calories: 200 + (nameSum % 600),
-    prepTime: 10 + (nameSum % 20),
-    spicyLevel: nameSum % 4
-  };
-}
-
 const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavoriteToggle, onClick }) => {
   const { theme } = useTheme();
   const { addItem } = useCart();
@@ -54,10 +45,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
   const [isAdding, setIsAdding] = useState(false);
   const [tags] = useState(generateFoodTags(item.name));
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [foodInfo] = useState(generateFoodInfo(item.name));
-  const [cookTime] = useState({
-    cookTime: Math.floor(Math.random() * 20) + 10,
-  });
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -150,14 +137,18 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
           </div>
           
           <div className="flex items-center gap-3 mb-3 text-xs text-muted-foreground">
-            <div className="flex items-center">
-              <Utensils size={12} className="mr-1" />
-              <span>{foodInfo.calories} ккал</span>
-            </div>
-            <div className="flex items-center">
-              <Clock size={12} className="mr-1" />
-              <span>{cookTime.cookTime} мин</span>
-            </div>
+            {item.calories && (
+              <div className="flex items-center">
+                <Utensils size={12} className="mr-1" />
+                <span>{item.calories} ккал</span>
+              </div>
+            )}
+            {item.prepTime && (
+              <div className="flex items-center">
+                <Clock size={12} className="mr-1" />
+                <span>{item.prepTime} мин</span>
+              </div>
+            )}
           </div>
           
           <div className="mb-2 flex flex-wrap gap-1">
@@ -214,12 +205,16 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
             </DialogHeader>
             
             <div className="my-4 flex flex-wrap gap-3">
-              <Badge variant="outline" className="bg-card/60 text-foreground">
-                <Utensils size={14} className="mr-1" /> {foodInfo.calories} калорий
-              </Badge>
-              <Badge variant="outline" className="bg-card/60 text-foreground">
-                <Clock size={14} className="mr-1" /> {cookTime.cookTime} мин. приготовления
-              </Badge>
+              {item.calories && (
+                <Badge variant="outline" className="bg-card/60 text-foreground">
+                  <Utensils size={14} className="mr-1" /> {item.calories} калорий
+                </Badge>
+              )}
+              {item.prepTime && (
+                <Badge variant="outline" className="bg-card/60 text-foreground">
+                  <Clock size={14} className="mr-1" /> {item.prepTime} мин. приготовления
+                </Badge>
+              )}
             </div>
             
             <div className="my-4">

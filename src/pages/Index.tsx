@@ -13,146 +13,7 @@ import { saveFavoritesToCookies, getFavoritesFromCookies, saveRecentlyViewedToCo
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingSpinner from "../components/LoadingSpinner";
-
-const foodItems: FoodItem[] = [{
-  id: "cc0a5991-5f23-47d9-97e8-753a3d9cc1be",
-  name: 'Классический бургер',
-  price: 90,
-  image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Сочная говяжая котлета с салатом, помидором, сыром и фирменным соусом на поджаренной булочке.'
-}, {
-  id: "9630fcc3-b496-45af-9918-e0698c1c6928",
-  name: 'Пицца "Маргарита"',
-  price: 120,
-  image: 'https://static.1000.menu/img/content-v2/ef/27/10853/picca-margarita-v-domashnix-usloviyax_1608783820_4_max.jpg',
-  description: 'Классическая пицца с томатным соусом, свежей моцареллой, базиликом и оливковым маслом.'
-}, {
-  id: "7d8ded21-c195-410c-8858-9ab6a1b0409d",
-  name: 'Салат "Цезарь"',
-  price: 130,
-  image: 'https://ferma-m2.ru/images/shop/recipe_image/crop_shutterstock_1505620307.jpg',
-  description: 'Свежий романо, сухарики, пармезан и соус "Цезарь".'
-}, {
-  id: "aa04728c-a701-48d6-8aa7-343d46095ccf",
-  name: 'Паста с курицей',
-  price: 80,
-  image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Пенне с курицей, сливочным соусом "Альфредо" и свежими травами.'
-}, {
-  id: "78c07716-d3f3-433f-8d0a-e56340ce1be5",
-  name: 'Овощное жаркое',
-  price: 90,
-  image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Свежие овощи, обжаренные с тофу в ароматном соусе, подаются с рисом.'
-}, {
-  id: "dbd459c7-c11d-4480-b85f-67aeebf7d0e6",
-  name: 'Шоколадный торт',
-  price: 180,
-  image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Насыщенный шоколадный торт с нежным ганашем и свежими ягодами.'
-}, {
-  id: "4eded883-1fd9-429f-8e13-bf92c974ef5b",
-  name: 'Рыбные тако',
-  price: 125,
-  image: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Жареная рыба с капустным салатом, авокадо и лаймовым кремом в кукуру��ных тортильях.'
-}, {
-  id: "53746dfa-2ed9-40a1-936d-be88f4de237a",
-  name: 'Суши-ассорти',
-  price: 220,
-  image: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Ассорти свежих суши, включая лосось, тунца и роллы "Калифорния".'
-}, {
-  id: "e0ea2c5e-a082-4a85-affa-6d268b9c2d10",
-  name: 'Бефстроганов',
-  price: 120,
-  image: 'https://images.unsplash.com/photo-1608835291093-394b0c943a75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Нежные кусочки говядины с грибами в сливочном соусе, подаются с яичной лапшой.'
-}, {
-  id: "fdf0fa2a-6173-46c0-b353-c92be7110efa",
-  name: 'Пад Тай с креветками',
-  price: 130,
-  image: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Рисовая лапша с креветками, тофу, ростками фасоли, арахисом и тамариндовым соусом.'
-}, {
-  id: "b2a52c6c-831d-4d4a-b703-6d09518e737c",
-  name: 'Греческий гирос',
-  price: 90,
-  image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Пряное мясо, свежие овощи и соус дзадзики в теплой питe.'
-}, {
-  id: "276dd5be-c262-4b78-b4be-191a63b2d096",
-  name: 'Грибное ризотто',
-  price: 125,
-  image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Кремовый рис Арборио, медленно приготовленный с грибами, белым вином и пармезаном.'
-}, {
-  id: "ff93e1f2-1ccb-40e8-a33f-d56d82c86314",
-  name: 'Тирамису',
-  price: 80,
-  image: 'https://lasunka.com/s165-prew.jpg',
-  description: 'Классический итальянский десерт с нежным кремом, кофе и какао.'
-}, {
-  id: "4ebd3882-fd00-4834-8529-2607427609f7",
-  name: 'Борщ украинский',
-  price: 115,
-  image: 'https://i.ytimg.com/vi/4C-ewlHTq2E/maxresdefault.jpg',
-  description: 'Традиционный украинский суп со свеклой, капустой, и сметаной.'
-}, {
-  id: "747812db-a925-4367-b797-eafe47874a11",
-  name: 'Пельмени сибирские',
-  price: 80,
-  image: 'https://images.gastronom.ru/OJ1rNL0xLnRuf9mNmOWUPV9BWWK-ivUk6Yck05IqXxE/pr:recipe-preview-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzLzI4NDA1OTE2LTM4ZDMtNDYwMC1hMjYyLTc1NzFkNjc3MDdlZi5qcGc',
-  description: 'Домашние пельмени с мясной начинкой, подаются со сметаной.'
-}, {
-  id: "3d197686-4aa0-4571-9686-f07cf595cb45",
-  name: 'Стейк Рибай',
-  price: 180,
-  image: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Сочный стейк из мраморной говядины, приготовленный на гриле.'
-}, {
-  id: "48b9bc14-babc-412a-82a6-95b6ea131752",
-  name: 'Том Ям',
-  price: 178,
-  image: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Острый тайский суп с креветками, грибами и ароматными травами.'
-}, {
-  id: "d9e94877-a850-43b2-9379-f9a6c55fc511",
-  name: 'Хачапури по-аджарски',
-  price: 130,
-  image: 'https://zira.uz/wp-content/uploads/2017/10/hachapuri-1.jpg',
-  description: 'Традиционная грузинская выпечка с сыром и яйцом.'
-}, {
-  id: "acd76e7d-46f4-4900-855e-a16c64edabfe",
-  name: 'Чизкейк Нью-Йорк',
-  price: 80,
-  image: 'https://la-torta.ua/content/uploads/images/12-cake.jpg',
-  description: 'Классический американский чизкейк с нежной сырной начинкой и ягодным соусом.'
-}, {
-  id: "92febdca-9da7-43f4-afe1-6aef7c4dcf55",
-  name: 'Раменбоул с курицей',
-  price: 156,
-  image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Питательный японский суп с лапшой, куриным филе, яйцом и овощами.'
-}, {
-  id: "5f73ba8a-96f9-42cb-9101-b687cb5231f4",
-  name: 'Осьминог на гриле',
-  price: 230,
-  image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Нежные щупальца осьминога, приготовленные на гриле с оливковым маслом и зеленью.'
-}, {
-  id: "62d608f6-0068-4978-a3bb-92bfc483aa3c",
-  name: 'Паэлья с морепродуктами',
-  price: 168,
-  image: 'https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Традиционное испанское блюдо из риса с шафраном, креветками, мидиями и кальмарами.'
-}, {
-  id: "ee168189-9900-49b9-8b17-5776e0c50b36",
-  name: 'Утка по-пекински',
-  price: 230,
-  image: 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-  description: 'Хрустящая утка с тонкими блинами, огурцами, зеленым луком и сладким соусом хойсин.'
-}];
+import { useMenuItems } from '../hooks/useMenuItems';
 
 const Index = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -171,9 +32,9 @@ const Index = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showQuickOrders, setShowQuickOrders] = useState(false);
   const [loadingRecommendations, setLoadingRecommendations] = React.useState(false);
-  const {
-    addItem
-  } = useCart();
+  
+  const { data: foodItems = [], isLoading, error } = useMenuItems();
+  const { addItem } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -225,7 +86,7 @@ const Index = () => {
         replace: true
       });
     }
-  }, [location, navigate]);
+  }, [location, navigate, foodItems]);
 
   useEffect(() => {
     const savedFavorites = getFavoritesFromCookies();
@@ -346,6 +207,8 @@ const Index = () => {
   };
 
   const generateRandomItem = () => {
+    if (foodItems.length === 0) return;
+    
     setIsRandomItemAnimating(true);
     const currentItem = randomItem;
     
@@ -391,6 +254,38 @@ const Index = () => {
     }
   }, [foodItems, recentlyViewed.length]);
 
+  if (isLoading) {
+    return (
+      <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <LoadingSpinner />
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <p className="text-lg text-red-600 mb-4">Ошибка загрузки меню</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/80 transition-colors"
+              >
+                Обновить страницу
+              </button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout onCartOpen={() => setIsCheckoutOpen(true)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 theme-transition">
@@ -428,6 +323,8 @@ const Index = () => {
               <RecentlyViewedBanner items={recentlyViewed} onItemClick={addToRecentlyViewed} />
             </motion.div>
           )}
+          
+          
           
           <motion.div 
             className="flex flex-col space-y-4 mb-8"
@@ -495,6 +392,8 @@ const Index = () => {
             </AnimatePresence>
           </motion.div>
 
+          
+          
           <motion.div 
             className="mb-6"
             initial={{ opacity: 0 }}
@@ -521,12 +420,6 @@ const Index = () => {
                     <X className="h-3 w-3" />
                   </motion.button>
                 )}
-              </div>
-              
-              <div className="flex gap-2">
-                
-                
-                
               </div>
             </div>
             
