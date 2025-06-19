@@ -3,6 +3,7 @@ import { useCart, FoodItem } from '../context/CartContext';
 import { Bookmark, BookmarkCheck, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+
 const QuickOrder: React.FC = () => {
   const [savedOrders, setSavedOrders] = useState<{
     name: string;
@@ -10,17 +11,19 @@ const QuickOrder: React.FC = () => {
   }[]>([]);
   const {
     items,
-    addToCart,
+    addItem,
     clearCart
   } = useCart();
   const [showSavePrompt, setShowSavePrompt] = useState(false);
   const [orderName, setOrderName] = useState('');
+
   useEffect(() => {
     const saved = localStorage.getItem('quickOrders');
     if (saved) {
       setSavedOrders(JSON.parse(saved));
     }
   }, []);
+
   const saveCurrentOrder = () => {
     if (items.length === 0) {
       toast.error('Your cart is empty. Add items before saving an order.');
@@ -28,6 +31,7 @@ const QuickOrder: React.FC = () => {
     }
     setShowSavePrompt(true);
   };
+
   const confirmSaveOrder = () => {
     if (!orderName.trim()) {
       toast.error('Please provide a name for your order');
@@ -50,20 +54,23 @@ const QuickOrder: React.FC = () => {
     setOrderName('');
     toast.success('Order saved for quick reordering!');
   };
+
   const loadOrder = (orderIndex: number) => {
     const orderToLoad = savedOrders[orderIndex];
     clearCart();
     orderToLoad.items.forEach(item => {
-      addToCart(item);
+      addItem(item);
     });
     toast.success(`"${orderToLoad.name}" loaded to your cart!`);
   };
+
   const deleteOrder = (orderIndex: number) => {
     const updatedOrders = savedOrders.filter((_, index) => index !== orderIndex);
     setSavedOrders(updatedOrders);
     localStorage.setItem('quickOrders', JSON.stringify(updatedOrders));
     toast.success('Order removed from saved orders');
   };
+
   if (savedOrders.length === 0 && !showSavePrompt) {
     return <div className="bg-white/60 rounded-lg p-4 shadow-sm border border-[#F77A54]/20">
         <div className="flex items-center justify-between">
@@ -83,6 +90,7 @@ const QuickOrder: React.FC = () => {
         <p className="text-xs text-[#2E2E2E]/60 mt-2">Сохраняйте ваши любимые комбинации блюд</p>
       </div>;
   }
+
   return <div className="rounded-lg p-4 shadow-sm border border-[#F77A54]/20 bg-slate-50">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-2">
@@ -174,4 +182,5 @@ const QuickOrder: React.FC = () => {
       </AnimatePresence>
     </div>;
 };
+
 export default QuickOrder;
