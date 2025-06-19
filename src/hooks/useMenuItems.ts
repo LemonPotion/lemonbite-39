@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ApiMenuItem, FoodItem } from '../types/api';
 
 const fetchMenuItems = async (): Promise<ApiMenuItem[]> => {
-  const response = await fetch('/api/v1/Order/all');
+  const response = await fetch('http://localhost:5058/api/v1/Order/all');
   if (!response.ok) {
     throw new Error('Failed to fetch menu items');
   }
