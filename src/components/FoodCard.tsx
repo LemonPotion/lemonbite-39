@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Plus, Heart, ChefHat, Clock, Utensils } from 'lucide-react';
+import { Plus, Heart, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
@@ -187,11 +187,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
               }}
             />
-            
-            <div className="absolute bottom-3 left-3 bg-card/80 backdrop-blur-sm rounded-full px-3 py-1 flex items-center shadow-sm">
-              <ChefHat size={16} className="text-accent mr-1" />
-              <span className="text-xs font-medium">От шеф-повара</span>
-            </div>
           </div>
           
           <div className="p-6">
