@@ -39,6 +39,48 @@ const Index = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Функция для очистки избранного от несуществующих блюд
+  const cleanupFavorites = (allItems: FoodItem[], currentFavorites: string[]) => {
+    const existingItemIds = new Set(allItems.map(item => item.id));
+    const validFavorites = currentFavorites.filter(id => existingItemIds.has(id));
+    
+    if (validFavorites.length !== currentFavorites.length) {
+      setFavorites(validFavorites);
+      saveFavoritesToCookies(validFavorites);
+      const removedCount = currentFavorites.length - validFavorites.length;
+      toast.info(`Удалено ${removedCount} недоступных блюд из избранного`);
+    }
+  };
+
+  // Функция для очистки быстрых заказов от несуществующих блюд
+  const cleanupQuickOrders = (allItems: FoodItem[]) => {
+    const saved = localStorage.getItem('quickOrders');
+    if (saved) {
+      const savedOrders = JSON.parse(saved);
+      const existingItemIds = new Set(allItems.map(item => item.id));
+      let hasChanges = false;
+      
+      const cleanedOrders = savedOrders.map((order: any) => {
+        const validItems = order.items.filter((item: FoodItem) => existingItemIds.has(item.id));
+        if (validItems.length !== order.items.length) {
+          hasChanges = true;
+        }
+        return {
+          ...order,
+          items: validItems
+        };
+      }).filter((order: any) => order.items.length > 0); // Удаляем пустые заказы
+      
+      if (hasChanges) {
+        localStorage.setItem('quickOrders', JSON.stringify(cleanedOrders));
+        const removedOrders = savedOrders.length - cleanedOrders.length;
+        if (removedOrders > 0) {
+          toast.info(`Обновлены быстрые заказы: удалены недоступные блюда`);
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const category = params.get('category');
@@ -114,6 +156,14 @@ const Index = () => {
       setRecentlyViewed(savedRecentlyViewed);
     }
   }, []);
+
+  // Очищаем избранное и быстрые заказы когда загружаются данные
+  useEffect(() => {
+    if (foodItems.length > 0) {
+      cleanupFavorites(foodItems, favorites);
+      cleanupQuickOrders(foodItems);
+    }
+  }, [foodItems]);
 
   const handleOrderComplete = (phoneNumber: string, address: string) => {
     console.log('Order placed with:', {
