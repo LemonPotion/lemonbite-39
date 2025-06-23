@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
-import { Plus, Heart, Clock, Utensils } from 'lucide-react';
+import { Plus, Heart, Clock, Utensils, Star, ChefHat } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Badge } from './ui/badge';
 import { useTheme } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface FoodCardProps {
   item: FoodItem;
@@ -176,71 +176,153 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
         </div>
       </motion.div>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden bg-card text-card-foreground border-accent/10">
-          <div className="relative h-64 sm:h-72">
-            <img 
-              src={item.image} 
-              alt={item.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
-              }}
-            />
-          </div>
-          
-          <div className="p-6">
-            <DialogHeader>
-              <DialogTitle className="flex justify-between items-center">
-                <span className="truncate text-foreground">{item.name}</span>
-                <span className="text-sm font-semibold bg-accent text-white px-2 py-1 rounded-full flex-shrink-0 ml-2">
-                  {item.price.toFixed(2)} р
-                </span>
-              </DialogTitle>
-            </DialogHeader>
-            
-            <div className="my-4 flex flex-wrap gap-3">
-              {item.calories && (
-                <Badge variant="outline" className="bg-card/60 text-foreground">
-                  <Utensils size={14} className="mr-1" /> {item.calories} калорий
-                </Badge>
-              )}
-              {item.prepTime && (
-                <Badge variant="outline" className="bg-card/60 text-foreground">
-                  <Clock size={14} className="mr-1" /> {item.prepTime} мин. приготовления
-                </Badge>
-              )}
-            </div>
-            
-            <div className="my-4">
-              <h4 className="text-sm font-medium mb-2 text-foreground">Описание</h4>
-              <p className="text-foreground/80">{item.description}</p>
-            </div>
-            
-            <div className="flex flex-wrap gap-1 mb-6">
-              {tags.map((tag, index) => (
-                <span 
-                  key={index} 
-                  className="inline-block bg-muted/80 px-2 py-1 rounded-full text-xs font-medium text-foreground/70"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            
-            <button 
-              onClick={(e) => {
-                handleAddToCart(e);
-                setIsDialogOpen(false);
-              }}
-              className="w-full py-3 flex items-center justify-center rounded-lg text-sm font-medium bg-accent text-white hover:bg-accent/90 transition-colors btn-pop shadow-sm"
-            >
-              <Plus size={16} className="mr-1" />
-              Добавить в корзину
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AnimatePresence>
+        {isDialogOpen && (
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden bg-card text-card-foreground border-accent/10 max-h-[90vh] overflow-y-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
+              >
+                <div className="relative h-80 sm:h-96 overflow-hidden">
+                  <motion.img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                    initial={{ scale: 1.1 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
+                    }}
+                  />
+                  
+                  {/* Floating rating */}
+                  <motion.div 
+                    className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm text-white px-3 py-2 rounded-full flex items-center gap-2"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <Star size={16} fill="gold" color="gold" />
+                    <span className="text-sm font-medium">4.8</span>
+                  </motion.div>
+
+                  {/* Chef's recommendation badge */}
+                  <motion.div 
+                    className="absolute top-4 right-4 bg-accent/90 backdrop-blur-sm text-white px-3 py-2 rounded-full flex items-center gap-2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <ChefHat size={16} />
+                    <span className="text-sm font-medium">Рекомендуем</span>
+                  </motion.div>
+
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                </div>
+                
+                <div className="p-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    <DialogHeader className="mb-6">
+                      <DialogTitle className="flex justify-between items-start gap-4">
+                        <div>
+                          <h2 className="text-2xl font-bold text-foreground mb-2">{item.name}</h2>
+                          <div className="flex items-center gap-2">
+                            <span className="text-3xl font-bold text-accent">{item.price.toFixed(2)} ₽</span>
+                            <span className="text-sm text-muted-foreground line-through">
+                              {(item.price * 1.2).toFixed(2)} ₽
+                            </span>
+                          </div>
+                        </div>
+                      </DialogTitle>
+                    </DialogHeader>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="grid grid-cols-2 gap-4 mb-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {item.calories && (
+                      <div className="bg-muted/50 rounded-lg p-4 text-center">
+                        <Utensils size={24} className="mx-auto mb-2 text-accent" />
+                        <div className="text-2xl font-bold text-foreground">{item.calories}</div>
+                        <div className="text-sm text-muted-foreground">калорий</div>
+                      </div>
+                    )}
+                    {item.prepTime && (
+                      <div className="bg-muted/50 rounded-lg p-4 text-center">
+                        <Clock size={24} className="mx-auto mb-2 text-accent" />
+                        <div className="text-2xl font-bold text-foreground">{item.prepTime}</div>
+                        <div className="text-sm text-muted-foreground">минут</div>
+                      </div>
+                    )}
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="mb-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <h4 className="text-lg font-semibold mb-3 text-foreground">Описание</h4>
+                    <p className="text-foreground/80 leading-relaxed">{item.description}</p>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="mb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <h4 className="text-lg font-semibold mb-3 text-foreground">Категории</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((tag, index) => (
+                        <motion.span 
+                          key={index} 
+                          className="inline-flex items-center bg-accent/10 text-accent px-3 py-2 rounded-full text-sm font-medium border border-accent/20"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.5 + index * 0.1 }}
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          {tag}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <button 
+                      onClick={(e) => {
+                        handleAddToCart(e);
+                        setIsDialogOpen(false);
+                      }}
+                      className="w-full py-4 flex items-center justify-center rounded-xl text-lg font-semibold bg-accent text-white hover:bg-accent/90 transition-all duration-300 btn-pop shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                    >
+                      <Plus size={20} className="mr-2" />
+                      Добавить в корзину за {item.price.toFixed(2)} ₽
+                    </button>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </DialogContent>
+          </Dialog>
+        )}
+      </AnimatePresence>
     </>
   );
 };
