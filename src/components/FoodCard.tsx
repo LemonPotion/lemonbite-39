@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Plus, Heart, Clock, Utensils, Star, ChefHat } from 'lucide-react';
+import { Plus, Heart, Clock, Utensils } from 'lucide-react';
 import { useCart, FoodItem } from '../context/CartContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
@@ -199,29 +198,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
                     }}
                   />
                   
-                  {/* Floating rating */}
-                  <motion.div 
-                    className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm text-white px-3 py-2 rounded-full flex items-center gap-2"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <Star size={16} fill="gold" color="gold" />
-                    <span className="text-sm font-medium">4.8</span>
-                  </motion.div>
-
-                  {/* Chef's recommendation badge */}
-                  <motion.div 
-                    className="absolute top-4 right-4 bg-accent/90 backdrop-blur-sm text-white px-3 py-2 rounded-full flex items-center gap-2"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    <ChefHat size={16} />
-                    <span className="text-sm font-medium">Рекомендуем</span>
-                  </motion.div>
-
-                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
                 </div>
                 
@@ -237,9 +213,6 @@ const FoodCard: React.FC<FoodCardProps> = ({ item, isFavorite = false, onFavorit
                           <h2 className="text-2xl font-bold text-foreground mb-2">{item.name}</h2>
                           <div className="flex items-center gap-2">
                             <span className="text-3xl font-bold text-accent">{item.price.toFixed(2)} ₽</span>
-                            <span className="text-sm text-muted-foreground line-through">
-                              {(item.price * 1.2).toFixed(2)} ₽
-                            </span>
                           </div>
                         </div>
                       </DialogTitle>

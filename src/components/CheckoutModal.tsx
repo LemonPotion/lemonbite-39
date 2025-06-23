@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, ShoppingBag, Trash2, Plus, Minus, Phone, MapPin } from 'lucide-react';
+import { X, ShoppingBag, Trash2, Plus, Minus, Phone, MapPin, Clock } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { toast } from 'sonner';
 import { useTheme } from '../context/ThemeContext';
@@ -22,6 +22,23 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
+
+  // Функция для расчета примерного времени ожидания
+  const calculateEstimatedTime = () => {
+    if (items.length === 0) return 0;
+    
+    // Получаем максимальное время приготовления среди всех блюд
+    const maxPrepTime = Math.max(...items.map(item => item.prepTime || 15));
+    
+    // Добавляем базовое время для обработки заказа (10 минут)
+    // и дополнительное время в зависимости от количества позиций
+    const baseTime = 10;
+    const additionalTime = Math.floor(items.length / 3) * 5; // +5 минут за каждые 3 позиции
+    
+    return maxPrepTime + baseTime + additionalTime;
+  };
+
+  const estimatedTime = calculateEstimatedTime();
 
   const validatePhone = (phone: string) => {
     const regex = /^\d{8,10}$/;
@@ -177,6 +194,23 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, onComple
             )
           ) : (
             <div className="p-6 space-y-6">
+              {/* Блок с примерным временем ожидания */}
+              {estimatedTime > 0 && (
+                <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-accent/20 rounded-full p-2">
+                      <Clock className="h-5 w-5 text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-foreground">Примерное время ожидания</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Ваш заказ будет готов примерно через <span className="font-semibold text-accent">{estimatedTime} минут</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-foreground">Контактная информация</h3>
                 
